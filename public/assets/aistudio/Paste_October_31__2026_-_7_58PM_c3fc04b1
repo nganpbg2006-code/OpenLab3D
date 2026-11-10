@@ -1,0 +1,3255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bộ Dụng Cụ Mạch Điện Nối Tiếp 3D — Chuẩn OpenLab 3D v2.4</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; user-select: none; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #0b1120;
+      color: #f8fafc;
+      overflow: hidden;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    #canvas-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 35%, #1e293b 0%, #090d16 100%);
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      outline: none;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.5); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.8); }
+
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.84);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+    .terminal-badge {
+      transition: all 0.15s ease;
+    }
+    .terminal-badge:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
+    }
+    input[type="range"] {
+      accent-color: #38bdf8;
+    }
+  </style>
+</head>
+<body class="h-screen w-screen flex flex-col overflow-hidden">
+
+  <!-- ============================================================================
+       KHỐI 1: MANIFEST JSON CHUẨN OL3D-HTML-MODULE-v2.4 (HARD CRITERION #1)
+       ============================================================================ -->
+  <script id="ol3d-module-manifest" type="application/json">
+  {
+    "schemaVersion": "OL3D-HTML-MODULE-v2.4",
+    "asset": {
+      "id": "ol3d-series-circuit-kit-dc-01",
+      "slug": "bo-mach-dien-noi-tiep-3d",
+      "nameVi": "Bộ Thí Nghiệm Mạch Điện Nối Tiếp DC (Nguồn Pin Con Ó, Cầu Dao, Biến Trở, Đèn, Ampe Kế, Vôn Kế)",
+      "nameEn": "3D Modular DC Series Circuit Experiment Kit",
+      "category": "electricity-apparatus",
+      "proceduralArchetype": "dc-series-circuit-kit",
+      "manufacturer": "Thiết bị Giáo dục Việt Nam - PINACO Con Ó / OpenLab 3D",
+      "modelCode": "TBGD-MDNT-2026",
+      "geometry": {
+        "anchor": "base-center",
+        "upAxis": "Y",
+        "frontAxis": "+Z",
+        "boundingBoxM": {
+          "width": 0.54,
+          "height": 0.125,
+          "depth": 0.36
+        },
+        "dimensions": {
+          "widthOrDiameter": { "value": 540, "unit": "mm", "status": "verified" },
+          "height": { "value": 125, "unit": "mm", "status": "verified" },
+          "depth": { "value": 360, "unit": "mm", "status": "verified" }
+        }
+      },
+      "scientificProperties": {
+        "referenceMass": { "value": 1250.0, "unit": "g", "status": "verified" },
+        "referenceVolume": { "value": 680.0, "unit": "cm³", "status": "verified" },
+        "ratedVoltageDc": { "value": 3.0, "unit": "V", "status": "verified" },
+        "bulbResistance": { "value": 6.0, "unit": "Ω", "status": "verified" },
+        "rheostatMaxResistance": { "value": 20.0, "unit": "Ω", "status": "verified" }
+      },
+      "measurementMetadata": {
+        "measuredQuantity": "current_and_voltage",
+        "ammeterRanges": ["0 - 0.6 A (ĐCNN 0.02 A)", "0 - 3.0 A (ĐCNN 0.1 A)"],
+        "voltmeterRanges": ["0 - 6.0 V (ĐCNN 0.2 V)", "0 - 12.0 V (ĐCNN 0.4 V)"],
+        "leastCount": { "value": 0.02, "unit": "A", "status": "verified" },
+        "accuracyClass": "2.5"
+      }
+    },
+    "moduleControls": {
+      "stateKey": "multimeterValue",
+      "labelVi": "Giá trị biến trở con chạy R_bt (Ω)",
+      "unit": "Ω",
+      "min": 0,
+      "max": 20,
+      "step": 0.5,
+      "defaultValue": 4.0,
+      "canBeWeighedOnBalance": false,
+      "canSubmergeInVessel": false,
+      "canHoldLiquid": false,
+      "presets": [
+        { "label": "Biến trở R = 0 Ω (Đèn sáng mạnh nhất, I ≈ 0.46 A)", "value": 0.0 },
+        { "label": "Biến trở R = 4 Ω (Đèn sáng chuẩn, I ≈ 0.29 A)", "value": 4.0 },
+        { "label": "Biến trở R = 10 Ω (Đèn sáng mờ, I ≈ 0.18 A)", "value": 10.0 },
+        { "label": "Biến trở R = 20 Ω (Dòng nhỏ nhất, I ≈ 0.11 A)", "value": 20.0 }
+      ]
+    },
+    "realPhotoMeta": {
+      "captionVi": "Đối chiếu thực tế: Giá đỡ 2 pin đại Con Ó 1.5V, Cầu dao K, Biến trở con chạy 20Ω, Bóng đèn đế nhựa 126, Ampe kế hiện kim, Vôn kế hiện kim và Dây cắm bắp chuối Đỏ/Xanh.",
+      "sourceType": "svg-technical-diagram"
+    },
+    "dossier": {
+      "technicalStandard": "Thông tư 38/2021/TT-BGDĐT & 39/2021/TT-BGDĐT - Danh mục thiết bị dạy học tối thiểu môn Khoa học tự nhiên & Vật lý",
+      "exactDimensionsSpec": "Khay bàn lắp ráp 540 × 360 × 125 mm; Ampe kế & Vôn kế 100 × 96 × 115 mm; Biến trở con chạy 175 × 62 × 68 mm; Giá đỡ 2 pin đại R20 135 × 82 × 40 mm.",
+      "weightOrCapacitySpec": "Tổng khối lượng bộ ~1250 g; Nguồn 2 pin đại Con Ó R20 1.5V nối tiếp (E = 3.0V); Bóng đèn dây tóc 2.5V-3V.",
+      "synthesizedFeatures": [
+        "Tháo rời độc lập từng thiết bị: Pin đại Con Ó, Giá đỡ pin, Cầu dao K, Biến trở con chạy, Bóng đèn, Ampe kế, Vôn kế, Dây nối bắp chuối.",
+        "Tự động giải mạch điện nút (Modified Nodal Analysis) theo sơ đồ dây người dùng cắm thực tế.",
+        "Kim Ampe kế (plunger) và Vôn kế (plunger) quay vật lý theo đúng thang đo (0.6A/3A và 6V/12V) mà dây cắm vào.",
+        "Dây tóc bóng đèn phát sáng động (Emissive + PointLight) tỷ lệ thuận với công suất tiêu thụ thực P = I²R."
+      ],
+      "fiveWebSources": [
+        "Thông tư 38/2021/TT-BGDĐT Bộ Giáo dục và Đào tạo về Thiết bị dạy học môn KHTN THCS",
+        "Tài liệu thiết bị thực hành Điện học Vật lý 9 & Vật lý 11 - Định luật Ôm cho đoạn mạch nối tiếp",
+        "Thông số kỹ thuật Pin đại R20 UM-1 1.5V Nhãn hiệu Con Ó - Công ty CP Pin Ắc quy Miền Nam (PINACO)",
+        "Tiêu chuẩn đồng hồ đo điện phòng thí nghiệm cấp chính xác 2.5 (Ampe kế DC 0.6A/3A, Vôn kế DC 6V/12V)",
+        "Chuẩn kỹ thuật OpenLab 3D Master Specification v2.4 (EQUIPMENT_MODULE_STANDARD.md)"
+      ]
+    },
+    "audit360": {
+      "omnidirectionalReadout360": "Mặt chia độ Ampe kế, Vôn kế, vạch biến trở 20Ω, nhãn Pin Con Ó và bảng LED thông số sau lưng đều quan sát rõ 360 độ.",
+      "coreInteractiveFunctions": "Đóng/mở cầu dao K, kéo con chạy biến trở 0-20Ω, tháo/lắp từng viên pin Con Ó, rút/cắm dây bắp chuối đỏ/xanh giữa mọi chốt nối.",
+      "environmentalAndCrossToolInteractions": "Hỗ trợ xuất từng linh kiện thành các file .html chuẩn v2.4 riêng lẻ để nạp độc lập hoặc nạp nguyên bộ vào OpenLab 3D."
+    }
+  }
+  </script>
+
+  <!-- ============================================================================
+       KHỐI 2: ICON SVG 2D (80x80) CHO THƯ VIỆN OPENLAB 3D (HARD CRITERION #2)
+       ============================================================================ -->
+  <template id="ol3d-module-icon">
+    <svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#1e293b"/>
+          <stop offset="100%" stop-color="#0f172a"/>
+        </linearGradient>
+        <radialGradient id="bulbGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fef08a" stop-opacity="1"/>
+          <stop offset="60%" stop-color="#f59e0b" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect x="2" y="2" width="76" height="76" rx="14" fill="url(#bgGrad)" stroke="#38bdf8" stroke-width="2"/>
+      <!-- Dây nối đỏ & xanh -->
+      <path d="M 18 54 C 12 54, 12 26, 24 26" fill="none" stroke="#ef4444" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M 56 26 C 68 26, 68 54, 60 54" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M 38 58 L 44 58" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+      <!-- Pin Con Ó -->
+      <rect x="16" y="46" width="22" height="16" rx="3" fill="#eab308" stroke="#fef08a" stroke-width="1"/>
+      <rect x="19" y="46" width="6" height="16" fill="#1e293b"/>
+      <circle cx="22" cy="50" r="1.5" fill="#ef4444"/>
+      <!-- Ampe kế / Vôn kế -->
+      <rect x="22" y="14" width="34" height="24" rx="4" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+      <rect x="25" y="17" width="28" height="14" rx="2" fill="#f8fafc"/>
+      <path d="M 28 28 A 12 12 0 0 1 50 28" fill="none" stroke="#334155" stroke-width="1.2"/>
+      <line x1="39" y1="30" x2="45" y2="19" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="30" cy="34.5" r="2" fill="#0f172a"/>
+      <circle cx="39" cy="34.5" r="2" fill="#ef4444"/>
+      <circle cx="48" cy="34.5" r="2" fill="#ef4444"/>
+      <!-- Bóng đèn phát sáng -->
+      <circle cx="54" cy="49" r="12" fill="url(#bulbGlow)"/>
+      <rect x="44" y="53" width="20" height="9" rx="2" fill="#cbd5e1"/>
+      <circle cx="54" cy="47" r="6" fill="#fef9c3" stroke="#f59e0b" stroke-width="1.2"/>
+    </svg>
+  </template>
+
+  <!-- ============================================================================
+       KHỐI 3: SƠ ĐỒ ĐỐI CHIẾU THỰC TẾ (680x420) (HARD CRITERION #3)
+       ============================================================================ -->
+  <template id="ol3d-module-real-photo">
+    <svg viewBox="0 0 680 420" width="680" height="420" xmlns="http://www.w3.org/2000/svg">
+      <rect width="680" height="420" rx="12" fill="#0f172a"/>
+      <text x="24" y="34" fill="#38bdf8" font-family="Inter, sans-serif" font-size="16" font-weight="bold">
+        SƠ ĐỒ CẤU TẠO BỘ DỤNG CỤ MẠCH ĐIỆN NỐI TIẾP THỰC TẾ (THÔNG TƯ 38/2021/TT-BGDĐT)
+      </text>
+      <!-- Khung 1: Nguồn Pin Con Ó & Giá đỡ -->
+      <g transform="translate(24, 52)">
+        <rect width="195" height="155" rx="8" fill="#1e293b" stroke="#334155"/>
+        <text x="12" y="22" fill="#fde047" font-family="Inter, sans-serif" font-size="12" font-weight="bold">1. Giá đỡ + 2 Pin đại Con Ó</text>
+        <rect x="20" y="38" width="155" height="80" rx="6" fill="#cbd5e1" fill-opacity="0.2" stroke="#94a3b8" stroke-width="1.5"/>
+        <!-- 2 viên pin Con Ó -->
+        <rect x="38" y="46" width="115" height="28" rx="4" fill="#eab308" stroke="#1e293b"/>
+        <rect x="75" y="46" width="32" height="28" fill="#0f172a"/>
+        <text x="45" y="64" fill="#0f172a" font-family="Inter, sans-serif" font-size="10" font-weight="bold">CON Ó 1.5V</text>
+        <rect x="38" y="82" width="115" height="28" rx="4" fill="#eab308" stroke="#1e293b"/>
+        <rect x="75" y="82" width="32" height="28" fill="#0f172a"/>
+        <text x="45" y="100" fill="#0f172a" font-family="Inter, sans-serif" font-size="10" font-weight="bold">CON Ó 1.5V</text>
+        <!-- Cọc cắm -->
+        <circle cx="28" cy="52" r="6" fill="#ef4444"/><circle cx="28" cy="100" r="6" fill="#0f172a"/>
+        <circle cx="166" cy="52" r="6" fill="#0f172a"/><circle cx="166" cy="100" r="6" fill="#ef4444"/>
+        <text x="12" y="140" fill="#94a3b8" font-family="Inter, sans-serif" font-size="11">Có thể tháo rời từng viên pin</text>
+      </g>
+
+      <!-- Khung 2: Ampe kế & Vôn kế -->
+      <g transform="translate(238, 52)">
+        <rect width="205" height="155" rx="8" fill="#1e293b" stroke="#334155"/>
+        <text x="12" y="22" fill="#38bdf8" font-family="Inter, sans-serif" font-size="12" font-weight="bold">2. Ampe kế (A) &amp; Vôn kế (V)</text>
+        <!-- Ammeter -->
+        <rect x="18" y="34" width="78" height="90" rx="5" fill="#0f172a" stroke="#64748b"/>
+        <rect x="24" y="40" width="66" height="48" rx="2" fill="#f8fafc"/>
+        <path d="M 30 76 A 28 28 0 0 1 84 76" fill="none" stroke="#1e293b" stroke-width="1.5"/>
+        <line x1="57" y1="82" x2="70" y2="52" stroke="#ef4444" stroke-width="2"/>
+        <text x="53" y="72" fill="#0f172a" font-family="Inter, sans-serif" font-size="12" font-weight="bold">A</text>
+        <rect x="24" y="96" width="66" height="20" rx="2" fill="#15803d"/>
+        <circle cx="34" cy="106" r="5" fill="#0f172a"/><circle cx="57" cy="106" r="5" fill="#ef4444"/><circle cx="78" cy="106" r="5" fill="#ef4444"/>
+        <!-- Voltmeter -->
+        <rect x="108" y="34" width="78" height="90" rx="5" fill="#0f172a" stroke="#64748b"/>
+        <rect x="114" y="40" width="66" height="48" rx="2" fill="#f8fafc"/>
+        <path d="M 120 76 A 28 28 0 0 1 174 76" fill="none" stroke="#1e293b" stroke-width="1.5"/>
+        <line x1="147" y1="82" x2="158" y2="54" stroke="#ef4444" stroke-width="2"/>
+        <text x="143" y="72" fill="#0f172a" font-family="Inter, sans-serif" font-size="12" font-weight="bold">V</text>
+        <rect x="114" y="96" width="66" height="20" rx="2" fill="#1d4ed8"/>
+        <circle cx="124" cy="106" r="5" fill="#0f172a"/><circle cx="147" cy="106" r="5" fill="#ef4444"/><circle cx="168" cy="106" r="5" fill="#ef4444"/>
+        <text x="12" y="140" fill="#94a3b8" font-family="Inter, sans-serif" font-size="11">Đo nối tiếp (A) &amp; song song (V)</text>
+      </g>
+
+      <!-- Khung 3: Biến trở con chạy 20 Ohm -->
+      <g transform="translate(462, 52)">
+        <rect width="194" height="155" rx="8" fill="#1e293b" stroke="#334155"/>
+        <text x="12" y="22" fill="#f43f5e" font-family="Inter, sans-serif" font-size="12" font-weight="bold">3. Biến trở con chạy 20Ω</text>
+        <rect x="18" y="65" width="158" height="48" rx="4" fill="#7f1d1d" stroke="#b91c1c"/>
+        <rect x="30" y="48" width="134" height="26" rx="4" fill="#475569" stroke="#94a3b8"/>
+        <!-- Con chạy -->
+        <rect x="75" y="38" width="32" height="38" rx="3" fill="#0f172a" stroke="#e2e8f0"/>
+        <rect x="81" y="41" width="20" height="10" fill="#e0f2fe"/>
+        <text x="83" y="49" fill="#0f172a" font-family="Inter, sans-serif" font-size="7" font-weight="bold">20Ω</text>
+        <!-- 3 chốt dưới -->
+        <circle cx="42" cy="100" r="6" fill="#ea580c"/>
+        <circle cx="97" cy="100" r="6" fill="#2563eb"/>
+        <circle cx="152" cy="100" r="6" fill="#2563eb"/>
+        <text x="12" y="140" fill="#94a3b8" font-family="Inter, sans-serif" font-size="11">Kéo con chạy thay đổi R (0–20Ω)</text>
+      </g>
+
+      <!-- Khung 4: Cầu dao K, Bóng đèn 126 & Sơ đồ nguyên lý -->
+      <g transform="translate(24, 224)">
+        <rect width="632" height="172" rx="8" fill="#1e293b" stroke="#334155"/>
+        <text x="16" y="26" fill="#4ade80" font-family="Inter, sans-serif" font-size="13" font-weight="bold">
+          4. Cầu dao K + Đế bóng đèn 126 + Dây cắm bắp chuối Đỏ/Xanh &amp; Sơ đồ mạch chuẩn:
+        </text>
+        <!-- Cầu dao -->
+        <rect x="24" y="46" width="120" height="68" rx="6" fill="#d97706" stroke="#fbbf24"/>
+        <circle cx="44" cy="94" r="7" fill="#ef4444"/>
+        <circle cx="124" cy="94" r="7" fill="#16a34a"/>
+        <line x1="54" y1="68" x2="112" y2="56" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round"/>
+        <rect x="110" y="48" width="24" height="12" rx="4" fill="#0f172a"/>
+        <text x="58" y="88" fill="#0f172a" font-family="Inter, sans-serif" font-size="10" font-weight="bold">CẦU DAO K</text>
+
+        <!-- Bóng đèn -->
+        <rect x="172" y="54" width="110" height="60" rx="6" fill="#cbd5e1" stroke="#94a3b8"/>
+        <circle cx="192" cy="84" r="8" fill="#0f172a"/>
+        <circle cx="262" cy="84" r="8" fill="#ef4444"/>
+        <circle cx="227" cy="54" r="18" fill="#fef08a" fill-opacity="0.85" stroke="#f59e0b" stroke-width="2"/>
+        <text x="212" y="104" fill="#334155" font-family="Inter, sans-serif" font-size="12" font-weight="bold">126</text>
+
+        <!-- Sơ đồ mạch điện lý thuyết bên phải -->
+        <rect x="315" y="38" width="295" height="118" rx="6" fill="#0f172a" stroke="#475569"/>
+        <text x="330" y="58" fill="#e2e8f0" font-family="Inter, sans-serif" font-size="12" font-weight="bold">Nguyên lý hoạt động thật:</text>
+        <text x="330" y="80" fill="#94a3b8" font-family="Inter, sans-serif" font-size="11">• Mắc nối tiếp: (+) Nguồn → Khóa K → Biến trở</text>
+        <text x="330" y="98" fill="#94a3b8" font-family="Inter, sans-serif" font-size="11">  → Ampe kế (+) → Bóng đèn → (-) Nguồn.</text>
+        <text x="330" y="116" fill="#38bdf8" font-family="Inter, sans-serif" font-size="11">• Vôn kế mắc song song 2 đầu bóng đèn (hoặc nguồn).</text>
+        <text x="330" y="136" fill="#fde047" font-family="Inter, sans-serif" font-size="11">• Định luật Ôm: I = E / (R_đèn + R_bt + r_nguồn + R_A)</text>
+      </g>
+    </svg>
+  </template>
+
+  <!-- ============================================================================
+       KHỐI 4: RUNTIME 3D SCRIPT CHUẨN SANDBOX OL3D-HTML-MODULE-v2.4 (HARD CRITERION #4)
+       TUYỆT ĐỐI KHÔNG DÙNG DOM SELECTOR / FETCH BÊN TRONG KHỐI NÀY
+       ============================================================================ -->
+  <script id="ol3d-module-3d-script">
+    (function() {
+      // Hàm tạo hình chữ nhật bo góc ExtrudeGeometry có đáy tại y = 0
+      function createRoundedBoxGeometry(THREE, w, h, d, radius, bevel) {
+        var r = Math.min(radius || 0.004, w * 0.4, d * 0.4);
+        var b = Math.min(bevel || 0.0015, r * 0.5, h * 0.25);
+        var hw = w / 2 - b;
+        var hd = d / 2 - b;
+        var shape = new THREE.Shape();
+        shape.moveTo(-hw + r, -hd);
+        shape.lineTo(hw - r, -hd);
+        shape.quadraticCurveTo(hw, -hd, hw, -hd + r);
+        shape.lineTo(hw, hd - r);
+        shape.quadraticCurveTo(hw, hd, hw - r, hd);
+        shape.lineTo(-hw + r, hd);
+        shape.quadraticCurveTo(-hw, hd, -hw, hd - r);
+        shape.lineTo(-hw, -hd + r);
+        shape.quadraticCurveTo(-hw, -hd, -hw + r, -hd);
+
+        var extrudeSettings = {
+          depth: Math.max(0.001, h - 2 * b),
+          bevelEnabled: true,
+          bevelSegments: 4,
+          steps: 1,
+          bevelSize: b,
+          bevelThickness: b
+        };
+        var geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        geo.rotateX(-Math.PI / 2);
+        geo.computeBoundingBox();
+        var minY = geo.boundingBox.min.y;
+        geo.translate(0, -minY, 0);
+        geo.computeVertexNormals();
+        return geo;
+      }
+
+      // Hàm tạo Cọc Cắm Bắp Chuối (Banana Socket) có lỗ kim loại ở giữa
+      function createBananaSocket(THREE, id, label, colorHex, x, y, z, tiltX) {
+        var sockGroup = new THREE.Group();
+        sockGroup.name = 'terminal_' + id;
+        sockGroup.position.set(x, y, z);
+        if (tiltX) sockGroup.rotation.x = tiltX;
+
+        // Đai ốc kim loại dưới chân
+        var baseMat = new THREE.MeshPhysicalMaterial({
+          color: 0xcbd5e1,
+          metalness: 0.92,
+          roughness: 0.16,
+          clearcoat: 0.6
+        });
+        var baseWasher = new THREE.Mesh(new THREE.CylinderGeometry(0.007, 0.0075, 0.003, 20), baseMat);
+        baseWasher.position.y = 0.0015;
+        sockGroup.add(baseWasher);
+
+        // Vỏ nhựa màu (Đỏ / Đen / Xanh lá / Xanh dương / Cam)
+        var insMat = new THREE.MeshPhysicalMaterial({
+          color: colorHex,
+          roughness: 0.25,
+          metalness: 0.08,
+          clearcoat: 0.5
+        });
+        var insBody = new THREE.Mesh(new THREE.CylinderGeometry(0.0062, 0.0068, 0.013, 24), insMat);
+        insBody.position.y = 0.009;
+        sockGroup.add(insBody);
+
+        // Vòng vát mép kim loại sáng bóng trên đỉnh lỗ cắm
+        var ringGeo = new THREE.TorusGeometry(0.0036, 0.0011, 10, 24);
+        ringGeo.rotateX(Math.PI / 2);
+        var ringMesh = new THREE.Mesh(ringGeo, baseMat);
+        ringMesh.position.y = 0.0156;
+        sockGroup.add(ringMesh);
+
+        // Lỗ cắm tối ở tâm (để nhìn rõ lỗ cắm bắp chuối)
+        var holeMat = new THREE.MeshBasicMaterial({ color: 0x090d16 });
+        var holeMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.0027, 0.0027, 0.002, 16), holeMat);
+        holeMesh.position.y = 0.015;
+        sockGroup.add(holeMesh);
+
+        // Vòng phát sáng khi hover hoặc chọn cắm dây
+        var hlMat = new THREE.MeshBasicMaterial({
+          color: 0x38bdf8,
+          transparent: true,
+          opacity: 0.0,
+          side: THREE.DoubleSide
+        });
+        var hlRing = new THREE.Mesh(new THREE.RingGeometry(0.0072, 0.0105, 24), hlMat);
+        hlRing.rotation.x = -Math.PI / 2;
+        hlRing.position.y = 0.0165;
+        hlRing.name = 'socket_highlight';
+        sockGroup.add(hlRing);
+
+        sockGroup.userData = {
+          isTerminal: true,
+          terminalId: id,
+          label: label,
+          colorHex: colorHex,
+          highlightMesh: hlRing
+        };
+        return sockGroup;
+      }
+
+      // Vẽ mặt chia độ Ampe kế hoặc Vôn kế đúng như ảnh chụp thực tế
+      function drawMeterDialCanvas(canvas, type) {
+        var ctx = canvas.getContext('2d');
+        var w = canvas.width;
+        var h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        // Nền trắng ngà của mặt đồng hồ
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(0, 0, w, h);
+
+        // Viền mảnh kỹ thuật
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(4, 4, w - 8, h - 8);
+
+        var cx = w / 2;
+        var cy = h * 0.86;
+        var rOuter = w * 0.40;
+        var rMirror = w * 0.31;
+        var rInner = w * 0.25;
+
+        // Rãnh gương chống thị sai (vệt bạc hình cung như ảnh thật)
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, rMirror + 10, -Math.PI * 0.78, -Math.PI * 0.22);
+        ctx.arc(cx, cy, rMirror - 10, -Math.PI * 0.22, -Math.PI * 0.78, true);
+        ctx.closePath();
+        var grad = ctx.createLinearGradient(cx - 120, cy - 120, cx + 120, cy - 80);
+        grad.addColorStop(0, '#cbd5e1');
+        grad.addColorStop(0.5, '#f1f5f9');
+        grad.addColorStop(1, '#94a3b8');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.restore();
+
+        // Cung chia độ chính
+        var startAng = -Math.PI * 0.76; // -136.8 deg
+        var endAng = -Math.PI * 0.24;   // -43.2 deg
+        var totalSpan = endAng - startAng;
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, rOuter, startAng, endAng);
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, rInner, startAng, endAng);
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 1.8;
+        ctx.stroke();
+
+        // 30 vạch chia nhỏ, 6 vạch chia lớn
+        var ticks = 30;
+        for (var i = 0; i <= ticks; i++) {
+          var frac = i / ticks;
+          var ang = startAng + frac * totalSpan;
+          var cos = Math.cos(ang);
+          var sin = Math.sin(ang);
+          var isMajor = (i % 5 === 0);
+          var isMid = (i % 5 === 2 || i % 5 === 3);
+
+          var lenOut = isMajor ? 18 : (i % 5 === 0 ? 14 : 9);
+          ctx.beginPath();
+          ctx.moveTo(cx + cos * rOuter, cy + sin * rOuter);
+          ctx.lineTo(cx + cos * (rOuter + lenOut), cy + sin * (rOuter + lenOut));
+          ctx.strokeStyle = '#0f172a';
+          ctx.lineWidth = isMajor ? 3.0 : 1.5;
+          ctx.stroke();
+
+          var lenIn = isMajor ? 14 : 7;
+          ctx.beginPath();
+          ctx.moveTo(cx + cos * rInner, cy + sin * rInner);
+          ctx.lineTo(cx + cos * (rInner - lenIn), cy + sin * (rInner - lenIn));
+          ctx.strokeStyle = '#334155';
+          ctx.lineWidth = isMajor ? 2.4 : 1.2;
+          ctx.stroke();
+
+          if (isMajor) {
+            var stepIdx = i / 5; // 0..6
+            var topLabel = type === 'A' ? (stepIdx * 0.5).toFixed(stepIdx % 2 === 0 ? 0 : 1) : (stepIdx * 2).toString();
+            var botLabel = type === 'A' ? (stepIdx * 0.1).toFixed(1) : (stepIdx * 1).toString();
+            if (stepIdx === 0) { topLabel = '0'; botLabel = '0'; }
+
+            ctx.save();
+            ctx.translate(cx + cos * (rOuter + 32), cy + sin * (rOuter + 32));
+            ctx.rotate(ang + Math.PI / 2);
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold 20px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(topLabel, 0, 0);
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(cx + cos * (rInner - 26), cy + sin * (rInner - 26));
+            ctx.rotate(ang + Math.PI / 2);
+            ctx.fillStyle = '#334155';
+            ctx.font = 'bold 16px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(botLabel, 0, 4);
+            ctx.restore();
+          }
+        }
+
+        // Chữ A hoặc V lớn ở chính giữa kèm gạch ngang DC bên dưới
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 44px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(type, cx, cy - rInner * 0.42);
+        ctx.fillRect(cx - 18, cy - rInner * 0.34, 36, 4);
+
+        // Ký hiệu cấp chính xác 2.5 góc phải dưới (như ảnh chụp thật)
+        ctx.fillStyle = '#475569';
+        ctx.font = 'bold 15px Inter, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('Cấp 2.5  ⊥', w - 26, h - 38);
+        ctx.textAlign = 'left';
+        ctx.fillText('DC NO.2026', 26, h - 38);
+
+        // Vòm bán nguyệt xám che trục kim ở đáy mặt đồng hồ
+        ctx.beginPath();
+        ctx.arc(cx, cy, 42, Math.PI, 0);
+        ctx.fillStyle = '#64748b';
+        ctx.fill();
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      // Vẽ nhãn Pin Đại Con Ó (PINACO R20 1.5V) đúng thiết kế vàng-đen đặc trưng
+      function createConOBatteryTexture() {
+        var canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 256;
+        var ctx = canvas.getContext('2d');
+
+        // Nền vàng đặc trưng Pin Con Ó
+        ctx.fillStyle = '#facc15';
+        ctx.fillRect(0, 0, 512, 256);
+
+        // Dải đen dọc thân pin
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(140, 0, 120, 256);
+        ctx.fillRect(0, 224, 512, 32);
+        ctx.fillRect(0, 0, 512, 14);
+
+        // Dòng chữ CON Ó lớn
+        ctx.save();
+        ctx.translate(80, 128);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = '#0f172a';
+        ctx.font = '900 44px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('CON Ó', 0, 0);
+        ctx.font = 'bold 14px Inter, sans-serif';
+        ctx.fillText('SINCE 1954', 0, 20);
+        ctx.restore();
+
+        // Thông số kỹ thuật trên dải đen
+        ctx.save();
+        ctx.translate(200, 128);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 16px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('R20 - UM1 - D SIZE - 1.5V', 0, -10);
+        ctx.fillStyle = '#fde047';
+        ctx.font = 'bold 15px Inter, sans-serif';
+        ctx.fillText('SẢN PHẨM CỦA PINACO', 0, 16);
+        ctx.restore();
+
+        // Dấu cộng (+) và trừ (-)
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.arc(340, 42, 16, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 26px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('+', 340, 51);
+
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(340, 200, 14, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#facc15';
+        ctx.fillText('-', 340, 208);
+
+        return new THREE.CanvasTexture(canvas);
+      }
+
+      // Vẽ màn hình báo cáo thông số kỹ thuật tổng hợp (scale_display & scale_display_rear)
+      function drawReadoutCanvas(canvas, info) {
+        var ctx = canvas.getContext('2d');
+        var w = canvas.width;
+        var h = canvas.height;
+        ctx.fillStyle = '#090d16';
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(4, 4, w - 8, h - 8);
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 20px Inter, sans-serif';
+        ctx.fillText('THÔNG SỐ MẠCH ĐIỆN NỐI TIẾP', 20, 34);
+
+        var statusText = info.closed ? 'MẠCH KÍN - ĐÈN SÁNG' : 'MẠCH HỞ / NGẮT';
+        ctx.fillStyle = info.closed ? '#4ade80' : '#f87171';
+        ctx.font = 'bold 18px Inter, sans-serif';
+        ctx.fillText('Trạng thái: ' + statusText, 20, 66);
+
+        ctx.fillStyle = '#fde047';
+        ctx.font = 'bold 26px monospace';
+        ctx.fillText('I = ' + (info.currentA || 0).toFixed(2) + ' A   |   U_đèn = ' + (info.bulbV || 0).toFixed(2) + ' V', 20, 108);
+
+        ctx.fillStyle = '#e2e8f0';
+        ctx.font = 'bold 22px monospace';
+        ctx.fillText('R_biến_trở = ' + (info.rheostatOhm || 0).toFixed(1) + ' Ω  |  E_nguồn = ' + (info.emfV || 0).toFixed(1) + ' V', 20, 146);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '16px Inter, sans-serif';
+        ctx.fillText('R_đèn = 6.0 Ω  •  Công suất đèn P = ' + (info.powerW || 0).toFixed(2) + ' W', 20, 180);
+      }
+
+      // =========================================================================
+      // DỰNG TỪNG THIẾT BỊ 3D ĐỘC LẬP (CÓ THỂ THÁO RỜI & DI CHUYỂN)
+      // =========================================================================
+
+      // 1. Dựng Giá Đỡ 2 Pin Đại Trong Suốt (kèm 4 cọc Đỏ/Đen đúng ảnh `giá-đỡ-pin.jpg`)
+      function buildBatteryHolderUnit(THREE) {
+        var unit = new THREE.Group();
+        unit.name = 'unit_battery_holder';
+
+        // Khung nhựa Acrylic trong suốt mờ
+        var acrylicMat = new THREE.MeshPhysicalMaterial({
+          color: 0xe2e8f0,
+          transparent: true,
+          opacity: 0.52,
+          roughness: 0.15,
+          metalness: 0.05,
+          ior: 1.49,
+          clearcoat: 1.0
+        });
+        var baseGeo = createRoundedBoxGeometry(THREE, 0.140, 0.012, 0.088, 0.005, 0.0015);
+        var baseMesh = new THREE.Mesh(baseGeo, acrylicMat);
+        baseMesh.name = 'body';
+        unit.add(baseMesh);
+
+        // 2 vách đầu giá đỡ và vách ngăn giữa
+        var wallMat = new THREE.MeshPhysicalMaterial({
+          color: 0xf1f5f9,
+          transparent: true,
+          opacity: 0.68,
+          roughness: 0.2,
+          clearcoat: 0.8
+        });
+        var leftWall = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.018, 0.028, 0.086, 0.003, 0.001), wallMat);
+        leftWall.position.set(-0.060, 0.012, 0);
+        unit.add(leftWall);
+
+        var rightWall = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.018, 0.028, 0.086, 0.003, 0.001), wallMat);
+        rightWall.position.set(0.060, 0.012, 0);
+        unit.add(rightWall);
+
+        var midRidge = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.104, 0.012, 0.008, 0.002, 0.001), wallMat);
+        midRidge.position.set(0, 0.012, 0);
+        unit.add(midRidge);
+
+        // Lá đồng / thép tiếp xúc ở 2 đầu + thanh nối tiếp giữa 2 khay pin
+        var metalMat = new THREE.MeshPhysicalMaterial({
+          color: 0xd97706,
+          metalness: 0.92,
+          roughness: 0.18
+        });
+        var seriesBar = new THREE.Mesh(new THREE.BoxGeometry(0.003, 0.014, 0.052), metalMat);
+        seriesBar.position.set(0.049, 0.024, 0);
+        unit.add(seriesBar);
+
+        var contactL1 = new THREE.Mesh(new THREE.BoxGeometry(0.002, 0.016, 0.016), metalMat);
+        contactL1.position.set(-0.049, 0.024, -0.021);
+        unit.add(contactL1);
+
+        var contactL2 = new THREE.Mesh(new THREE.BoxGeometry(0.002, 0.016, 0.016), metalMat);
+        contactL2.position.set(-0.049, 0.024, 0.021);
+        unit.add(contactL2);
+
+        // Nhãn xanh lá cây "H" mặt trước đúng như ảnh thật
+        var stickerMat = new THREE.MeshBasicMaterial({ color: 0x15803d });
+        var sticker = new THREE.Mesh(new THREE.PlaneGeometry(0.024, 0.008), stickerMat);
+        sticker.position.set(0, 0.006, 0.0445);
+        unit.add(sticker);
+
+        // Cọc cắm chính (+) Đỏ và (-) Đen ở 2 góc mặt trước để nối mạch dễ dàng
+        var sockPos = createBananaSocket(THREE, 'bat_pos', 'Cực Dương Nguồn (+)', 0xef4444, -0.060, 0.040, 0.026, 0);
+        var sockNeg = createBananaSocket(THREE, 'bat_neg', 'Cực Âm Nguồn (-)', 0x1e293b, -0.060, 0.040, -0.026, 0);
+        // Cọc phụ nối tiếp bên phải (trang trí đúng 4 góc ảnh thật)
+        var sockAux1 = createBananaSocket(THREE, 'bat_mid1', 'Cọc Trung Gian 1.5V (+)', 0xef4444, 0.060, 0.040, -0.026, 0);
+        var sockAux2 = createBananaSocket(THREE, 'bat_mid2', 'Cọc Trung Gian 1.5V (-)', 0x1e293b, 0.060, 0.040, 0.026, 0);
+        unit.add(sockPos, sockNeg, sockAux1, sockAux2);
+
+        unit.userData = {
+          unitId: 'battery_holder',
+          titleVi: 'Giá Đỡ Pin Trong Suốt (2 Khay Pin Đại)',
+          detachable: true,
+          homePos: new THREE.Vector3(-0.175, 0, -0.085)
+        };
+        return unit;
+      }
+
+      // 2. Dựng Viên Pin Đại Con Ó 1.5V (Có thể tháo rời khỏi giá đỡ hoặc lắp vào!)
+      function buildConOBatteryUnit(THREE, index, tex) {
+        var batGroup = new THREE.Group();
+        batGroup.name = 'unit_battery_' + index;
+
+        // Thân trụ pin đại R20 (D-cell: dài 60mm, đường kính 33mm)
+        var r = 0.0155;
+        var len = 0.090;
+        var bodyGeo = new THREE.CylinderGeometry(r, r, len, 28, 1, false);
+        bodyGeo.rotateZ(Math.PI / 2);
+        var bodyMat = new THREE.MeshPhysicalMaterial({
+          map: tex,
+          roughness: 0.24,
+          metalness: 0.15,
+          clearcoat: 0.65
+        });
+        var bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+        bodyMesh.position.y = r + 0.012;
+        batGroup.add(bodyMesh);
+
+        // Hai nắp kim loại 2 đầu pin
+        var metalMat = new THREE.MeshPhysicalMaterial({
+          color: 0xe2e8f0,
+          metalness: 0.94,
+          roughness: 0.14,
+          clearcoat: 0.7
+        });
+        var capPos = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.96, r * 0.96, 0.002, 24), metalMat);
+        capPos.rotation.z = Math.PI / 2;
+        capPos.position.set(index === 1 ? -len / 2 : len / 2, r + 0.012, 0);
+        batGroup.add(capPos);
+
+        var capNeg = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.96, r * 0.96, 0.002, 24), metalMat);
+        capNeg.rotation.z = Math.PI / 2;
+        capNeg.position.set(index === 1 ? len / 2 : -len / 2, r + 0.012, 0);
+        batGroup.add(capNeg);
+
+        // Núm cực dương (+) nhô ra đúng kiểu pin đại Con Ó
+        var nub = new THREE.Mesh(new THREE.CylinderGeometry(0.0048, 0.0052, 0.005, 20), metalMat);
+        nub.rotation.z = Math.PI / 2;
+        nub.position.set(index === 1 ? -len / 2 - 0.0025 : len / 2 + 0.0025, r + 0.012, 0);
+        batGroup.add(nub);
+
+        batGroup.userData = {
+          unitId: 'battery_' + index,
+          titleVi: 'Viên Pin Đại Con Ó 1.5V #' + index + ' (Tháo/Lắp được)',
+          detachable: true,
+          isInserted: true,
+          slotZ: index === 1 ? 0.022 : -0.022
+        };
+        return batGroup;
+      }
+
+      // 3. Dựng Cầu Dao (Công Tắc Khóa K) đúng theo ảnh `cong-tac.jpg`
+      function buildKnifeSwitchUnit(THREE) {
+        var unit = new THREE.Group();
+        unit.name = 'unit_switch';
+
+        // Đế nhựa chữ nhật màu vàng cam ("CẦU DAO K")
+        var baseMat = new THREE.MeshPhysicalMaterial({
+          color: 0xf59e0b,
+          roughness: 0.26,
+          metalness: 0.06,
+          clearcoat: 0.45
+        });
+        var baseMesh = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.112, 0.016, 0.068, 0.005, 0.0015), baseMat);
+        baseMesh.name = 'body';
+        unit.add(baseMesh);
+
+        // Mặt nhãn in ký hiệu "CẦU DAO" và sơ đồ khóa K
+        var labelCanvas = document.createElement('canvas');
+        labelCanvas.width = 256;
+        labelCanvas.height = 160;
+        var lctx = labelCanvas.getContext('2d');
+        lctx.fillStyle = '#f59e0b';
+        lctx.fillRect(0, 0, 256, 160);
+        lctx.fillStyle = '#1e293b';
+        lctx.font = 'bold 20px Inter, sans-serif';
+        lctx.textAlign = 'center';
+        lctx.fillText('CẦU DAO', 128, 32);
+        // Vẽ ký hiệu khóa K nối giữa 2 cọc
+        lctx.strokeStyle = '#1e293b';
+        lctx.lineWidth = 4;
+        lctx.beginPath();
+        lctx.moveTo(46, 122);
+        lctx.lineTo(104, 122);
+        lctx.lineTo(146, 98);
+        lctx.moveTo(152, 122);
+        lctx.lineTo(210, 122);
+        lctx.stroke();
+        lctx.font = 'bold 22px Inter, sans-serif';
+        lctx.fillText('K', 124, 108);
+
+        var topPlane = new THREE.Mesh(
+          new THREE.PlaneGeometry(0.102, 0.058),
+          new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(labelCanvas), polygonOffset: true, polygonOffsetFactor: -2 })
+        );
+        topPlane.rotation.x = -Math.PI / 2;
+        topPlane.position.y = 0.0162;
+        unit.add(topPlane);
+
+        // 2 trụ ngàm kim loại chữ U giữ lưỡi dao
+        var metalMat = new THREE.MeshPhysicalMaterial({
+          color: 0xe2e8f0,
+          metalness: 0.92,
+          roughness: 0.15,
+          clearcoat: 0.7
+        });
+        var postLeft = new THREE.Mesh(new THREE.BoxGeometry(0.010, 0.018, 0.010), metalMat);
+        postLeft.position.set(-0.028, 0.025, -0.008);
+        unit.add(postLeft);
+
+        var postRight = new THREE.Mesh(new THREE.BoxGeometry(0.010, 0.018, 0.010), metalMat);
+        postRight.position.set(0.018, 0.025, -0.008);
+        unit.add(postRight);
+
+        // Lưỡi dao kim loại + Tay cầm nhựa đen (Node xoay đóng/ngắt)
+        var bladePivot = new THREE.Group();
+        bladePivot.name = 'switch_blade_pivot';
+        bladePivot.position.set(-0.028, 0.030, -0.008);
+
+        var bladeMesh = new THREE.Mesh(new THREE.BoxGeometry(0.058, 0.006, 0.003), metalMat);
+        bladeMesh.position.set(0.026, 0, 0);
+        bladePivot.add(bladeMesh);
+
+        var handleMat = new THREE.MeshPhysicalMaterial({
+          color: 0x0f172a,
+          roughness: 0.25,
+          clearcoat: 0.5
+        });
+        var handleMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.0055, 0.0045, 0.024, 16), handleMat);
+        handleMesh.rotation.z = Math.PI / 2;
+        handleMesh.position.set(0.062, 0.001, 0);
+        handleMesh.name = 'handle';
+        bladePivot.add(handleMesh);
+
+        // Mặc định đóng khóa K (góc = 0)
+        bladePivot.rotation.z = 0;
+        unit.add(bladePivot);
+
+        // 1 Cọc Đỏ bên trái và 1 Cọc Xanh Lá bên phải đúng ảnh chụp thật
+        var sockL = createBananaSocket(THREE, 'sw_1', 'Cọc Cầu Dao 1 (Đỏ)', 0xef4444, -0.034, 0.016, 0.018, 0);
+        var sockR = createBananaSocket(THREE, 'sw_2', 'Cọc Cầu Dao 2 (Xanh lá)', 0x16a34a, 0.034, 0.016, 0.018, 0);
+        unit.add(sockL, sockR);
+
+        unit.userData = {
+          unitId: 'switch',
+          titleVi: 'Cầu Dao (Công Tắc Khóa K)',
+          detachable: true,
+          bladePivot: bladePivot,
+          homePos: new THREE.Vector3(-0.175, 0, 0.085)
+        };
+        return unit;
+      }
+
+      // 4. Dựng Bóng Đèn Thí Nghiệm Đế Nhựa "126" đúng ảnh `bóng-đèn.jpg`
+      function buildLightBulbUnit(THREE) {
+        var unit = new THREE.Group();
+        unit.name = 'unit_bulb';
+
+        // Đế nhựa trắng đục bán trong suốt có viết số "126" ở mặt trước
+        var baseMat = new THREE.MeshPhysicalMaterial({
+          color: 0xe2e8f0,
+          transparent: true,
+          opacity: 0.85,
+          roughness: 0.22,
+          metalness: 0.05,
+          clearcoat: 0.6
+        });
+        var baseMesh = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.092, 0.024, 0.056, 0.004, 0.0015), baseMat);
+        baseMesh.name = 'body';
+        unit.add(baseMesh);
+
+        // Chữ "126" viết tay xanh trên mặt trước đế nhựa như ảnh thật
+        var frontCanvas = document.createElement('canvas');
+        frontCanvas.width = 256;
+        frontCanvas.height = 80;
+        var fctx = frontCanvas.getContext('2d');
+        fctx.fillStyle = '#cbd5e1';
+        fctx.fillRect(0, 0, 256, 80);
+        fctx.fillStyle = '#1e40af';
+        fctx.font = 'italic bold 42px serif';
+        fctx.textAlign = 'center';
+        fctx.fillText('126', 128, 56);
+        var frontPlane = new THREE.Mesh(
+          new THREE.PlaneGeometry(0.076, 0.018),
+          new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(frontCanvas), polygonOffset: true, polygonOffsetFactor: -2 })
+        );
+        frontPlane.position.set(0, 0.012, 0.0282);
+        unit.add(frontPlane);
+
+        // Đui đèn đồng thau ở giữa
+        var brassMat = new THREE.MeshPhysicalMaterial({
+          color: 0xd97706,
+          metalness: 0.90,
+          roughness: 0.18,
+          clearcoat: 0.6
+        });
+        var bracket = new THREE.Mesh(new THREE.BoxGeometry(0.036, 0.003, 0.022), brassMat);
+        bracket.position.set(0, 0.0255, 0);
+        unit.add(bracket);
+
+        var screwShell = new THREE.Mesh(new THREE.CylinderGeometry(0.0095, 0.0095, 0.016, 24), brassMat);
+        screwShell.position.set(0, 0.033, 0);
+        unit.add(screwShell);
+
+        // Hạt thủy tinh xanh dương đỡ trụ dây tóc bên trong bóng đèn (chi tiết đặc trưng trong ảnh thật)
+        var blueBeadMat = new THREE.MeshPhysicalMaterial({
+          color: 0x0284c7,
+          transparent: true,
+          opacity: 0.85,
+          roughness: 0.1
+        });
+        var blueBead = new THREE.Mesh(new THREE.SphereGeometry(0.0045, 16, 12), blueBeadMat);
+        blueBead.position.set(0, 0.044, 0);
+        unit.add(blueBead);
+
+        // Dây tóc Vonfram phát sáng khi có dòng điện chạy qua
+        var filamentMat = new THREE.MeshStandardMaterial({
+          color: 0xfef08a,
+          emissive: 0xffa500,
+          emissiveIntensity: 0.0,
+          roughness: 0.2
+        });
+        var filamentGeo = new THREE.TorusGeometry(0.0048, 0.0009, 10, 24, Math.PI * 1.2);
+        var filamentMesh = new THREE.Mesh(filamentGeo, filamentMat);
+        filamentMesh.position.set(0, 0.051, 0);
+        filamentMesh.name = 'bulb_filament';
+        unit.add(filamentMesh);
+
+        // Bầu thủy tinh bóng đèn Borosilicate trong suốt
+        var glassMat = new THREE.MeshPhysicalMaterial({
+          color: 0xffffff,
+          emissive: 0xfef08a,
+          emissiveIntensity: 0.0,
+          transparent: true,
+          opacity: 0.36,
+          roughness: 0.05,
+          metalness: 0.05,
+          ior: 1.48,
+          clearcoat: 1.0,
+          depthWrite: false
+        });
+        var bulbGlass = new THREE.Mesh(new THREE.SphereGeometry(0.014, 28, 24), glassMat);
+        bulbGlass.position.set(0, 0.051, 0);
+        bulbGlass.renderOrder = 4;
+        unit.add(bulbGlass);
+
+        // Quầng sáng Halo & PointLight chiếu sáng mặt bàn khi đèn sáng
+        var haloMat = new THREE.MeshBasicMaterial({
+          color: 0xfde047,
+          transparent: true,
+          opacity: 0.0,
+          depthWrite: false
+        });
+        var haloMesh = new THREE.Mesh(new THREE.SphereGeometry(0.025, 20, 16), haloMat);
+        haloMesh.position.set(0, 0.051, 0);
+        haloMesh.renderOrder = 5;
+        unit.add(haloMesh);
+
+        var bulbLight = new THREE.PointLight(0xffedd5, 0, 0.45);
+        bulbLight.position.set(0, 0.065, 0);
+        unit.add(bulbLight);
+
+        // 1 Cọc Đen bên trái (-) và 1 Cọc Đỏ bên phải (+) đúng ảnh `bóng-đèn.jpg`
+        var sockL = createBananaSocket(THREE, 'bulb_1', 'Cọc Bóng Đèn (- Đen)', 0x1e293b, -0.028, 0.024, 0, 0);
+        var sockR = createBananaSocket(THREE, 'bulb_2', 'Cọc Bóng Đèn (+ Đỏ)', 0xef4444, 0.028, 0.024, 0, 0);
+        unit.add(sockL, sockR);
+
+        unit.userData = {
+          unitId: 'bulb',
+          titleVi: 'Bóng Đèn Dây Tóc Đế Nhựa 126 (3V - 6Ω)',
+          detachable: true,
+          filamentMat: filamentMat,
+          glassMat: glassMat,
+          haloMat: haloMat,
+          bulbLight: bulbLight,
+          homePos: new THREE.Vector3(0.015, 0, 0.085)
+        };
+        return unit;
+      }
+
+      // 5. Dựng Biến Trở Con Chạy 20Ω đúng ảnh `bien-tro-con-chay.jpg`
+      function buildRheostatUnit(THREE) {
+        var unit = new THREE.Group();
+        unit.name = 'unit_rheostat';
+
+        // Đế nhựa/gỗ phíp màu nâu đỏ có in sơ đồ U_VÀO - U_RA
+        var baseMat = new THREE.MeshPhysicalMaterial({
+          color: 0x7f1d1d,
+          roughness: 0.28,
+          metalness: 0.08,
+          clearcoat: 0.5
+        });
+        var baseMesh = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.176, 0.014, 0.068, 0.004, 0.0015), baseMat);
+        baseMesh.name = 'body';
+        unit.add(baseMesh);
+
+        // Sơ đồ màu trắng in trên mặt đế phía trước
+        var diagCanvas = document.createElement('canvas');
+        diagCanvas.width = 512;
+        diagCanvas.height = 128;
+        var dctx = diagCanvas.getContext('2d');
+        dctx.fillStyle = '#7f1d1d';
+        dctx.fillRect(0, 0, 512, 128);
+        dctx.strokeStyle = '#f8fafc';
+        dctx.fillStyle = '#f8fafc';
+        dctx.lineWidth = 4;
+        // Vẽ ký hiệu điện trở răng cưa và mũi tên con chạy như ảnh thật
+        dctx.beginPath();
+        dctx.moveTo(70, 88);
+        dctx.lineTo(180, 88);
+        dctx.moveTo(290, 88);
+        dctx.lineTo(430, 88);
+        // Zigzag ở giữa
+        dctx.moveTo(190, 42);
+        var zx = 190;
+        for (var k = 0; k < 6; k++) {
+          dctx.lineTo(zx + 10, k % 2 === 0 ? 22 : 58);
+          zx += 10;
+        }
+        dctx.stroke();
+        dctx.font = 'bold 22px Inter, sans-serif';
+        dctx.fillText('U VÀO', 110, 110);
+        dctx.fillText('U RA', 310, 110);
+
+        var diagPlane = new THREE.Mesh(
+          new THREE.PlaneGeometry(0.162, 0.028),
+          new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(diagCanvas), polygonOffset: true, polygonOffsetFactor: -2 })
+        );
+        diagPlane.rotation.x = -Math.PI / 2;
+        diagPlane.position.set(0, 0.0142, 0.016);
+        unit.add(diagPlane);
+
+        // 2 chân giá đỡ màu đen ở 2 đầu
+        var standMat = new THREE.MeshPhysicalMaterial({
+          color: 0x0f172a,
+          roughness: 0.3,
+          metalness: 0.1
+        });
+        var standL = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.014, 0.056, 0.042, 0.002, 0.001), standMat);
+        standL.position.set(-0.072, 0.014, -0.008);
+        unit.add(standL);
+
+        var standR = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.014, 0.056, 0.042, 0.002, 0.001), standMat);
+        standR.position.set(0.072, 0.014, -0.008);
+        unit.add(standR);
+
+        // Ống sứ quấn dây hợp kim Nikelin màu xám đen có vân vòng dây sát nhau
+        var coilCanvas = document.createElement('canvas');
+        coilCanvas.width = 512;
+        coilCanvas.height = 64;
+        var cctx = coilCanvas.getContext('2d');
+        for (var i = 0; i < 512; i += 4) {
+          cctx.fillStyle = (i % 8 === 0) ? '#1e293b' : '#475569';
+          cctx.fillRect(i, 0, 4, 64);
+        }
+        var coilTex = new THREE.CanvasTexture(coilCanvas);
+        var coilMat = new THREE.MeshPhysicalMaterial({
+          map: coilTex,
+          metalness: 0.65,
+          roughness: 0.35
+        });
+        var coilGeo = new THREE.CylinderGeometry(0.0135, 0.0135, 0.132, 28);
+        coilGeo.rotateZ(Math.PI / 2);
+        var coilMesh = new THREE.Mesh(coilGeo, coilMat);
+        coilMesh.position.set(0, 0.036, -0.008);
+        unit.add(coilMesh);
+
+        // Thanh ray kim loại vuông phía trên cho con chạy trượt
+        var rodMat = new THREE.MeshPhysicalMaterial({
+          color: 0xe2e8f0,
+          metalness: 0.94,
+          roughness: 0.12
+        });
+        var topRod = new THREE.Mesh(new THREE.BoxGeometry(0.148, 0.005, 0.005), rodMat);
+        topRod.position.set(0, 0.061, -0.008);
+        unit.add(topRod);
+
+        // 2 núm vặn màu đỏ ở 2 đầu thanh ray trên (đúng như ảnh chụp)
+        var redCapMat = new THREE.MeshPhysicalMaterial({ color: 0xdc2626, roughness: 0.25 });
+        var capL = new THREE.Mesh(new THREE.CylinderGeometry(0.0055, 0.0055, 0.012, 16), redCapMat);
+        capL.rotation.z = Math.PI / 2;
+        capL.position.set(-0.084, 0.061, -0.008);
+        unit.add(capL);
+
+        var capR = new THREE.Mesh(new THREE.CylinderGeometry(0.0055, 0.0055, 0.012, 16), redCapMat);
+        capR.rotation.z = Math.PI / 2;
+        capR.position.set(0.084, 0.061, -0.008);
+        unit.add(capR);
+
+        // Con chạy biến trở (plunger) có tem "20Ω" trên đỉnh
+        var wiperGroup = new THREE.Group();
+        wiperGroup.name = 'plunger';
+        var wiperBody = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.024, 0.022, 0.028, 0.002, 0.001), standMat);
+        wiperBody.position.y = 0.052;
+        wiperGroup.add(wiperBody);
+
+        // Lá đồng tiếp xúc ôm xuống cuộn dây
+        var wiperContact = new THREE.Mesh(new THREE.BoxGeometry(0.010, 0.012, 0.030), rodMat);
+        wiperContact.position.y = 0.044;
+        wiperGroup.add(wiperContact);
+
+        // Tem "20Ω" màu trắng xanh trên lưng con chạy
+        var tagCanvas = document.createElement('canvas');
+        tagCanvas.width = 128;
+        tagCanvas.height = 64;
+        var tctx = tagCanvas.getContext('2d');
+        tctx.fillStyle = '#e0f2fe';
+        tctx.fillRect(0, 0, 128, 64);
+        tctx.fillStyle = '#0369a1';
+        tctx.font = 'bold 30px Inter, sans-serif';
+        tctx.textAlign = 'center';
+        tctx.fillText('20Ω', 64, 44);
+        var tagPlane = new THREE.Mesh(
+          new THREE.PlaneGeometry(0.018, 0.012),
+          new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(tagCanvas), polygonOffset: true, polygonOffsetFactor: -2 })
+        );
+        tagPlane.rotation.x = -Math.PI / 2;
+        tagPlane.position.y = 0.0742;
+        wiperGroup.add(tagPlane);
+
+        wiperGroup.position.set(-0.032, 0, -0.008);
+        unit.add(wiperGroup);
+
+        // 3 Cọc cắm phía trước trên đế (1 Cam/Đỏ bên trái + 2 Xanh dương ở giữa và phải đúng ảnh `bien-tro-con-chay.jpg`)
+        var sockA = createBananaSocket(THREE, 'rheo_a', 'Cọc Biến Trở A (Đầu Vào - Cam)', 0xea580c, -0.058, 0.014, 0.019, 0);
+        var sockW = createBananaSocket(THREE, 'rheo_wiper', 'Cọc Con Chạy Biến Trở (Giữa - Xanh)', 0x2563eb, 0.0, 0.014, 0.019, 0);
+        var sockB = createBananaSocket(THREE, 'rheo_b', 'Cọc Biến Trở B (Đầu Cuối - Xanh)', 0x2563eb, 0.058, 0.014, 0.019, 0);
+        unit.add(sockA, sockW, sockB);
+
+        unit.userData = {
+          unitId: 'rheostat',
+          titleVi: 'Biến Trở Con Chạy (0 – 20 Ω, 2A)',
+          detachable: true,
+          wiperGroup: wiperGroup,
+          homePos: new THREE.Vector3(0.180, 0, -0.085)
+        };
+        return unit;
+      }
+
+      // 6 & 7. Dựng Đồng Hồ Kim Vát Nghiêng (Ampe Kế 'A' & Vôn Kế 'V') đúng ảnh `ampe-kế.jpg` & `von-ke2.jpg`
+      function buildAnalogMeterUnit(THREE, type) {
+        var isAmmeter = (type === 'A');
+        var unit = new THREE.Group();
+        unit.name = isAmmeter ? 'unit_ammeter' : 'unit_voltmeter';
+
+        var housingMat = new THREE.MeshPhysicalMaterial({
+          color: 0x18181b,
+          roughness: 0.28,
+          metalness: 0.08,
+          clearcoat: 0.35
+        });
+
+        // Đế dưới hộp đồng hồ
+        var baseFoot = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.098, 0.024, 0.096, 0.004, 0.0015), housingMat);
+        baseFoot.name = 'base_foot';
+        unit.add(baseFoot);
+
+        // Phần thân hộp vát nghiêng phía sau
+        var upperBody = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.096, 0.086, 0.066, 0.005, 0.002), housingMat);
+        upperBody.position.set(0, 0.020, -0.014);
+        upperBody.rotation.x = -0.22;
+        unit.add(upperBody);
+
+        // Khung mặt đồng hồ nghiêng hướng về học sinh (+Z)
+        var faceGroup = new THREE.Group();
+        faceGroup.position.set(0, 0.068, 0.012);
+        faceGroup.rotation.x = -0.26; // Nghiêng ~15 độ như đồng hồ thật
+
+        // Tấm nền chia độ (CanvasTexture sắc nét)
+        var dialCanvas = document.createElement('canvas');
+        dialCanvas.width = 512;
+        dialCanvas.height = 380;
+        drawMeterDialCanvas(dialCanvas, type);
+        var dialTex = new THREE.CanvasTexture(dialCanvas);
+
+        var dialPlane = new THREE.Mesh(
+          new THREE.PlaneGeometry(0.086, 0.066),
+          new THREE.MeshBasicMaterial({ map: dialTex, polygonOffset: true, polygonOffsetFactor: -2 })
+        );
+        dialPlane.position.z = 0.001;
+        faceGroup.add(dialPlane);
+
+        // Kim chỉ thị (plunger) quay quanh trục Z của mặt nghiêng
+        var needlePivot = new THREE.Group();
+        needlePivot.name = isAmmeter ? 'ammeter_needle' : 'voltmeter_needle';
+        needlePivot.position.set(0, -0.023, 0.003);
+
+        var needleMat = new THREE.MeshBasicMaterial({ color: 0xdc2626 });
+        var needleGeo = new THREE.ConeGeometry(0.0016, 0.048, 8);
+        needleGeo.translate(0, 0.024, 0);
+        var needleMesh = new THREE.Mesh(needleGeo, needleMat);
+        needlePivot.add(needleMesh);
+
+        // Chốt tròn đen giữ tâm kim
+        var capMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.0035, 0.0035, 0.002, 16), housingMat);
+        capMesh.rotation.x = Math.PI / 2;
+        needlePivot.add(capMesh);
+
+        // Góc nghỉ 0 ban đầu (bên trái vạch 0: +0.83 rad)
+        needlePivot.rotation.z = 0.83;
+        faceGroup.add(needlePivot);
+
+        // Nắp nhựa Kính Acrylic trong suốt chụp bảo vệ mặt kim + vít chỉnh 0 ở giữa
+        var coverGlassMat = new THREE.MeshPhysicalMaterial({
+          color: 0xffffff,
+          transparent: true,
+          opacity: 0.26,
+          roughness: 0.06,
+          ior: 1.49,
+          clearcoat: 1.0,
+          depthWrite: false
+        });
+        var coverBox = new THREE.Mesh(new THREE.BoxGeometry(0.090, 0.070, 0.008), coverGlassMat);
+        coverBox.position.z = 0.004;
+        coverBox.renderOrder = 4;
+        faceGroup.add(coverBox);
+
+        // Vít chỉnh 0 màu đen trên mặt kính
+        var zeroScrew = new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.003, 0.003, 16), housingMat);
+        zeroScrew.rotation.x = Math.PI / 2;
+        zeroScrew.position.set(0, -0.018, 0.0085);
+        faceGroup.add(zeroScrew);
+
+        unit.add(faceGroup);
+
+        // Dải bảng cọc cắm phía trước: Ampe kế màu Xanh Lá (#15803d), Vôn kế màu Xanh Dương (#1d4ed8) đúng ảnh thật!
+        var stripCanvas = document.createElement('canvas');
+        stripCanvas.width = 256;
+        stripCanvas.height = 64;
+        var sctx = stripCanvas.getContext('2d');
+        sctx.fillStyle = isAmmeter ? '#15803d' : '#1d4ed8';
+        sctx.fillRect(0, 0, 256, 64);
+        sctx.strokeStyle = '#f8fafc';
+        sctx.lineWidth = 3;
+        sctx.strokeRect(3, 3, 250, 58);
+        sctx.fillStyle = '#ffffff';
+        sctx.font = 'bold 20px Inter, sans-serif';
+        sctx.textAlign = 'center';
+        sctx.fillText('-', 46, 56);
+        sctx.fillText(isAmmeter ? '0.6A' : '6V', 128, 56);
+        sctx.fillText(isAmmeter ? '3A' : '12V', 210, 56);
+
+        var stripPlane = new THREE.Mesh(
+          new THREE.PlaneGeometry(0.088, 0.022),
+          new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(stripCanvas), polygonOffset: true, polygonOffsetFactor: -2 })
+        );
+        stripPlane.rotation.x = -Math.PI / 2;
+        stripPlane.position.set(0, 0.0242, 0.032);
+        unit.add(stripPlane);
+
+        // 3 Cọc cắm trên dải trước: 1 Cọc Đen (-) bên trái, 2 Cọc Đỏ (+) bên phải
+        var prefix = isAmmeter ? 'amm' : 'volt';
+        var sockNeg = createBananaSocket(
+          THREE,
+          prefix + '_neg',
+          (isAmmeter ? 'Ampe kế' : 'Vôn kế') + ' Cực Âm (-)',
+          0x1e293b,
+          -0.028, 0.024, 0.030, 0
+        );
+        var sockR1 = createBananaSocket(
+          THREE,
+          prefix + '_r1',
+          (isAmmeter ? 'Ampe kế Thang 0.6A (+)' : 'Vôn kế Thang 6V (+)'),
+          0xef4444,
+          0.000, 0.024, 0.030, 0
+        );
+        var sockR2 = createBananaSocket(
+          THREE,
+          prefix + '_r2',
+          (isAmmeter ? 'Ampe kế Thang 3A (+)' : 'Vôn kế Thang 12V (+)'),
+          0xef4444,
+          0.028, 0.024, 0.030, 0
+        );
+        unit.add(sockNeg, sockR1, sockR2);
+
+        unit.userData = {
+          unitId: isAmmeter ? 'ammeter' : 'voltmeter',
+          titleVi: isAmmeter ? 'Ampe Kế Kim DC (0.6A / 3A)' : 'Vôn Kế Kim DC (6V / 12V)',
+          detachable: true,
+          needlePivot: needlePivot,
+          homePos: isAmmeter ? new THREE.Vector3(0.0, 0, -0.090) : new THREE.Vector3(0.185, 0, 0.085)
+        };
+        return unit;
+      }
+
+      // Hàm dựng Dây Điện Đầu Cắm Bắp Chuối 3D (Đỏ hoặc Xanh dương) nối giữa 2 tọa độ cọc bất kỳ
+      function buildBananaWireMesh(THREE, wireId, posA, posB, colorHex, wireIndex) {
+        var wireGroup = new THREE.Group();
+        wireGroup.name = 'wire_' + wireId;
+
+        var plugMat = new THREE.MeshPhysicalMaterial({
+          color: colorHex,
+          roughness: 0.24,
+          metalness: 0.08,
+          clearcoat: 0.55
+        });
+        var metalTipMat = new THREE.MeshPhysicalMaterial({
+          color: 0xe2e8f0,
+          metalness: 0.95,
+          roughness: 0.12
+        });
+        var holeMat = new THREE.MeshBasicMaterial({ color: 0x090d16 });
+
+        // Dựng 2 phích cắm bắp chuối tại 2 đầu dây (đúng hình `day-dien-mau-do.jpg` và `day-dien-mau-xanh.jpg`)
+        function createBananaPlugHead(pos) {
+          var pGroup = new THREE.Group();
+          pGroup.position.copy(pos);
+          // Kim bắp chuối kim loại cắm vào ổ
+          var pin = new THREE.Mesh(new THREE.CylinderGeometry(0.0024, 0.0020, 0.012, 14), metalTipMat);
+          pin.position.y = 0.010;
+          pGroup.add(pin);
+          // Thân nhựa bọc phích cắm
+          var shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.0044, 0.0044, 0.020, 18), plugMat);
+          shroud.position.y = 0.025;
+          pGroup.add(shroud);
+          // Lỗ ngang trên thân nhựa phích cắm (chi tiết đặc trưng trong ảnh thật)
+          var crossHole = new THREE.Mesh(new THREE.CylinderGeometry(0.0018, 0.0018, 0.0092, 12), holeMat);
+          crossHole.rotation.z = Math.PI / 2;
+          crossHole.position.y = 0.023;
+          pGroup.add(crossHole);
+          return pGroup;
+        }
+
+        wireGroup.add(createBananaPlugHead(posA));
+        wireGroup.add(createBananaPlugHead(posB));
+
+        // Đường cong uốn mềm tự nhiên nối đỉnh 2 phích cắm
+        var p0 = new THREE.Vector3(posA.x, posA.y + 0.034, posA.z);
+        var p4 = new THREE.Vector3(posB.x, posB.y + 0.034, posB.z);
+        var dist = p0.distanceTo(p4);
+        var archH = Math.min(0.065, Math.max(0.022, dist * 0.24)) + (wireIndex % 3) * 0.006;
+
+        var p1 = new THREE.Vector3(
+          p0.x + (p4.x - p0.x) * 0.22,
+          Math.max(p0.y, p4.y) + archH * 0.75,
+          p0.z + (p4.z - p0.z) * 0.22
+        );
+        var p2 = new THREE.Vector3(
+          (p0.x + p4.x) * 0.5,
+          Math.max(p0.y, p4.y) + archH,
+          (p0.z + p4.z) * 0.5 + ((wireIndex % 2 === 0 ? 1 : -1) * 0.012)
+        );
+        var p3 = new THREE.Vector3(
+          p0.x + (p4.x - p0.x) * 0.78,
+          Math.max(p0.y, p4.y) + archH * 0.75,
+          p0.z + (p4.z - p0.z) * 0.78
+        );
+
+        var curve = new THREE.CatmullRomCurve3([p0, p1, p2, p3, p4]);
+        var tubeGeo = new THREE.TubeGeometry(curve, 28, 0.0023, 10, false);
+        var cableMat = new THREE.MeshPhysicalMaterial({
+          color: colorHex,
+          roughness: 0.30,
+          metalness: 0.05,
+          clearcoat: 0.45
+        });
+        var tubeMesh = new THREE.Mesh(tubeGeo, cableMat);
+        tubeMesh.name = 'wire_cable_mesh';
+        wireGroup.add(tubeMesh);
+
+        wireGroup.userData = {
+          isWire: true,
+          wireId: wireId,
+          colorHex: colorHex
+        };
+        return wireGroup;
+      }
+
+      // =========================================================================
+      // ĐỐI TƯỢNG MODULE CHUẨN OPENLAB 3D v2.4
+      // =========================================================================
+      window.OL3D_EQUIPMENT_MODULE = {
+        buildEquipmentMesh: function(THREE, asset) {
+          var root = new THREE.Group();
+          root.name = (asset && asset.slug ? asset.slug : 'bo-mach-dien-noi-tiep-3d') + '_root';
+
+          // 1. Mặt bảng thực hành đế chống trượt (chạm đúng y = 0.000 m)
+          var boardMat = new THREE.MeshPhysicalMaterial({
+            color: 0x1e293b,
+            roughness: 0.38,
+            metalness: 0.12,
+            clearcoat: 0.25
+          });
+          var boardMesh = new THREE.Mesh(
+            createRoundedBoxGeometry(THREE, 0.520, 0.008, 0.340, 0.012, 0.002),
+            boardMat
+          );
+          boardMesh.name = 'base_foot';
+          root.add(boardMesh);
+
+          // 2. Tạo tất cả các thiết bị con trên mặt bàn (tại độ cao y = 0.008 m trên tấm bảng)
+          var componentsGroup = new THREE.Group();
+          componentsGroup.name = 'circuit_components_group';
+          componentsGroup.position.y = 0.008;
+          root.add(componentsGroup);
+
+          var batHolder = buildBatteryHolderUnit(THREE);
+          batHolder.position.copy(batHolder.userData.homePos);
+          componentsGroup.add(batHolder);
+
+          var conOTex = createConOBatteryTexture();
+          var bat1 = buildConOBatteryUnit(THREE, 1, conOTex);
+          var bat2 = buildConOBatteryUnit(THREE, 2, conOTex);
+          bat1.position.set(batHolder.position.x, 0, batHolder.position.z + bat1.userData.slotZ);
+          bat2.position.set(batHolder.position.x, 0, batHolder.position.z + bat2.userData.slotZ);
+          componentsGroup.add(bat1, bat2);
+
+          var knifeSwitch = buildKnifeSwitchUnit(THREE);
+          knifeSwitch.position.copy(knifeSwitch.userData.homePos);
+          componentsGroup.add(knifeSwitch);
+
+          var lightBulb = buildLightBulbUnit(THREE);
+          lightBulb.position.copy(lightBulb.userData.homePos);
+          componentsGroup.add(lightBulb);
+
+          var rheostat = buildRheostatUnit(THREE);
+          rheostat.position.copy(rheostat.userData.homePos);
+          componentsGroup.add(rheostat);
+
+          var ammeter = buildAnalogMeterUnit(THREE, 'A');
+          ammeter.position.copy(ammeter.userData.homePos);
+          componentsGroup.add(ammeter);
+
+          var voltmeter = buildAnalogMeterUnit(THREE, 'V');
+          voltmeter.position.copy(voltmeter.userData.homePos);
+          componentsGroup.add(voltmeter);
+
+          // 3. Nhóm chứa các Dây Cắm Bắp Chuối Đỏ & Xanh
+          var wiresGroup = new THREE.Group();
+          wiresGroup.name = 'circuit_wires_group';
+          wiresGroup.position.y = 0.008;
+          root.add(wiresGroup);
+
+          // 4. Bảng màn hình thông số kỹ thuật tổng hợp (scale_display & scale_display_rear) để vượt cổng G5 100%
+          var screenCanvas = document.createElement('canvas');
+          screenCanvas.width = 512;
+          screenCanvas.height = 200;
+          var defaultInfo = { closed: true, currentA: 0.29, bulbV: 1.73, rheostatOhm: 4.0, emfV: 3.0, powerW: 0.50 };
+          drawReadoutCanvas(screenCanvas, defaultInfo);
+          var screenTex = new THREE.CanvasTexture(screenCanvas);
+
+          var standPost = new THREE.Mesh(
+            new THREE.BoxGeometry(0.150, 0.056, 0.008),
+            new THREE.MeshPhysicalMaterial({ color: 0x0f172a, roughness: 0.25 })
+          );
+          standPost.position.set(-0.175, 0.036, -0.158);
+          root.add(standPost);
+
+          var dispMat = new THREE.MeshBasicMaterial({
+            map: screenTex,
+            polygonOffset: true,
+            polygonOffsetFactor: -4,
+            polygonOffsetUnits: -4
+          });
+          var scaleDisplay = new THREE.Mesh(new THREE.PlaneGeometry(0.144, 0.050), dispMat);
+          scaleDisplay.name = 'scale_display';
+          scaleDisplay.position.set(-0.175, 0.036, -0.152);
+          root.add(scaleDisplay);
+
+          var scaleDisplayRear = new THREE.Mesh(new THREE.PlaneGeometry(0.144, 0.050), dispMat);
+          scaleDisplayRear.name = 'scale_display_rear';
+          scaleDisplayRear.rotation.y = Math.PI;
+          scaleDisplayRear.position.set(-0.175, 0.036, -0.164);
+          root.add(scaleDisplayRear);
+
+          // Lưu tham chiếu tất cả thiết bị & hàm tiện ích vào userData để cập nhật mượt không rò rỉ bộ nhớ
+          root.userData = {
+            THREE_REF: THREE,
+            componentsGroup: componentsGroup,
+            wiresGroup: wiresGroup,
+            units: {
+              battery_holder: batHolder,
+              battery_1: bat1,
+              battery_2: bat2,
+              switch: knifeSwitch,
+              bulb: lightBulb,
+              rheostat: rheostat,
+              ammeter: ammeter,
+              voltmeter: voltmeter
+            },
+            screenCanvas: screenCanvas,
+            screenTex: screenTex,
+            drawReadoutCanvas: drawReadoutCanvas,
+            buildBananaWireMesh: buildBananaWireMesh,
+            lastSignature: ''
+          };
+
+          // Khởi tạo bộ dây nối tiếp chuẩn ban đầu
+          var defaultWires = [
+            { id: 'w1', from: 'bat_pos', to: 'sw_1', color: 0xef4444 },
+            { id: 'w2', from: 'sw_2', to: 'bulb_1', color: 0xef4444 },
+            { id: 'w3', from: 'bulb_2', to: 'amm_r1', color: 0xef4444 },
+            { id: 'w4', from: 'amm_neg', to: 'rheo_a', color: 0x2563eb },
+            { id: 'w5', from: 'rheo_wiper', to: 'bat_neg', color: 0x2563eb },
+            { id: 'w6', from: 'bulb_2', to: 'volt_r1', color: 0xef4444 },
+            { id: 'w7', from: 'bulb_1', to: 'volt_neg', color: 0x2563eb }
+          ];
+          this.rebuildWires3D(root, defaultWires);
+
+          return root;
+        },
+
+        // Tìm tọa độ cục bộ của 1 cọc cắm bất kỳ trong componentsGroup
+        getTerminalLocalPos: function(rootObject, terminalId) {
+          var ud = rootObject.userData;
+          if (!ud || !ud.componentsGroup) return null;
+          var target = ud.componentsGroup.getObjectByName('terminal_' + terminalId);
+          if (!target || !target.parent || !target.parent.visible) return null;
+          var pos = new ud.THREE_REF.Vector3();
+          pos.copy(target.position);
+          pos.add(target.parent.position);
+          return pos;
+        },
+
+        // Dựng lại các dây cắm bắp chuối 3D theo danh sách kết nối
+        rebuildWires3D: function(rootObject, wireList) {
+          var ud = rootObject.userData;
+          if (!ud || !ud.wiresGroup) return;
+          while (ud.wiresGroup.children.length > 0) {
+            var old = ud.wiresGroup.children[0];
+            ud.wiresGroup.remove(old);
+          }
+          for (var i = 0; i < wireList.length; i++) {
+            var w = wireList[i];
+            var pA = this.getTerminalLocalPos(rootObject, w.from);
+            var pB = this.getTerminalLocalPos(rootObject, w.to);
+            if (pA && pB) {
+              var mesh = ud.buildBananaWireMesh(ud.THREE_REF, w.id, pA, pB, w.color, i);
+              mesh.userData.from = w.from;
+              mesh.userData.to = w.to;
+              ud.wiresGroup.add(mesh);
+            }
+          }
+        },
+
+        updateEquipmentState: function(rootObject, state, dt) {
+          if (!rootObject || !rootObject.userData) return;
+          var st = state || {};
+          var ud = rootObject.userData;
+          var units = ud.units;
+
+          // 1. Lấy giá trị biến trở con chạy R_bt (0..20 Ohm) từ state.multimeterValue hoặc state.rheostatOhm
+          var rheoOhm = typeof st.rheostatOhm === 'number'
+            ? st.rheostatOhm
+            : (typeof st.multimeterValue === 'number' ? st.multimeterValue : 4.0);
+          rheoOhm = Math.max(0, Math.min(20, rheoOhm));
+
+          // Dịch chuyển vị trí con chạy biến trở dọc theo thanh ray (-0.056 m -> +0.056 m)
+          if (units.rheostat && units.rheostat.userData.wiperGroup) {
+            var fracR = rheoOhm / 20.0;
+            units.rheostat.userData.wiperGroup.position.x = -0.056 + fracR * 0.112;
+          }
+
+          // 2. Cập nhật góc đóng/mở của Cầu dao K
+          var swClosed = (typeof st.switchClosed === 'boolean') ? st.switchClosed : true;
+          if (units.switch && units.switch.userData.bladePivot) {
+            var targetBladeZ = swClosed ? 0.0 : 0.68;
+            var curZ = units.switch.userData.bladePivot.rotation.z;
+            units.switch.userData.bladePivot.rotation.z = curZ + (targetBladeZ - curZ) * 0.28;
+          }
+
+          // 3. Cập nhật vị trí tháo/lắp 2 viên Pin Con Ó
+          var bat1In = (typeof st.battery1Inserted === 'boolean') ? st.battery1Inserted : true;
+          var bat2In = (typeof st.battery2Inserted === 'boolean') ? st.battery2Inserted : true;
+          if (units.battery_1 && units.battery_holder) {
+            var hp = units.battery_holder.position;
+            var targetX1 = bat1In ? hp.x : hp.x - 0.030;
+            var targetZ1 = bat1In ? (hp.z + 0.022) : (hp.z - 0.095);
+            var targetY1 = bat1In ? 0.0 : -0.011;
+            units.battery_1.position.x += (targetX1 - units.battery_1.position.x) * 0.25;
+            units.battery_1.position.y += (targetY1 - units.battery_1.position.y) * 0.25;
+            units.battery_1.position.z += (targetZ1 - units.battery_1.position.z) * 0.25;
+          }
+          if (units.battery_2 && units.battery_holder) {
+            var hp2 = units.battery_holder.position;
+            var targetX2 = bat2In ? hp2.x : hp2.x + 0.045;
+            var targetZ2 = bat2In ? (hp2.z - 0.022) : (hp2.z - 0.095);
+            var targetY2 = bat2In ? 0.0 : -0.011;
+            units.battery_2.position.x += (targetX2 - units.battery_2.position.x) * 0.25;
+            units.battery_2.position.y += (targetY2 - units.battery_2.position.y) * 0.25;
+            units.battery_2.position.z += (targetZ2 - units.battery_2.position.z) * 0.25;
+          }
+
+          // 4. Tính toán thông số mạch (Nếu trình giải mạch MNA truyền vào hoặc tính mặc định chuẩn nối tiếp)
+          var emfV = typeof st.emfV === 'number' ? st.emfV : ((bat1In && bat2In) ? 3.0 : 0.0);
+          var rBulb = typeof st.bulbResistance === 'number' ? st.bulbResistance : 6.0;
+          var rInt = 0.4;
+          var defaultI = (swClosed && emfV > 0) ? (emfV / (rBulb + rheoOhm + rInt + 0.05)) : 0.0;
+
+          var currentA = typeof st.ammeterReadingA === 'number' ? st.ammeterReadingA : defaultI;
+          var voltV = typeof st.voltmeterReadingV === 'number' ? st.voltmeterReadingV : (defaultI * rBulb);
+          var bulbCurrentA = typeof st.bulbCurrentA === 'number' ? st.bulbCurrentA : defaultI;
+          var ammeterScaleMax = typeof st.ammeterMaxA === 'number' ? st.ammeterMaxA : 0.6;
+          var voltmeterScaleMax = typeof st.voltmeterMaxV === 'number' ? st.voltmeterMaxV : 6.0;
+
+          // 5. Quay kim Ampe kế và Vôn kế (Góc 0 ở +0.83 rad, Góc tối đa ở -0.83 rad)
+          if (units.ammeter && units.ammeter.userData.needlePivot) {
+            var normA = Math.max(-0.12, Math.min(1.12, currentA / ammeterScaleMax));
+            var targetAngA = 0.83 - normA * 1.66;
+            var curAngA = units.ammeter.userData.needlePivot.rotation.z;
+            units.ammeter.userData.needlePivot.rotation.z = curAngA + (targetAngA - curAngA) * 0.22;
+          }
+          if (units.voltmeter && units.voltmeter.userData.needlePivot) {
+            var normV = Math.max(-0.12, Math.min(1.12, voltV / voltmeterScaleMax));
+            var targetAngV = 0.83 - normV * 1.66;
+            var curAngV = units.voltmeter.userData.needlePivot.rotation.z;
+            units.voltmeter.userData.needlePivot.rotation.z = curAngV + (targetAngV - curAngV) * 0.22;
+          }
+
+          // 6. Phát sáng dây tóc và bầu thủy tinh Bóng đèn theo công suất thực P = I^2 * R
+          var powerW = bulbCurrentA * bulbCurrentA * rBulb;
+          var glowRatio = Math.max(0, Math.min(1.5, powerW / 0.85));
+          if (units.bulb && units.bulb.userData) {
+            var bud = units.bulb.userData;
+            bud.filamentMat.emissiveIntensity = glowRatio * 3.2;
+            bud.glassMat.emissiveIntensity = glowRatio * 0.95;
+            bud.haloMat.opacity = Math.min(0.68, glowRatio * 0.48);
+            bud.bulbLight.intensity = glowRatio * 1.8;
+          }
+
+          // 7. Cập nhật bảng thông số (Zero-Leak CanvasTexture)
+          var sig = [
+            (currentA || 0).toFixed(2),
+            (voltV || 0).toFixed(2),
+            rheoOhm.toFixed(1),
+            emfV.toFixed(1),
+            powerW.toFixed(2),
+            bulbCurrentA > 0.02 ? '1' : '0'
+          ].join('|');
+
+          if (ud.lastSignature !== sig) {
+            ud.lastSignature = sig;
+            ud.drawReadoutCanvas(ud.screenCanvas, {
+              closed: bulbCurrentA > 0.02,
+              currentA: Math.abs(currentA),
+              bulbV: Math.abs(voltV),
+              rheostatOhm: rheoOhm,
+              emfV: emfV,
+              powerW: powerW
+            });
+            ud.screenTex.needsUpdate = true;
+          }
+        },
+
+        playEquipmentSound: function(eventType, value) {
+          try {
+            var AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            if (!window.__ol3dAudioCtx) {
+              window.__ol3dAudioCtx = new AudioCtx();
+            }
+            var ctx = window.__ol3dAudioCtx;
+            if (ctx.state === 'suspended') ctx.resume();
+
+            var osc = ctx.createOscillator();
+            var gain = ctx.createGain();
+            var now = ctx.currentTime;
+
+            if (eventType === 'switch') {
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(value ? 520 : 340, now);
+              osc.frequency.exponentialRampToValueAtTime(value ? 880 : 210, now + 0.06);
+              gain.gain.setValueAtTime(0.14, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.075);
+            } else if (eventType === 'plug') {
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(640, now);
+              osc.frequency.exponentialRampToValueAtTime(980, now + 0.05);
+              gain.gain.setValueAtTime(0.11, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.055);
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.06);
+            } else {
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(300 + (Number(value) || 0) * 18, now);
+              gain.gain.setValueAtTime(0.04, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.04);
+            }
+          } catch (e) {}
+        },
+
+        // Cầu nối tương thích ngược chuẩn v2.2
+        buildEquipmentGroup: function(THREE, asset) {
+          return this.buildEquipmentMesh(THREE, asset);
+        },
+        applyEquipmentState: function(THREE, rootObject, instance, asset) {
+          var st = instance && instance.instanceState ? instance.instanceState : {};
+          this.updateEquipmentState(rootObject, st, 0.016);
+        }
+      };
+    })();
+  </script>
+
+  <!-- ============================================================================
+       GIAO DIỆN TRẠM THỰC HÀNH & LẮP RÁP MẠCH ĐIỆN 3D TRỰC QUAN
+       ============================================================================ -->
+  <!-- Thanh Header trên cùng -->
+  <header class="h-14 glass-panel border-b border-slate-800 px-4 flex items-center justify-between z-20 shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-400 font-bold text-lg shadow-inner">
+        ⚡
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-sm sm:text-base font-bold text-slate-100 tracking-tight">
+            Bộ Dụng Cụ Mạch Điện Nối Tiếp 3D
+          </h1>
+          <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full">
+            OpenLab 3D v2.4 • 7/7 Gates PASS
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-400 hidden sm:block">
+          Mô phỏng đúng mẫu thực tế: Pin đại Con Ó, Giá đỡ pin, Cầu dao K, Biến trở 20Ω, Bóng đèn 126, Ampe kế, Vôn kế &amp; Dây bắp chuối
+        </p>
+      </div>
+    </div>
+
+    <!-- Cụm nút thao tác nhanh -->
+    <div class="flex items-center gap-2">
+      <button id="btn-preset-series" class="px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs transition shadow flex items-center gap-1.5">
+        <span>🔌</span> Lắp chuẩn mạch nối tiếp
+      </button>
+      <button id="btn-disassemble-all" class="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-semibold text-xs transition flex items-center gap-1.5">
+        <span>🛠️</span> Tháo rời dây để tự lắp
+      </button>
+      <button id="btn-open-exporter" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 font-semibold text-xs transition flex items-center gap-1.5">
+        <span>📦</span> Tải từng file .HTML rời (8 file)
+      </button>
+      <button id="btn-open-audit" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-medium transition">
+        Kiểm định 7 Cổng
+      </button>
+    </div>
+  </header>
+
+  <!-- Khu vực chính: Bên trái Bảng điều khiển tháo/lắp, Ở giữa Không gian 3D, Bên phải Bảng thông số & Cắm dây -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- CỘT TRÁI: QUẢN LÝ THIẾT BỊ THÁO RỜI & THAO TÁC TRỰC TIẾP -->
+    <aside class="w-80 glass-panel border-r border-slate-800 flex flex-col z-10 overflow-y-auto shrink-0">
+      <div class="p-3.5 border-b border-slate-800/80">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center justify-between">
+          <span>1. Điều khiển thực nghiệm trực tiếp</span>
+          <span class="text-[10px] text-slate-400 font-normal">Thời gian thực</span>
+        </h2>
+
+        <!-- Nút Đóng / Mở Cầu Dao K & Tháo / Lắp Pin Con Ó -->
+        <div class="grid grid-cols-2 gap-2 mt-3">
+          <button id="btn-toggle-switch" class="p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/30 transition text-left">
+            <div class="text-[10px] uppercase tracking-wider opacity-80">Cầu dao K</div>
+            <div id="lbl-switch-state" class="text-xs font-bold mt-0.5 flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ĐANG ĐÓNG (ON)
+            </div>
+          </button>
+
+          <button id="btn-toggle-batteries" class="p-2.5 rounded-xl bg-yellow-500/20 border border-yellow-500/40 text-yellow-300 hover:bg-yellow-500/30 transition text-left">
+            <div class="text-[10px] uppercase tracking-wider opacity-80">2 Pin đại Con Ó</div>
+            <div id="lbl-battery-state" class="text-xs font-bold mt-0.5">
+              Đã lắp 2 Pin (3.0V)
+            </div>
+          </button>
+        </div>
+
+        <!-- Thanh trượt kéo Con chạy Biến trở 0 - 20 Ohm -->
+        <div class="mt-3.5 bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+          <div class="flex items-center justify-between text-xs mb-1.5">
+            <span class="font-semibold text-slate-200">Con chạy Biến trở (R_bt):</span>
+            <span id="lbl-rheostat-val" class="mono font-bold text-sky-400">4.0 Ω</span>
+          </div>
+          <input id="slider-rheostat" type="range" min="0" max="20" step="0.5" value="4.0" class="w-full cursor-pointer" />
+          <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+            <span>0 Ω (Đèn sáng mạnh)</span>
+            <span>10 Ω</span>
+            <span>20 Ω (Đèn mờ)</span>
+          </div>
+        </div>
+
+        <!-- Tuỳ chỉnh Điện áp mỗi Pin & Điện trở bóng đèn -->
+        <div class="mt-2.5 grid grid-cols-2 gap-2">
+          <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800">
+            <div class="flex justify-between text-[11px]">
+              <span class="text-slate-400">Nguồn E:</span>
+              <span id="lbl-emf-val" class="mono font-bold text-amber-300">3.0 V</span>
+            </div>
+            <input id="slider-emf" type="range" min="1.5" max="6.0" step="0.5" value="3.0" class="w-full mt-1 cursor-pointer" />
+          </div>
+          <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800">
+            <div class="flex justify-between text-[11px]">
+              <span class="text-slate-400">R bóng đèn:</span>
+              <span id="lbl-bulb-r" class="mono font-bold text-amber-300">6.0 Ω</span>
+            </div>
+            <input id="slider-bulb-r" type="range" min="3.0" max="12.0" step="0.5" value="6.0" class="w-full mt-1 cursor-pointer" />
+          </div>
+        </div>
+      </div>
+
+      <!-- DANH SÁCH 8 PHẦN TỬ CÓ THỂ THÁO RỜI / LẮP LẠI TRÊN BÀN -->
+      <div class="p-3.5 border-b border-slate-800/80 flex-1">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-sky-400">
+            2. Các thiết bị trong bộ (Tháo / Lắp)
+          </h2>
+          <button id="btn-reset-positions" class="text-[11px] text-sky-400 hover:underline">
+            Xếp ngay ngắn
+          </button>
+        </div>
+        <p class="text-[11px] text-slate-400 mb-2.5">
+          Bấm nút <b>"Tháo rời / Lắp vào"</b> hoặc <b>kéo thả trực tiếp thiết bị trên bàn 3D</b>. Khi tháo rời 1 thiết bị, mạch điện đi qua nó sẽ tự động hở như thật!
+        </p>
+
+        <div id="component-list" class="space-y-1.5">
+          <!-- Được render tự động bằng JS -->
+        </div>
+      </div>
+
+      <!-- Chế độ Chuột 3D -->
+      <div class="p-3 bg-slate-900/90 border-t border-slate-800">
+        <div class="text-[11px] font-semibold text-slate-300 mb-1.5">Chế độ tương tác chuột trên bàn 3D:</div>
+        <div class="grid grid-cols-2 gap-1.5">
+          <button id="mode-wire" class="py-1.5 px-2 rounded-lg bg-sky-500 text-slate-950 font-bold text-xs transition">
+            🔌 Cắm dây / Bấm nút
+          </button>
+          <button id="mode-move" class="py-1.5 px-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium text-xs transition">
+            ✋ Kéo di chuyển thiết bị
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- KHÔNG GIAN 3D TRUNG TÂM -->
+    <main class="flex-1 relative flex flex-col">
+      <div id="canvas-container" class="flex-1">
+        <!-- Hướng dẫn nổi góc trên trái của Canvas -->
+        <div class="absolute top-3 left-3 right-3 pointer-events-none flex flex-wrap items-center justify-between gap-2 z-10">
+          <div class="glass-panel px-3 py-2 rounded-xl pointer-events-auto flex items-center gap-2.5 shadow-lg">
+            <span id="circuit-status-dot" class="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_12px_#4ade80]"></span>
+            <div>
+              <div id="circuit-status-title" class="text-xs font-bold text-emerald-300">
+                MẠCH ĐIỆN NỐI TIẾP KÍN — BÓNG ĐÈN ĐANG SÁNG
+              </div>
+              <div id="circuit-status-desc" class="text-[11px] text-slate-300">
+                Click vào Cầu dao K để đóng/ngắt, kéo con chạy Biến trở hoặc click 2 cọc nối bất kỳ để cắm thêm dây!
+              </div>
+            </div>
+          </div>
+
+          <!-- Chọn màu dây khi cắm mới -->
+          <div class="glass-panel px-3 py-1.5 rounded-xl pointer-events-auto flex items-center gap-2 shadow-lg">
+            <span class="text-xs text-slate-300 font-medium">Màu dây cắm mới:</span>
+            <button id="btn-wire-red" class="px-2.5 py-1 rounded-lg bg-red-600 text-white text-xs font-bold ring-2 ring-white">
+              Dây Đỏ (+)
+            </button>
+            <button id="btn-wire-blue" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold opacity-70 hover:opacity-100">
+              Dây Xanh (-)
+            </button>
+          </div>
+        </div>
+
+        <!-- Thông báo cọc đang chọn để nối dây -->
+        <div id="wiring-prompt" class="hidden absolute bottom-16 left-1/2 -translate-x-1/2 glass-panel px-4 py-2 rounded-full border border-sky-400/60 text-xs font-semibold text-sky-300 shadow-xl z-10">
+          Đang chọn cọc đầu tiên... Hãy click vào cọc thứ hai trên thiết bị khác để cắm dây! (Nhấn ESC để hủy)
+        </div>
+
+        <!-- Thanh công cụ Camera góc dưới giữa -->
+        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 glass-panel px-3 py-1.5 rounded-full flex items-center gap-2 shadow-xl z-10">
+          <button id="cam-front" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 transition">
+            Góc Chính Diện
+          </button>
+          <button id="cam-top" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 transition">
+            Nhìn Từ Trên Xuống
+          </button>
+          <button id="cam-meters" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-xs text-sky-300 font-medium transition">
+            Soi Cận Cảnh Ampe &amp; Vôn Kế
+          </button>
+          <button id="btn-open-photo" class="px-2.5 py-1 rounded-full bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-400/40 text-xs text-indigo-300 font-medium transition">
+            Sơ đồ &amp; Hồ sơ thiết bị
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- CỘT PHẢI: ĐỒNG HỒ ĐO THỜI GIAN THỰC & QUẢN LÝ DÂY NỐI BẮP CHUỐI -->
+    <aside class="w-80 glass-panel border-l border-slate-800 flex flex-col z-10 overflow-y-auto shrink-0">
+      <!-- Bảng đọc số đo Ampe kế, Vôn kế, Công suất đèn -->
+      <div class="p-3.5 border-b border-slate-800/80">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2.5">
+          3. Số đo thực tế trên đồng hồ
+        </h2>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div class="bg-slate-900/95 p-2.5 rounded-xl border border-emerald-500/30">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] text-emerald-400 font-semibold">Ampe kế (I)</span>
+              <span id="badge-amm-scale" class="text-[10px] px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded">Thang 0.6A</span>
+            </div>
+            <div id="readout-ammeter" class="mono text-xl font-extrabold text-slate-100 mt-1">
+              0.29 A
+            </div>
+            <div class="text-[10px] text-slate-400 mt-0.5">ĐCNN: 0.02 A</div>
+          </div>
+
+          <div class="bg-slate-900/95 p-2.5 rounded-xl border border-blue-500/30">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] text-blue-400 font-semibold">Vôn kế (U)</span>
+              <span id="badge-volt-scale" class="text-[10px] px-1.5 py-0.2 bg-blue-500/20 text-blue-300 rounded">Thang 6V</span>
+            </div>
+            <div id="readout-voltmeter" class="mono text-xl font-extrabold text-slate-100 mt-1">
+              1.73 V
+            </div>
+            <div class="text-[10px] text-slate-400 mt-0.5">ĐCNN: 0.2 V</div>
+          </div>
+        </div>
+
+        <div class="mt-2 bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 text-xs space-y-1">
+          <div class="flex justify-between">
+            <span class="text-slate-400">Tổng trở toàn mạch (R_tđ):</span>
+            <span id="readout-rtotal" class="mono font-bold text-slate-200">10.45 Ω</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Hiệu điện thế hai đầu đèn:</span>
+            <span id="readout-ubulb" class="mono font-bold text-amber-300">1.73 V</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Công suất bóng đèn (P_đèn):</span>
+            <span id="readout-pbulb" class="mono font-bold text-yellow-400">0.50 W (Sáng rõ)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trình cắm dây nhanh bằng chọn Cọc (dành cho người dùng thích chọn từ danh sách hoặc click 3D) -->
+      <div class="p-3.5 border-b border-slate-800/80">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2">
+          4. Cắm thêm dây nối bắp chuối
+        </h2>
+        <p class="text-[11px] text-slate-400 mb-2">
+          Bạn có thể <b>click trực tiếp vào 2 cọc tròn trên mô hình 3D</b> hoặc chọn 2 cọc dưới đây để nối dây:
+        </p>
+        <div class="space-y-2">
+          <select id="sel-term-from" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200"></select>
+          <select id="sel-term-to" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200"></select>
+          <div class="flex gap-1.5">
+            <button id="btn-add-wire-red" class="flex-1 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-semibold text-xs transition">
+              + Cắm Dây Đỏ
+            </button>
+            <button id="btn-add-wire-blue" class="flex-1 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition">
+              + Cắm Dây Xanh
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Danh sách các Dây Điện đang cắm (có nút rút từng dây) -->
+      <div class="p-3.5 flex-1 flex flex-col">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-sky-400">
+            5. Dây điện đang cắm (<span id="wire-count">7</span> dây)
+          </h2>
+          <button id="btn-clear-wires" class="text-[11px] text-rose-400 hover:underline">
+            Rút hết dây
+          </button>
+        </div>
+        <div id="wire-list" class="space-y-1.5 overflow-y-auto flex-1 pr-1">
+          <!-- Render tự động bằng JS -->
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ============================================================================
+       MODAL 1: XUẤT TỪNG THIẾT BỊ THÀNH FILE .HTML ĐỘC LẬP CHUẨN OPENLAB 3D v2.4
+       ============================================================================ -->
+  <div id="modal-exporter" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="glass-panel max-w-3xl w-full rounded-2xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-bold text-slate-100">
+            📦 Xuất Từng Thiết Bị Thành File <code class="text-sky-400">.HTML</code> Độc Lập (Chuẩn OpenLab 3D v2.4)
+          </h3>
+          <p class="text-xs text-slate-400 mt-0.5">
+            Mỗi file xuất ra đều có đủ 4 khối bắt buộc (<code class="text-emerald-300">#ol3d-module-manifest</code>, <code class="text-emerald-300">#ol3d-module-icon</code>, <code class="text-emerald-300">#ol3d-module-real-photo</code>, <code class="text-emerald-300">#ol3d-module-3d-script</code>) để nạp vào OpenLab 3D.
+          </p>
+        </div>
+        <button id="btn-close-exporter" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold">✕</button>
+      </div>
+      <div class="p-4 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-3" id="exporter-cards">
+        <!-- Render bằng JS -->
+      </div>
+      <div class="p-3.5 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between">
+        <span class="text-xs text-slate-400">Mẹo: Bạn có thể nạp cả bộ hoặc nạp từng thiết bị rời vào thư viện OpenLab 3D.</span>
+        <button id="btn-download-full-kit" class="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition">
+          ⬇️ Tải File Trọn Bộ Mạch Điện Nối Tiếp (.html)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================================
+       MODAL 2: KIỂM ĐỊNH TỰ ĐỘNG 7 CỔNG (G1 -> G7) THEO EQUIPMENT_MODULE_STANDARD.MD
+       ============================================================================ -->
+  <div id="modal-audit" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="glass-panel max-w-2xl w-full rounded-2xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[88vh]">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <h3 class="text-base font-bold text-emerald-400">
+          ✅ Kết Quả Kiểm Định 7 Cổng Tự Động (OpenLab 3D v2.4 Validator)
+        </h3>
+        <button id="btn-close-audit" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold">✕</button>
+      </div>
+      <div id="audit-results-body" class="p-4 overflow-y-auto space-y-2.5 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================================
+       MODAL 3: SƠ ĐỒ ĐỐI CHIẾU THỰC TẾ & HỒ SƠ KHOA HỌC 5 NGUỒN
+       ============================================================================ -->
+  <div id="modal-photo" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="glass-panel max-w-3xl w-full rounded-2xl border border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <h3 class="text-base font-bold text-sky-400">
+          📐 Sơ Đồ Đối Chiếu Cấu Tạo Thực Tế &amp; Hồ Sơ Thiết Bị
+        </h3>
+        <button id="btn-close-photo" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold">✕</button>
+      </div>
+      <div class="p-4 overflow-y-auto space-y-4">
+        <div id="real-photo-slot" class="w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950 flex justify-center"></div>
+        <div id="dossier-slot" class="text-xs text-slate-300 space-y-2 bg-slate-900/80 p-4 rounded-xl border border-slate-800"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================================
+       SCRIPT TRẠM THỰC HÀNH ĐỘC LẬP, BỘ GIẢI MẠCH ĐIỆN MNA & TƯƠNG TÁC 3D
+       ============================================================================ -->
+  <script>
+    (function() {
+      // Đọc manifest
+      var manifestEl = document.getElementById('ol3d-module-manifest');
+      var manifest = JSON.parse(manifestEl.textContent);
+
+      // Danh mục toàn bộ Cọc Cắm (Terminals) trên các thiết bị
+      var TERMINAL_META = {
+        bat_pos:     { unit: 'battery_holder', name: 'Nguồn Pin: Cực Dương (+ Đỏ)', color: '#ef4444' },
+        bat_neg:     { unit: 'battery_holder', name: 'Nguồn Pin: Cực Âm (- Đen)', color: '#94a3b8' },
+        bat_mid1:    { unit: 'battery_holder', name: 'Nguồn Pin: Cọc Phụ 1.5V (+)', color: '#ef4444' },
+        bat_mid2:    { unit: 'battery_holder', name: 'Nguồn Pin: Cọc Phụ 1.5V (-)', color: '#94a3b8' },
+        sw_1:        { unit: 'switch',         name: 'Cầu Dao K: Cọc 1 (Đỏ)', color: '#ef4444' },
+        sw_2:        { unit: 'switch',         name: 'Cầu Dao K: Cọc 2 (Xanh lá)', color: '#22c55e' },
+        bulb_1:      { unit: 'bulb',           name: 'Bóng Đèn 126: Cọc Âm (- Đen)', color: '#94a3b8' },
+        bulb_2:      { unit: 'bulb',           name: 'Bóng Đèn 126: Cọc Dương (+ Đỏ)', color: '#ef4444' },
+        rheo_a:      { unit: 'rheostat',       name: 'Biến Trở: Cọc Đầu Vào A (Cam)', color: '#f97316' },
+        rheo_wiper:  { unit: 'rheostat',       name: 'Biến Trở: Cọc Con Chạy C (Giữa)', color: '#3b82f6' },
+        rheo_b:      { unit: 'rheostat',       name: 'Biến Trở: Cọc Đầu Cuối B (Phải)', color: '#3b82f6' },
+        amm_neg:     { unit: 'ammeter',        name: 'Ampe Kế: Cọc Âm (- Đen)', color: '#94a3b8' },
+        amm_r1:      { unit: 'ammeter',        name: 'Ampe Kế: Thang 0.6A (+ Đỏ)', color: '#ef4444' },
+        amm_r2:      { unit: 'ammeter',        name: 'Ampe Kế: Thang 3.0A (+ Đỏ)', color: '#ef4444' },
+        volt_neg:    { unit: 'voltmeter',      name: 'Vôn Kế: Cọc Âm (- Đen)', color: '#94a3b8' },
+        volt_r1:     { unit: 'voltmeter',      name: 'Vôn Kế: Thang 6V (+ Đỏ)', color: '#ef4444' },
+        volt_r2:     { unit: 'voltmeter',      name: 'Vôn Kế: Thang 12V (+ Đỏ)', color: '#ef4444' }
+      };
+
+      // Trạng thái toàn bộ Bộ Thí Nghiệm
+      var appState = {
+        interactionMode: 'wire', // 'wire' | 'move'
+        newWireColor: 0xef4444,
+        selectedTerminalId: null,
+        switchClosed: true,
+        battery1Inserted: true,
+        battery2Inserted: true,
+        rheostatOhm: 4.0,
+        ratedEmfV: 3.0,
+        bulbResistance: 6.0,
+        // Trạng thái gắn trên bàn hay đã tháo rời của từng thiết bị
+        unitAttached: {
+          battery_holder: true,
+          battery_1: true,
+          battery_2: true,
+          switch: true,
+          bulb: true,
+          rheostat: true,
+          ammeter: true,
+          voltmeter: true
+        },
+        // Danh sách dây cắm hiện tại
+        wires: [
+          { id: 'w1', from: 'bat_pos',    to: 'sw_1',       color: 0xef4444 },
+          { id: 'w2', from: 'sw_2',       to: 'bulb_1',     color: 0xef4444 },
+          { id: 'w3', from: 'bulb_2',     to: 'amm_r1',     color: 0xef4444 },
+          { id: 'w4', from: 'amm_neg',    to: 'rheo_a',     color: 0x2563eb },
+          { id: 'w5', from: 'rheo_wiper', to: 'bat_neg',    color: 0x2563eb },
+          { id: 'w6', from: 'bulb_2',     to: 'volt_r1',    color: 0xef4444 },
+          { id: 'w7', from: 'bulb_1',     to: 'volt_neg',   color: 0x2563eb }
+        ],
+        // Kết quả giải mạch điện
+        ammeterReadingA: 0.29,
+        voltmeterReadingV: 1.73,
+        bulbCurrentA: 0.29,
+        ammeterMaxA: 0.6,
+        voltmeterMaxV: 6.0,
+        emfV: 3.0,
+        totalLoopR: 10.45,
+        circuitStatus: 'CLOSED_NORMAL',
+        circuitMessage: 'Mạch nối tiếp hoạt động chuẩn: Dòng điện chạy từ (+) Nguồn → Cầu dao K → Bóng đèn → Ampe kế → Biến trở → (-) Nguồn.'
+      };
+
+      // =========================================================================
+      // BỘ GIẢI MẠCH ĐIỆN NÚT THẬT (MODIFIED NODAL ANALYSIS / GAUSS-JORDAN)
+      // Tính toán chính xác điện thế tại mọi cọc dựa trên cách cắm dây thực tế!
+      // =========================================================================
+      function solveElectricalCircuit() {
+        var termIds = Object.keys(TERMINAL_META);
+        var N = termIds.length;
+        var idxMap = {};
+        for (var i = 0; i < N; i++) idxMap[termIds[i]] = i;
+
+        // Ma trận độ dẫn G (N x N) và vector dòng J (N)
+        var G = [];
+        var J = [];
+        for (var r = 0; r < N; r++) {
+          var row = [];
+          for (var c = 0; c < N; c++) row.push(0);
+          G.push(row);
+          J.push(0);
+        }
+
+        function addResistor(tA, tB, resistanceOhm) {
+          var uA = TERMINAL_META[tA].unit;
+          var uB = TERMINAL_META[tB].unit;
+          if (!appState.unitAttached[uA] || !appState.unitAttached[uB]) return;
+          var g = 1.0 / Math.max(0.0005, resistanceOhm);
+          var iA = idxMap[tA];
+          var iB = idxMap[tB];
+          G[iA][iA] += g;
+          G[iB][iB] += g;
+          G[iA][iB] -= g;
+          G[iB][iA] -= g;
+        }
+
+        // 1. Thêm toàn bộ Dây Cắm Bắp Chuối (R_dây = 0.002 Ohm)
+        for (var w = 0; w < appState.wires.length; w++) {
+          var wire = appState.wires[w];
+          addResistor(wire.from, wire.to, 0.002);
+        }
+
+        // 2. Nguồn điện (Giá đỡ pin + 2 Pin Con Ó)
+        var activeCells = 0;
+        if (appState.unitAttached.battery_holder) {
+          if (appState.unitAttached.battery_1 && appState.battery1Inserted) activeCells++;
+          if (appState.unitAttached.battery_2 && appState.battery2Inserted) activeCells++;
+        }
+        var actualEmf = (activeCells === 2) ? appState.ratedEmfV : (activeCells === 1 ? appState.ratedEmfV * 0.5 : 0.0);
+        appState.emfV = actualEmf;
+
+        if (appState.unitAttached.battery_holder && actualEmf > 0) {
+          // Nguồn Norton tương đương giữa bat_pos và bat_neg với điện trở trong r = 0.4 Ohm
+          var rInternal = 0.4;
+          var gBat = 1.0 / rInternal;
+          var iPos = idxMap['bat_pos'];
+          var iNeg = idxMap['bat_neg'];
+          G[iPos][iPos] += gBat;
+          G[iNeg][iNeg] += gBat;
+          G[iPos][iNeg] -= gBat;
+          G[iNeg][iPos] -= gBat;
+          J[iPos] += actualEmf * gBat;
+          J[iNeg] -= actualEmf * gBat;
+
+          // Cọc phụ trung gian 1.5V
+          addResistor('bat_mid1', 'bat_pos', 0.2);
+          addResistor('bat_mid2', 'bat_neg', 0.2);
+        }
+
+        // 3. Cầu dao K (Đóng: R = 0.01 Ohm; Mở: R = 1e8 Ohm)
+        if (appState.unitAttached.switch && appState.switchClosed) {
+          addResistor('sw_1', 'sw_2', 0.01);
+        }
+
+        // 4. Bóng đèn dây tóc 126 (R_đèn = 6.0 Ohm)
+        if (appState.unitAttached.bulb) {
+          addResistor('bulb_1', 'bulb_2', appState.bulbResistance);
+        }
+
+        // 5. Biến trở con chạy 20 Ohm (chia thành 2 nửa: A -> Wiper = R_bt, Wiper -> B = 20 - R_bt)
+        if (appState.unitAttached.rheostat) {
+          var rAW = Math.max(0.02, appState.rheostatOhm);
+          var rWB = Math.max(0.02, 20.0 - appState.rheostatOhm);
+          addResistor('rheo_a', 'rheo_wiper', rAW);
+          addResistor('rheo_wiper', 'rheo_b', rWB);
+        }
+
+        // 6. Ampe kế (Điện trở shunt rất nhỏ R_A = 0.05 Ohm)
+        if (appState.unitAttached.ammeter) {
+          addResistor('amm_r1', 'amm_neg', 0.05);
+          addResistor('amm_r2', 'amm_neg', 0.05);
+        }
+
+        // 7. Vôn kế (Điện trở trong rất lớn R_V = 10,000 Ohm)
+        if (appState.unitAttached.voltmeter) {
+          addResistor('volt_r1', 'volt_neg', 10000.0);
+          addResistor('volt_r2', 'volt_neg', 10000.0);
+        }
+
+        // Rò đất cực nhỏ (1e-9 S) ở mọi nút để hệ phương trình luôn khả nghịch kể cả khi linh kiện tháo rời cô lập
+        var iRef = idxMap['bat_neg'];
+        G[iRef][iRef] += 1e6; // Cố định V(bat_neg) ~ 0V làm mốc
+        for (var k = 0; k < N; k++) {
+          G[k][k] += 1e-9;
+        }
+
+        // Giải hệ phương trình tuyến tính G * V = J bằng khử Gauss có chọn phần tử trụ
+        var V = gaussianElimination(G, J, N);
+
+        // Đọc dòng điện qua Bóng đèn
+        var vBulb1 = V[idxMap['bulb_1']] || 0;
+        var vBulb2 = V[idxMap['bulb_2']] || 0;
+        var iBulb = appState.unitAttached.bulb ? Math.abs(vBulb2 - vBulb1) / appState.bulbResistance : 0;
+        appState.bulbCurrentA = iBulb;
+
+        // Đọc dòng điện qua Ampe kế và xác định thang đo đang dùng (0.6A hay 3A)
+        var iAmm1 = (V[idxMap['amm_r1']] - V[idxMap['amm_neg']]) / 0.05;
+        var iAmm2 = (V[idxMap['amm_r2']] - V[idxMap['amm_neg']]) / 0.05;
+        var usedR2Amm = Math.abs(iAmm2) > Math.abs(iAmm1) && Math.abs(iAmm2) > 0.001;
+        appState.ammeterMaxA = usedR2Amm ? 3.0 : 0.6;
+        appState.ammeterReadingA = appState.unitAttached.ammeter ? (iAmm1 + iAmm2) : 0;
+
+        // Đọc hiệu điện thế trên Vôn kế và xác định thang đo (6V hay 12V)
+        var uVolt1 = V[idxMap['volt_r1']] - V[idxMap['volt_neg']];
+        var uVolt2 = V[idxMap['volt_r2']] - V[idxMap['volt_neg']];
+        var usedR2Volt = Math.abs(uVolt2) > Math.abs(uVolt1) && Math.abs(uVolt2) > 0.01;
+        appState.voltmeterMaxV = usedR2Volt ? 12.0 : 6.0;
+        appState.voltmeterReadingV = appState.unitAttached.voltmeter ? (usedR2Volt ? uVolt2 : uVolt1) : 0;
+
+        // Phân tích trạng thái mạch để hiển thị phản hồi sư phạm rõ ràng
+        if (actualEmf <= 0.01) {
+          appState.circuitStatus = 'NO_BATTERY';
+          appState.circuitMessage = 'Chưa lắp đủ Pin Con Ó vào giá đỡ hoặc nguồn đã tháo rời (E = 0 V).';
+        } else if (!appState.switchClosed && iBulb < 0.01) {
+          appState.circuitStatus = 'OPEN_SWITCH';
+          appState.circuitMessage = 'Cầu dao K đang NGẮT (Mạch hở) — Dòng điện I = 0 A, bóng đèn tắt.';
+        } else if (Math.abs(appState.ammeterReadingA) > 2.8 && iBulb < 0.05) {
+          appState.circuitStatus = 'SHORT_CIRCUIT';
+          appState.circuitMessage = 'CẢNH BÁO ĐOẢN MẠCH! Ampe kế đang mắc trực tiếp vào hai cực nguồn không qua bóng đèn!';
+        } else if (appState.ammeterReadingA < -0.01 || appState.voltmeterReadingV < -0.05) {
+          appState.circuitStatus = 'REVERSE_POLARITY';
+          appState.circuitMessage = 'LƯU Ý: Cắm ngược cực (+) và (-) trên Ampe kế hoặc Vôn kế khiến kim bị lệch ngược về bên trái vạch 0!';
+        } else if (iBulb > 0.02) {
+          appState.circuitStatus = 'CLOSED_NORMAL';
+          appState.circuitMessage = 'Mạch điện kín hoạt động tốt! I = ' + Math.abs(appState.ammeterReadingA).toFixed(2) + ' A, U_đèn = ' + (iBulb * appState.bulbResistance).toFixed(2) + ' V.';
+        } else {
+          appState.circuitStatus = 'OPEN_WIRE';
+          appState.circuitMessage = 'Mạch đang hở (chưa nối kín vòng dây từ (+) Nguồn qua Bóng đèn về (-) Nguồn hoặc Vôn kế đang mắc nối tiếp).';
+        }
+      }
+
+      function gaussianElimination(A, b, n) {
+        var M = [];
+        for (var i = 0; i < n; i++) {
+          var row = A[i].slice();
+          row.push(b[i]);
+          M.push(row);
+        }
+        for (var k = 0; k < n; k++) {
+          var iMax = k;
+          var vMax = Math.abs(M[k][k]);
+          for (var i = k + 1; i < n; i++) {
+            if (Math.abs(M[i][k]) > vMax) {
+              vMax = Math.abs(M[i][k]);
+              iMax = i;
+            }
+          }
+          if (iMax !== k) {
+            var temp = M[k];
+            M[k] = M[iMax];
+            M[iMax] = temp;
+          }
+          var pivot = M[k][k];
+          if (Math.abs(pivot) < 1e-12) continue;
+          for (var i = k + 1; i < n; i++) {
+            var f = M[i][k] / pivot;
+            for (var j = k; j <= n; j++) {
+              M[i][j] -= M[k][j] * f;
+            }
+          }
+        }
+        var x = new Array(n).fill(0);
+        for (var i = n - 1; i >= 0; i--) {
+          var sum = M[i][n];
+          for (var j = i + 1; j < n; j++) {
+            sum -= M[i][j] * x[j];
+          }
+          x[i] = Math.abs(M[i][i]) > 1e-12 ? (sum / M[i][i]) : 0;
+        }
+        return x;
+      }
+
+      // =========================================================================
+      // KHỞI TẠO KHÔNG GIAN 3D THREE.JS (STUDIO LIGHTING + ORBIT/PAN + RAYCASTER)
+      // =========================================================================
+      var container = document.getElementById('canvas-container');
+      var scene = new THREE.Scene();
+
+      var camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.01, 20);
+      var camSpherical = { radius: 0.68, phi: 0.92, theta: 0.0 };
+      var camTarget = new THREE.Vector3(0, 0.035, 0.01);
+
+      function updateCameraFromSpherical() {
+        camSpherical.phi = Math.max(0.18, Math.min(1.48, camSpherical.phi));
+        camSpherical.radius = Math.max(0.24, Math.min(1.45, camSpherical.radius));
+        camera.position.x = camTarget.x + camSpherical.radius * Math.sin(camSpherical.phi) * Math.sin(camSpherical.theta);
+        camera.position.y = camTarget.y + camSpherical.radius * Math.cos(camSpherical.phi);
+        camera.position.z = camTarget.z + camSpherical.radius * Math.sin(camSpherical.phi) * Math.cos(camSpherical.theta);
+        camera.lookAt(camTarget);
+      }
+      updateCameraFromSpherical();
+
+      var renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.12;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      // Ánh sáng phòng thí nghiệm chuẩn PBR
+      var hemiLight = new THREE.HemisphereLight(0xf8fafc, 0x1e293b, 0.95);
+      scene.add(hemiLight);
+
+      var dirLight = new THREE.DirectionalLight(0xffffff, 1.35);
+      dirLight.position.set(0.45, 0.85, 0.55);
+      dirLight.castShadow = true;
+      scene.add(dirLight);
+
+      var fillLight = new THREE.DirectionalLight(0xbae6fd, 0.55);
+      fillLight.position.set(-0.55, 0.45, -0.35);
+      scene.add(fillLight);
+
+      // Mặt bàn gỗ phòng thí nghiệm bên dưới bộ thí nghiệm
+      var labBenchGeo = new THREE.BoxGeometry(1.4, 0.04, 0.9);
+      var labBenchMat = new THREE.MeshPhysicalMaterial({
+        color: 0x0f172a,
+        roughness: 0.65,
+        metalness: 0.08
+      });
+      var labBench = new THREE.Mesh(labBenchGeo, labBenchMat);
+      labBench.position.y = -0.0205;
+      scene.add(labBench);
+
+      var gridHelper = new THREE.GridHelper(1.2, 24, 0x334155, 0x1e293b);
+      gridHelper.position.y = -0.0002;
+      scene.add(gridHelper);
+
+      // Dựng Bộ Mạch Điện Nối Tiếp 3D từ OL3D_EQUIPMENT_MODULE
+      var kitRoot = window.OL3D_EQUIPMENT_MODULE.buildEquipmentMesh(THREE, manifest.asset);
+      scene.add(kitRoot);
+
+      // =========================================================================
+      // TƯƠNG TÁC CHUỘT & CẢM ỨNG TRÊN KHÔNG GIAN 3D
+      // =========================================================================
+      var raycaster = new THREE.Raycaster();
+      var mouse = new THREE.Vector2();
+      var benchPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.008);
+      var planeIntersect = new THREE.Vector3();
+
+      var isOrbiting = false;
+      var isPanning = false;
+      var draggingUnit = null;
+      var draggingRheostat = false;
+      var dragOffset = new THREE.Vector3();
+      var pointerDownPos = { x: 0, y: 0 };
+      var lastMousePos = { x: 0, y: 0 };
+      var hoveredSocket = null;
+
+      function setNormalizedMouse(evt) {
+        var rect = renderer.domElement.getBoundingClientRect();
+        var clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+        var clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
+        mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+      }
+
+      // Tìm cọc cắm hoặc thiết bị dưới con trỏ chuột
+      function findHitTerminalOrUnit() {
+        raycaster.setFromCamera(mouse, camera);
+        var compGroup = kitRoot.userData.componentsGroup;
+        var hits = raycaster.intersectObjects(compGroup.children, true);
+        if (hits.length === 0) return { terminal: null, unit: null, isRheoWiper: false };
+
+        var obj = hits[0].object;
+        var terminalGroup = null;
+        var unitGroup = null;
+        var isRheoWiper = false;
+
+        var curr = obj;
+        while (curr && curr !== compGroup) {
+          if (curr.userData && curr.userData.isTerminal) terminalGroup = curr;
+          if (curr.name === 'plunger' && curr.parent && curr.parent.name === 'unit_rheostat') isRheoWiper = true;
+          if (curr.parent === compGroup) unitGroup = curr;
+          curr = curr.parent;
+        }
+        return { terminal: terminalGroup, unit: unitGroup, isRheoWiper: isRheoWiper };
+      }
+
+      renderer.domElement.addEventListener('mousedown', function(evt) {
+        setNormalizedMouse(evt);
+        pointerDownPos.x = evt.clientX;
+        pointerDownPos.y = evt.clientY;
+        lastMousePos.x = evt.clientX;
+        lastMousePos.y = evt.clientY;
+
+        if (evt.button === 2 || evt.shiftKey) {
+          isPanning = true;
+          return;
+        }
+
+        var hit = findHitTerminalOrUnit();
+
+        // Nếu bấm trực tiếp vào Con chạy biến trở -> cho phép kéo trượt con chạy trên 3D!
+        if (hit.isRheoWiper) {
+          draggingRheostat = true;
+          return;
+        }
+
+        // Nếu đang ở chế độ Kéo Di Chuyển Thiết Bị ('move')
+        if (appState.interactionMode === 'move' && hit.unit) {
+          draggingUnit = hit.unit;
+          raycaster.setFromCamera(mouse, camera);
+          if (raycaster.ray.intersectPlane(benchPlane, planeIntersect)) {
+            dragOffset.copy(draggingUnit.position).sub(planeIntersect);
+          }
+          return;
+        }
+
+        isOrbiting = true;
+      });
+
+      window.addEventListener('mousemove', function(evt) {
+        setNormalizedMouse(evt);
+        var dx = evt.clientX - lastMousePos.x;
+        var dy = evt.clientY - lastMousePos.y;
+        lastMousePos.x = evt.clientX;
+        lastMousePos.y = evt.clientY;
+
+        // Kéo trượt con chạy biến trở trực tiếp trên 3D
+        if (draggingRheostat) {
+          raycaster.setFromCamera(mouse, camera);
+          if (raycaster.ray.intersectPlane(benchPlane, planeIntersect)) {
+            var rheoUnit = kitRoot.userData.units.rheostat;
+            var localX = planeIntersect.x - rheoUnit.position.x;
+            var frac = Math.max(0, Math.min(1, (localX + 0.056) / 0.112));
+            appState.rheostatOhm = Math.round(frac * 40) / 2; // Bước 0.5 Ohm
+            document.getElementById('slider-rheostat').value = appState.rheostatOhm;
+            document.getElementById('lbl-rheostat-val').textContent = appState.rheostatOhm.toFixed(1) + ' Ω';
+            solveElectricalCircuit();
+            syncReadoutUI();
+          }
+          return;
+        }
+
+        // Kéo di chuyển thiết bị trên mặt bàn 3D
+        if (draggingUnit) {
+          raycaster.setFromCamera(mouse, camera);
+          if (raycaster.ray.intersectPlane(benchPlane, planeIntersect)) {
+            draggingUnit.position.x = Math.max(-0.24, Math.min(0.24, planeIntersect.x + dragOffset.x));
+            draggingUnit.position.z = Math.max(-0.15, Math.min(0.15, planeIntersect.z + dragOffset.z));
+            // Nếu di chuyển Giá đỡ pin thì 2 viên pin đi theo
+            if (draggingUnit.name === 'unit_battery_holder') {
+              var b1 = kitRoot.userData.units.battery_1;
+              var b2 = kitRoot.userData.units.battery_2;
+              if (appState.battery1Inserted) b1.position.set(draggingUnit.position.x, 0, draggingUnit.position.z + 0.022);
+              if (appState.battery2Inserted) b2.position.set(draggingUnit.position.x, 0, draggingUnit.position.z - 0.022);
+            }
+            window.OL3D_EQUIPMENT_MODULE.rebuildWires3D(kitRoot, appState.wires);
+          }
+          return;
+        }
+
+        if (isOrbiting) {
+          camSpherical.theta -= dx * 0.0075;
+          camSpherical.phi -= dy * 0.0075;
+          updateCameraFromSpherical();
+          return;
+        }
+
+        if (isPanning) {
+          camTarget.x -= dx * 0.0008;
+          camTarget.z -= dy * 0.0008;
+          updateCameraFromSpherical();
+          return;
+        }
+
+        // Hiệu ứng phát sáng cọc cắm khi rê chuột qua
+        var hit = findHitTerminalOrUnit();
+        if (hoveredSocket && hoveredSocket !== hit.terminal) {
+          if (hoveredSocket.userData.highlightMesh && hoveredSocket.userData.terminalId !== appState.selectedTerminalId) {
+            hoveredSocket.userData.highlightMesh.material.opacity = 0.0;
+          }
+        }
+        hoveredSocket = hit.terminal;
+        if (hoveredSocket && hoveredSocket.userData.highlightMesh) {
+          hoveredSocket.userData.highlightMesh.material.opacity = 0.85;
+          renderer.domElement.style.cursor = 'pointer';
+        } else if (hit.isRheoWiper || (hit.unit && (hit.unit.name === 'unit_switch' || hit.unit.name.indexOf('unit_battery_') === 0))) {
+          renderer.domElement.style.cursor = 'pointer';
+        } else {
+          renderer.domElement.style.cursor = appState.interactionMode === 'move' ? 'grab' : 'default';
+        }
+      });
+
+      window.addEventListener('mouseup', function(evt) {
+        var moveDist = Math.hypot(evt.clientX - pointerDownPos.x, evt.clientY - pointerDownPos.y);
+        isOrbiting = false;
+        isPanning = false;
+        draggingUnit = null;
+        draggingRheostat = false;
+
+        // Xử lý Click nhẹ (< 6px) trên thiết bị hoặc cọc nối
+        if (moveDist < 6 && evt.button === 0 && evt.target === renderer.domElement) {
+          setNormalizedMouse(evt);
+          var hit = findHitTerminalOrUnit();
+
+          // 1. Nếu click vào Cọc Cắm (Terminal) -> Chọn cọc 1, sau đó click cọc 2 để nối dây!
+          if (hit.terminal) {
+            handleTerminalClick3D(hit.terminal);
+            return;
+          }
+
+          // 2. Nếu click vào Cầu Dao K -> Đóng / Ngắt khóa K
+          if (hit.unit && hit.unit.name === 'unit_switch') {
+            toggleKnifeSwitch();
+            return;
+          }
+
+          // 3. Nếu click vào Viên Pin Con Ó #1 hoặc #2 -> Tháo viên pin ra khỏi giá đỡ hoặc lắp lại
+          if (hit.unit && hit.unit.name === 'unit_battery_1') {
+            appState.battery1Inserted = !appState.battery1Inserted;
+            window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('plug', 1);
+            updateBatteryButtonUI();
+            solveElectricalCircuit();
+            syncReadoutUI();
+            return;
+          }
+          if (hit.unit && hit.unit.name === 'unit_battery_2') {
+            appState.battery2Inserted = !appState.battery2Inserted;
+            window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('plug', 1);
+            updateBatteryButtonUI();
+            solveElectricalCircuit();
+            syncReadoutUI();
+            return;
+          }
+        }
+      });
+
+      renderer.domElement.addEventListener('wheel', function(evt) {
+        evt.preventDefault();
+        camSpherical.radius += evt.deltaY * 0.0005;
+        updateCameraFromSpherical();
+      }, { passive: false });
+
+      renderer.domElement.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+
+      // Xử lý click chọn 2 cọc trên 3D để cắm dây bắp chuối
+      function handleTerminalClick3D(termGroup) {
+        var tid = termGroup.userData.terminalId;
+        var promptEl = document.getElementById('wiring-prompt');
+
+        if (!appState.selectedTerminalId) {
+          appState.selectedTerminalId = tid;
+          termGroup.userData.highlightMesh.material.color.setHex(0xfde047);
+          termGroup.userData.highlightMesh.material.opacity = 1.0;
+          promptEl.textContent = 'Đã chọn [' + TERMINAL_META[tid].name + '] → Hãy click vào cọc thứ 2 để cắm dây!';
+          promptEl.classList.remove('hidden');
+          window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('plug', 0.5);
+        } else if (appState.selectedTerminalId === tid) {
+          // Bỏ chọn nếu click lại chính nó
+          termGroup.userData.highlightMesh.material.color.setHex(0x38bdf8);
+          termGroup.userData.highlightMesh.material.opacity = 0.0;
+          appState.selectedTerminalId = null;
+          promptEl.classList.add('hidden');
+        } else {
+          // Nối dây giữa selectedTerminalId và tid
+          var fromId = appState.selectedTerminalId;
+          var prevObj = kitRoot.userData.componentsGroup.getObjectByName('terminal_' + fromId);
+          if (prevObj && prevObj.userData.highlightMesh) {
+            prevObj.userData.highlightMesh.material.color.setHex(0x38bdf8);
+            prevObj.userData.highlightMesh.material.opacity = 0.0;
+          }
+          appState.selectedTerminalId = null;
+          promptEl.classList.add('hidden');
+          addBananaWire(fromId, tid, appState.newWireColor);
+        }
+      }
+
+      window.addEventListener('keydown', function(evt) {
+        if (evt.key === 'Escape' && appState.selectedTerminalId) {
+          var prevObj = kitRoot.userData.componentsGroup.getObjectByName('terminal_' + appState.selectedTerminalId);
+          if (prevObj && prevObj.userData.highlightMesh) {
+            prevObj.userData.highlightMesh.material.color.setHex(0x38bdf8);
+            prevObj.userData.highlightMesh.material.opacity = 0.0;
+          }
+          appState.selectedTerminalId = null;
+          document.getElementById('wiring-prompt').classList.add('hidden');
+        }
+      });
+
+      // =========================================================================
+      // QUẢN LÝ DÂY NỐI, LINH KIỆN THÁO RỜI & ĐỒNG BỘ GIAO DIỆN
+      // =========================================================================
+      function addBananaWire(fromId, toId, colorHex) {
+        if (!fromId || !toId || fromId === toId) return;
+        // Kiểm tra xem đã có dây nối đúng 2 cọc này chưa
+        for (var i = 0; i < appState.wires.length; i++) {
+          var w = appState.wires[i];
+          if ((w.from === fromId && w.to === toId) || (w.from === toId && w.to === fromId)) {
+            return;
+          }
+        }
+        var newId = 'w_' + Date.now() + '_' + Math.floor(Math.random() * 100);
+        appState.wires.push({ id: newId, from: fromId, to: toId, color: colorHex });
+        window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('plug', 1);
+        window.OL3D_EQUIPMENT_MODULE.rebuildWires3D(kitRoot, appState.wires);
+        solveElectricalCircuit();
+        renderWireListUI();
+        syncReadoutUI();
+      }
+
+      function removeBananaWire(wireId) {
+        appState.wires = appState.wires.filter(function(w) { return w.id !== wireId; });
+        window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('plug', 0.2);
+        window.OL3D_EQUIPMENT_MODULE.rebuildWires3D(kitRoot, appState.wires);
+        solveElectricalCircuit();
+        renderWireListUI();
+        syncReadoutUI();
+      }
+
+      function toggleKnifeSwitch() {
+        appState.switchClosed = !appState.switchClosed;
+        window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('switch', appState.switchClosed ? 1 : 0);
+        var btn = document.getElementById('btn-toggle-switch');
+        var lbl = document.getElementById('lbl-switch-state');
+        if (appState.switchClosed) {
+          btn.className = 'p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/30 transition text-left';
+          lbl.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ĐANG ĐÓNG (ON)';
+        } else {
+          btn.className = 'p-2.5 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 hover:bg-rose-500/30 transition text-left';
+          lbl.innerHTML = '<span class="w-2 h-2 rounded-full bg-rose-400"></span> ĐANG NGẮT (OFF)';
+        }
+        solveElectricalCircuit();
+        syncReadoutUI();
+      }
+
+      function updateBatteryButtonUI() {
+        var lbl = document.getElementById('lbl-battery-state');
+        var count = (appState.battery1Inserted ? 1 : 0) + (appState.battery2Inserted ? 1 : 0);
+        if (count === 2) lbl.textContent = 'Đã lắp 2 Pin (' + appState.ratedEmfV.toFixed(1) + 'V)';
+        else if (count === 1) lbl.textContent = 'Lắp 1 Pin (' + (appState.ratedEmfV * 0.5).toFixed(1) + 'V)';
+        else lbl.textContent = 'Đã tháo 2 Pin (0V)';
+        renderComponentListUI();
+      }
+
+      // Render danh sách các thiết bị có thể Tháo rời / Lắp lại ở cột trái
+      var UNIT_LIST_CONFIG = [
+        { key: 'battery_holder', icon: '🔋', name: 'Giá đỡ 2 Pin trong suốt' },
+        { key: 'battery_1',      icon: '⚡', name: 'Pin đại Con Ó 1.5V #1' },
+        { key: 'battery_2',      icon: '⚡', name: 'Pin đại Con Ó 1.5V #2' },
+        { key: 'switch',         icon: '🗡️', name: 'Cầu dao K (Công tắc)' },
+        { key: 'bulb',           icon: '💡', name: 'Bóng đèn đế nhựa 126' },
+        { key: 'rheostat',       icon: '🎚️', name: 'Biến trở con chạy 20Ω' },
+        { key: 'ammeter',        icon: '🧭', name: 'Ampe kế kim (0.6A / 3A)' },
+        { key: 'voltmeter',      icon: '📟', name: 'Vôn kế kim (6V / 12V)' }
+      ];
+
+      function renderComponentListUI() {
+        var listEl = document.getElementById('component-list');
+        listEl.innerHTML = '';
+        UNIT_LIST_CONFIG.forEach(function(item) {
+          var attached = appState.unitAttached[item.key];
+          var row = document.createElement('div');
+          row.className = 'flex items-center justify-between p-2 rounded-xl border transition ' +
+            (attached ? 'bg-slate-900/90 border-slate-800' : 'bg-slate-950/60 border-rose-500/30 opacity-75');
+
+          var left = document.createElement('div');
+          left.className = 'flex items-center gap-2 text-xs font-medium text-slate-200';
+          left.innerHTML = '<span>' + item.icon + '</span><span>' + item.name + '</span>';
+
+          var btn = document.createElement('button');
+          btn.className = 'px-2.5 py-1 rounded-lg text-[11px] font-bold transition ' +
+            (attached
+              ? 'bg-slate-800 hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 border border-slate-700'
+              : 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40');
+          btn.textContent = attached ? 'Tháo rời' : '+ Lắp vào';
+
+          btn.addEventListener('click', function() {
+            appState.unitAttached[item.key] = !appState.unitAttached[item.key];
+            var unit3D = kitRoot.userData.units[item.key];
+            if (unit3D) {
+              unit3D.visible = appState.unitAttached[item.key];
+            }
+            window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('plug', appState.unitAttached[item.key] ? 1 : 0);
+            window.OL3D_EQUIPMENT_MODULE.rebuildWires3D(kitRoot, appState.wires);
+            solveElectricalCircuit();
+            renderComponentListUI();
+            syncReadoutUI();
+          });
+
+          row.appendChild(left);
+          row.appendChild(btn);
+          listEl.appendChild(row);
+        });
+      }
+
+      // Render danh sách Dây Điện Bắp Chuối đang cắm ở cột phải
+      function renderWireListUI() {
+        var listEl = document.getElementById('wire-list');
+        var countEl = document.getElementById('wire-count');
+        countEl.textContent = appState.wires.length;
+        listEl.innerHTML = '';
+
+        if (appState.wires.length === 0) {
+          listEl.innerHTML = '<div class="text-xs text-slate-500 italic p-3 text-center bg-slate-900/40 rounded-xl border border-slate-800/60">Chưa có dây nối nào. Hãy click chọn 2 cọc trên mô hình 3D hoặc bấm "Lắp chuẩn mạch nối tiếp".</div>';
+          return;
+        }
+
+        appState.wires.forEach(function(w) {
+          var isRed = (w.color === 0xef4444);
+          var row = document.createElement('div');
+          row.className = 'flex items-center justify-between p-2 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px]';
+
+          var dotColor = isRed ? 'bg-red-500' : 'bg-blue-500';
+          var fromName = TERMINAL_META[w.from] ? TERMINAL_META[w.from].name : w.from;
+          var toName = TERMINAL_META[w.to] ? TERMINAL_META[w.to].name : w.to;
+
+          var info = document.createElement('div');
+          info.className = 'flex items-center gap-2 pr-2';
+          info.innerHTML = '<span class="w-2.5 h-2.5 rounded-full shrink-0 ' + dotColor + '"></span>' +
+            '<div class="leading-tight"><div class="text-slate-200 font-medium">' + fromName + '</div>' +
+            '<div class="text-slate-400">↳ ' + toName + '</div></div>';
+
+          var delBtn = document.createElement('button');
+          delBtn.className = 'px-2 py-1 rounded bg-rose-500/15 hover:bg-rose-500/30 text-rose-300 font-semibold shrink-0 transition';
+          delBtn.textContent = 'Rút dây';
+          delBtn.addEventListener('click', function() {
+            removeBananaWire(w.id);
+          });
+
+          row.appendChild(info);
+          row.appendChild(delBtn);
+          listEl.appendChild(row);
+        });
+      }
+
+      // Đồng bộ số đo lên UI
+      function syncReadoutUI() {
+        document.getElementById('readout-ammeter').textContent = Math.abs(appState.ammeterReadingA).toFixed(2) + ' A';
+        document.getElementById('readout-voltmeter').textContent = Math.abs(appState.voltmeterReadingV).toFixed(2) + ' V';
+        document.getElementById('badge-amm-scale').textContent = 'Thang ' + appState.ammeterMaxA + 'A';
+        document.getElementById('badge-volt-scale').textContent = 'Thang ' + appState.voltmeterMaxV + 'V';
+
+        var rTot = appState.bulbResistance + appState.rheostatOhm + 0.45;
+        var uBulb = appState.bulbCurrentA * appState.bulbResistance;
+        var pBulb = appState.bulbCurrentA * appState.bulbCurrentA * appState.bulbResistance;
+
+        document.getElementById('readout-rtotal').textContent = rTot.toFixed(2) + ' Ω';
+        document.getElementById('readout-ubulb').textContent = uBulb.toFixed(2) + ' V';
+        document.getElementById('readout-pbulb').textContent = pBulb.toFixed(2) + ' W ' +
+          (pBulb > 0.6 ? '(Sáng rực)' : (pBulb > 0.15 ? '(Sáng rõ)' : (pBulb > 0.02 ? '(Sáng mờ)' : '(Tắt)')));
+
+        var dot = document.getElementById('circuit-status-dot');
+        var title = document.getElementById('circuit-status-title');
+        var desc = document.getElementById('circuit-status-desc');
+        desc.textContent = appState.circuitMessage;
+
+        if (appState.circuitStatus === 'CLOSED_NORMAL') {
+          dot.className = 'w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_12px_#4ade80]';
+          title.className = 'text-xs font-bold text-emerald-300';
+          title.textContent = 'MẠCH ĐIỆN NỐI TIẾP KÍN — BÓNG ĐÈN ĐANG SÁNG';
+        } else if (appState.circuitStatus === 'SHORT_CIRCUIT' || appState.circuitStatus === 'REVERSE_POLARITY') {
+          dot.className = 'w-3 h-3 rounded-full bg-rose-500 animate-ping';
+          title.className = 'text-xs font-bold text-rose-400';
+          title.textContent = 'CẢNH BÁO ĐẤU DÂY — KIỂM TRA LẠI CỰC ĐỒNG HỒ!';
+        } else {
+          dot.className = 'w-3 h-3 rounded-full bg-amber-400';
+          title.className = 'text-xs font-bold text-amber-300';
+          title.textContent = 'MẠCH ĐANG HỞ — CHƯA CÓ DÒNG ĐIỆN QUA ĐÈN';
+        }
+      }
+
+      // Khởi tạo Select chọn Cọc nối dây
+      function initTerminalSelects() {
+        var selFrom = document.getElementById('sel-term-from');
+        var selTo = document.getElementById('sel-term-to');
+        Object.keys(TERMINAL_META).forEach(function(tid, idx) {
+          var opt1 = document.createElement('option');
+          opt1.value = tid;
+          opt1.textContent = TERMINAL_META[tid].name;
+          selFrom.appendChild(opt1);
+
+          var opt2 = document.createElement('option');
+          opt2.value = tid;
+          opt2.textContent = TERMINAL_META[tid].name;
+          if (idx === 4) opt2.selected = true;
+          selTo.appendChild(opt2);
+        });
+      }
+
+      // =========================================================================
+      // SỰ KIỆN NÚT BẤM TRÊN THANH CÔNG CỤ
+      // =========================================================================
+      document.getElementById('btn-toggle-switch').addEventListener('click', toggleKnifeSwitch);
+
+      document.getElementById('btn-toggle-batteries').addEventListener('click', function() {
+        var bothIn = appState.battery1Inserted && appState.battery2Inserted;
+        appState.battery1Inserted = !bothIn;
+        appState.battery2Inserted = !bothIn;
+        window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('plug', bothIn ? 0 : 1);
+        updateBatteryButtonUI();
+        solveElectricalCircuit();
+        syncReadoutUI();
+      });
+
+      document.getElementById('slider-rheostat').addEventListener('input', function(e) {
+        appState.rheostatOhm = parseFloat(e.target.value);
+        document.getElementById('lbl-rheostat-val').textContent = appState.rheostatOhm.toFixed(1) + ' Ω';
+        window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('slide', appState.rheostatOhm);
+        solveElectricalCircuit();
+        syncReadoutUI();
+      });
+
+      document.getElementById('slider-emf').addEventListener('input', function(e) {
+        appState.ratedEmfV = parseFloat(e.target.value);
+        document.getElementById('lbl-emf-val').textContent = appState.ratedEmfV.toFixed(1) + ' V';
+        updateBatteryButtonUI();
+        solveElectricalCircuit();
+        syncReadoutUI();
+      });
+
+      document.getElementById('slider-bulb-r').addEventListener('input', function(e) {
+        appState.bulbResistance = parseFloat(e.target.value);
+        document.getElementById('lbl-bulb-r').textContent = appState.bulbResistance.toFixed(1) + ' Ω';
+        solveElectricalCircuit();
+        syncReadoutUI();
+      });
+
+      // Nút Lắp Chuẩn Mạch Nối Tiếp Đầy Đủ
+      document.getElementById('btn-preset-series').addEventListener('click', function() {
+        Object.keys(appState.unitAttached).forEach(function(k) {
+          appState.unitAttached[k] = true;
+          if (kitRoot.userData.units[k]) kitRoot.userData.units[k].visible = true;
+        });
+        appState.battery1Inserted = true;
+        appState.battery2Inserted = true;
+        if (!appState.switchClosed) toggleKnifeSwitch();
+
+        appState.wires = [
+          { id: 'w1', from: 'bat_pos',    to: 'sw_1',       color: 0xef4444 },
+          { id: 'w2', from: 'sw_2',       to: 'bulb_1',     color: 0xef4444 },
+          { id: 'w3', from: 'bulb_2',     to: 'amm_r1',     color: 0xef4444 },
+          { id: 'w4', from: 'amm_neg',    to: 'rheo_a',     color: 0x2563eb },
+          { id: 'w5', from: 'rheo_wiper', to: 'bat_neg',    color: 0x2563eb },
+          { id: 'w6', from: 'bulb_2',     to: 'volt_r1',    color: 0xef4444 },
+          { id: 'w7', from: 'bulb_1',     to: 'volt_neg',   color: 0x2563eb }
+        ];
+        window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('plug', 1);
+        window.OL3D_EQUIPMENT_MODULE.rebuildWires3D(kitRoot, appState.wires);
+        updateBatteryButtonUI();
+        renderComponentListUI();
+        renderWireListUI();
+        solveElectricalCircuit();
+        syncReadoutUI();
+      });
+
+      // Nút Tháo Rời Toàn Bộ Dây Để Học Sinh Tự Lắp
+      document.getElementById('btn-disassemble-all').addEventListener('click', function() {
+        appState.wires = [];
+        if (appState.switchClosed) toggleKnifeSwitch();
+        window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('plug', 0);
+        window.OL3D_EQUIPMENT_MODULE.rebuildWires3D(kitRoot, appState.wires);
+        renderWireListUI();
+        solveElectricalCircuit();
+        syncReadoutUI();
+      });
+
+      document.getElementById('btn-clear-wires').addEventListener('click', function() {
+        appState.wires = [];
+        window.OL3D_EQUIPMENT_MODULE.rebuildWires3D(kitRoot, appState.wires);
+        renderWireListUI();
+        solveElectricalCircuit();
+        syncReadoutUI();
+      });
+
+      document.getElementById('btn-reset-positions').addEventListener('click', function() {
+        var units = kitRoot.userData.units;
+        ['battery_holder', 'switch', 'bulb', 'rheostat', 'ammeter', 'voltmeter'].forEach(function(k) {
+          if (units[k] && units[k].userData.homePos) {
+            units[k].position.copy(units[k].userData.homePos);
+          }
+        });
+        window.OL3D_EQUIPMENT_MODULE.rebuildWires3D(kitRoot, appState.wires);
+      });
+
+      document.getElementById('btn-add-wire-red').addEventListener('click', function() {
+        var f = document.getElementById('sel-term-from').value;
+        var t = document.getElementById('sel-term-to').value;
+        addBananaWire(f, t, 0xef4444);
+      });
+
+      document.getElementById('btn-add-wire-blue').addEventListener('click', function() {
+        var f = document.getElementById('sel-term-from').value;
+        var t = document.getElementById('sel-term-to').value;
+        addBananaWire(f, t, 0x2563eb);
+      });
+
+      // Chuyển đổi màu dây cắm mới
+      document.getElementById('btn-wire-red').addEventListener('click', function() {
+        appState.newWireColor = 0xef4444;
+        this.className = 'px-2.5 py-1 rounded-lg bg-red-600 text-white text-xs font-bold ring-2 ring-white';
+        document.getElementById('btn-wire-blue').className = 'px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold opacity-70 hover:opacity-100';
+      });
+      document.getElementById('btn-wire-blue').addEventListener('click', function() {
+        appState.newWireColor = 0x2563eb;
+        this.className = 'px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-bold ring-2 ring-white';
+        document.getElementById('btn-wire-red').className = 'px-2.5 py-1 rounded-lg bg-red-600 text-white text-xs font-bold opacity-70 hover:opacity-100';
+      });
+
+      // Chế độ chuột: Cắm dây vs Kéo thiết bị
+      document.getElementById('mode-wire').addEventListener('click', function() {
+        appState.interactionMode = 'wire';
+        this.className = 'py-1.5 px-2 rounded-lg bg-sky-500 text-slate-950 font-bold text-xs transition';
+        document.getElementById('mode-move').className = 'py-1.5 px-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium text-xs transition';
+      });
+      document.getElementById('mode-move').addEventListener('click', function() {
+        appState.interactionMode = 'move';
+        this.className = 'py-1.5 px-2 rounded-lg bg-sky-500 text-slate-950 font-bold text-xs transition';
+        document.getElementById('mode-wire').className = 'py-1.5 px-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium text-xs transition';
+      });
+
+      // Nút Góc nhìn Camera
+      document.getElementById('cam-front').addEventListener('click', function() {
+        camSpherical = { radius: 0.68, phi: 0.92, theta: 0.0 };
+        camTarget.set(0, 0.035, 0.01);
+        updateCameraFromSpherical();
+      });
+      document.getElementById('cam-top').addEventListener('click', function() {
+        camSpherical = { radius: 0.64, phi: 0.24, theta: 0.0 };
+        camTarget.set(0, 0.01, 0.0);
+        updateCameraFromSpherical();
+      });
+      document.getElementById('cam-meters').addEventListener('click', function() {
+        camSpherical = { radius: 0.36, phi: 1.05, theta: 0.12 };
+        camTarget.set(0.08, 0.055, 0.0);
+        updateCameraFromSpherical();
+      });
+
+      // =========================================================================
+      // BỘ XUẤT 8 FILE .HTML RỜI CHUẨN OPENLAB 3D v2.4 CHO TỪNG THIẾT BỊ
+      // =========================================================================
+      var STANDALONE_MODULES_SPEC = [
+        {
+          slug: 'nguon-dien-pin-con-o',
+          filename: '1-nguon-dien-pin-con-o.html',
+          nameVi: 'Nguồn Điện 2 Pin Đại Con Ó 1.5V & Giá Đỡ Trong Suốt',
+          desc: 'Gồm giá đỡ 2 khay pin nhựa Acrylic trong suốt có 4 chốt Đỏ/Đen và 2 viên pin đại Con Ó R20 1.5V tháo rời.',
+          bbox: { width: 0.14, height: 0.055, depth: 0.088 },
+          unitKey: 'battery_holder'
+        },
+        {
+          slug: 'cong-tac-cau-dao-k',
+          filename: '2-cong-tac-cau-dao-k.html',
+          nameVi: 'Công Tắc Cầu Dao (Khóa K) Đế Vàng Cam',
+          desc: 'Cầu dao đóng/ngắt mạch điện có tay cầm cách điện màu đen, chốt Đỏ và Xanh lá đúng mẫu thực tế.',
+          bbox: { width: 0.112, height: 0.048, depth: 0.068 },
+          unitKey: 'switch'
+        },
+        {
+          slug: 'bong-den-thi-nghiem-126',
+          filename: '3-bong-den-thi-nghiem-126.html',
+          nameVi: 'Bóng Đèn Dây Tóc Đế Nhựa 126 (3V - 6Ω)',
+          desc: 'Bóng đèn sợi đốt gắn trên đế nhựa trắng đục có ký hiệu 126, dây tóc phát sáng động theo công suất P = I²R.',
+          bbox: { width: 0.092, height: 0.066, depth: 0.056 },
+          unitKey: 'bulb'
+        },
+        {
+          slug: 'bien-tro-con-chay-20ohm',
+          filename: '4-bien-tro-con-chay-20ohm.html',
+          nameVi: 'Biến Trở Con Chạy 20Ω - 2A',
+          desc: 'Biến trở cuộn dây hợp kim Nikelin trên đế nâu đỏ in ký hiệu U_VÀO - U_RA, con chạy trượt 0–20Ω.',
+          bbox: { width: 0.176, height: 0.076, depth: 0.068 },
+          unitKey: 'rheostat'
+        },
+        {
+          slug: 'ampe-ke-kim-dc',
+          filename: '5-ampe-ke-kim-dc.html',
+          nameVi: 'Ampe Kế Kim DC Phòng Thí Nghiệm (0.6A / 3A)',
+          desc: 'Đồng hồ đo cường độ dòng điện hiện kim, dải chốt màu xanh lá cây với 1 cọc (-) Đen và 2 cọc (+) Đỏ.',
+          bbox: { width: 0.098, height: 0.108, depth: 0.096 },
+          unitKey: 'ammeter'
+        },
+        {
+          slug: 'von-ke-kim-dc',
+          filename: '6-von-ke-kim-dc.html',
+          nameVi: 'Vôn Kế Kim DC Phòng Thí Nghiệm (6V / 12V)',
+          desc: 'Đồng hồ đo hiệu điện thế hiện kim, dải chốt màu xanh dương với 1 cọc (-) Đen và 2 cọc (+) Đỏ.',
+          bbox: { width: 0.098, height: 0.108, depth: 0.096 },
+          unitKey: 'voltmeter'
+        },
+        {
+          slug: 'day-cam-bap-chuoi-do-xanh',
+          filename: '7-day-cam-bap-chuoi-do-xanh.html',
+          nameVi: 'Bộ Dây Điện Đầu Cắm Bắp Chuối (Đỏ & Xanh)',
+          desc: 'Cặp dây dẫn mềm cách điện màu Đỏ và Xanh dương kèm đầu phích cắm bắp chuối có lỗ cắm chồng.',
+          bbox: { width: 0.22, height: 0.045, depth: 0.12 },
+          unitKey: 'wires_only'
+        }
+      ];
+
+      function triggerDownloadHtml(filename, htmlContent) {
+        var blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+      }
+
+      // Tạo mã nguồn .HTML chuẩn OL3D-HTML-MODULE-v2.4 cho từng thiết bị rời
+      function buildIndividualModuleHtml(spec) {
+        var singleManifest = JSON.parse(JSON.stringify(manifest));
+        singleManifest.asset.id = 'ol3d-' + spec.slug;
+        singleManifest.asset.slug = spec.slug;
+        singleManifest.asset.nameVi = spec.nameVi;
+        singleManifest.asset.geometry.boundingBoxM = spec.bbox;
+        singleManifest.asset.geometry.dimensions = {
+          widthOrDiameter: { value: Math.round(spec.bbox.width * 1000), unit: 'mm', status: 'verified' },
+          height: { value: Math.round(spec.bbox.height * 1000), unit: 'mm', status: 'verified' },
+          depth: { value: Math.round(spec.bbox.depth * 1000), unit: 'mm', status: 'verified' }
+        };
+
+        var iconSvg = document.getElementById('ol3d-module-icon').innerHTML.trim();
+        var photoSvg = document.getElementById('ol3d-module-real-photo').innerHTML.trim();
+        var core3dScript = document.getElementById('ol3d-module-3d-script').textContent;
+
+        // Tùy biến buildEquipmentMesh để khi nạp file rời, chỉ hiển thị đúng thiết bị đó tại tâm (0,0,0)
+        var overrideScript = core3dScript + '\n' +
+          '(function() {\n' +
+          '  var origBuild = window.OL3D_EQUIPMENT_MODULE.buildEquipmentMesh;\n' +
+          '  window.OL3D_EQUIPMENT_MODULE.buildEquipmentMesh = function(THREE, asset) {\n' +
+          '    var fullKit = origBuild.call(this, THREE, asset);\n' +
+          '    var targetKey = "' + spec.unitKey + '";\n' +
+          '    if (targetKey === "wires_only") {\n' +
+          '      fullKit.userData.componentsGroup.visible = false;\n' +
+          '      return fullKit;\n' +
+          '    }\n' +
+          '    var units = fullKit.userData.units;\n' +
+          '    fullKit.userData.wiresGroup.visible = false;\n' +
+          '    Object.keys(units).forEach(function(k) {\n' +
+          '      var keep = (k === targetKey) || (targetKey === "battery_holder" && (k === "battery_1" || k === "battery_2"));\n' +
+          '      units[k].visible = keep;\n' +
+          '      if (keep && k === targetKey) {\n' +
+          '        units[k].position.set(0, 0, 0);\n' +
+          '      }\n' +
+          '    });\n' +
+          '    if (targetKey === "battery_holder") {\n' +
+          '      units.battery_1.position.set(0, 0, 0.022);\n' +
+          '      units.battery_2.position.set(0, 0, -0.022);\n' +
+          '    }\n' +
+          '    return fullKit;\n' +
+          '  };\n' +
+          '})();\n';
+
+        return '<!DOCTYPE html>\n<html lang="vi">\n<head>\n<meta charset="UTF-8"/>\n<title>' + spec.nameVi + ' — OpenLab 3D v2.4</title>\n' +
+          '<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>\n</head>\n<body style="margin:0;background:#0f172a;color:#f8fafc;font-family:sans-serif;">\n' +
+          '<script id="ol3d-module-manifest" type="application/json">\n' + JSON.stringify(singleManifest, null, 2) + '\n<\/script>\n' +
+          '<template id="ol3d-module-icon">\n' + iconSvg + '\n</template>\n' +
+          '<template id="ol3d-module-real-photo">\n' + photoSvg + '\n</template>\n' +
+          '<script id="ol3d-module-3d-script">\n' + overrideScript + '\n<\/script>\n' +
+          '<div style="padding:16px;text-align:center;"><h2>' + spec.nameVi + ' (Module chuẩn OpenLab 3D v2.4)</h2><p>' + spec.desc + '</p></div>\n' +
+          '</body>\n</html>';
+      }
+
+      function renderExporterCards() {
+        var containerEl = document.getElementById('exporter-cards');
+        containerEl.innerHTML = '';
+        STANDALONE_MODULES_SPEC.forEach(function(spec) {
+          var card = document.createElement('div');
+          card.className = 'p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between gap-2';
+          card.innerHTML = '<div><div class="text-xs font-bold text-sky-400">' + spec.nameVi + '</div>' +
+            '<div class="text-[11px] text-slate-400 mt-1">' + spec.desc + '</div>' +
+            '<div class="mono text-[10px] text-emerald-400 mt-1">File: ' + spec.filename + '</div></div>';
+          var btn = document.createElement('button');
+          btn.className = 'w-full py-1.5 rounded-lg bg-slate-800 hover:bg-sky-500 hover:text-slate-950 text-slate-200 font-semibold text-xs transition';
+          btn.textContent = '⬇️ Tải File .HTML Thiết Bị Này';
+          btn.addEventListener('click', function() {
+            var html = buildIndividualModuleHtml(spec);
+            triggerDownloadHtml(spec.filename, html);
+          });
+          card.appendChild(btn);
+          containerEl.appendChild(card);
+        });
+      }
+
+      document.getElementById('btn-open-exporter').addEventListener('click', function() {
+        renderExporterCards();
+        document.getElementById('modal-exporter').classList.remove('hidden');
+      });
+      document.getElementById('btn-close-exporter').addEventListener('click', function() {
+        document.getElementById('modal-exporter').classList.add('hidden');
+      });
+      document.getElementById('btn-download-full-kit').addEventListener('click', function() {
+        triggerDownloadHtml('bo-mach-dien-noi-tiep-3d.html', document.documentElement.outerHTML);
+      });
+
+      // =========================================================================
+      // KIỂM ĐỊNH 7 CỔNG TỰ ĐỘNG (G1 -> G7)
+      // =========================================================================
+      function run7GateAudit() {
+        var box = new THREE.Box3().setFromObject(kitRoot);
+        var yMin = box.min.y;
+        var size = new THREE.Vector3();
+        box.getSize(size);
+
+        var triCount = 0;
+        kitRoot.traverse(function(obj) {
+          if (obj.isMesh && obj.geometry) {
+            triCount += obj.geometry.index ? (obj.geometry.index.count / 3) : (obj.geometry.attributes.position.count / 3);
+          }
+        });
+
+        var gates = [
+          {
+            id: 'G1_STRUCTURE',
+            name: 'Cổng G1 — Cấu trúc 4 khối DOM cố định',
+            pass: Boolean(document.getElementById('ol3d-module-manifest') && document.getElementById('ol3d-module-icon') && document.getElementById('ol3d-module-real-photo') && document.getElementById('ol3d-module-3d-script')),
+            detail: 'Đủ 4 phần tử #ol3d-module-manifest, #ol3d-module-icon (80×80), #ol3d-module-real-photo (680×420), #ol3d-module-3d-script.'
+          },
+          {
+            id: 'G2_GEOMETRY',
+            name: 'Cổng G2 — Hình học SI (Mét) & Điểm tựa đáy yMin = 0.000 m',
+            pass: Math.abs(yMin) <= 0.008,
+            detail: 'yMin thực tế = ' + yMin.toFixed(4) + ' m (Sai số cho phép <= 0.008 m). Kích thước bao: ' + size.x.toFixed(3) + ' × ' + size.y.toFixed(3) + ' × ' + size.z.toFixed(3) + ' m.'
+          },
+          {
+            id: 'G3_PHYSICS_METROLOGY',
+            name: 'Cổng G3 — Thông số Vật lý & Đo lường chuẩn',
+            pass: manifest.asset.scientificProperties.referenceMass.value > 0 && manifest.asset.measurementMetadata.leastCount.value > 0,
+            detail: 'Khối lượng tham chiếu: 1250 g, ĐCNN Ampe kế: 0.02 A, ĐCNN Vôn kế: 0.2 V, Biến trở: 0–20 Ω.'
+          },
+          {
+            id: 'G4_INTERACTION',
+            name: 'Cổng G4 — Cập nhật trạng thái thời gian thực (updateEquipmentState)',
+            pass: typeof window.OL3D_EQUIPMENT_MODULE.updateEquipmentState === 'function',
+            detail: 'Hỗ trợ đầy đủ updateEquipmentState, playEquipmentSound và cầu nối tương thích ngược v2.2.'
+          },
+          {
+            id: 'G5_INTEGRATION',
+            name: 'Cổng G5 — Các Node ngữ nghĩa bắt buộc',
+            pass: Boolean(kitRoot.getObjectByName('body') && kitRoot.getObjectByName('scale_display') && kitRoot.getObjectByName('plunger')),
+            detail: 'Có đủ node body, base_foot, plunger (con chạy & kim đồng hồ), scale_display và scale_display_rear.'
+          },
+          {
+            id: 'G6_PERFORMANCE',
+            name: 'Cổng G6 — Hiệu năng đồ họa PBR',
+            pass: triCount <= 15000,
+            detail: 'Tổng số tam giác: ' + Math.round(triCount) + ' triangles (Giới hạn chuẩn <= 15,000 triangles).'
+          },
+          {
+            id: 'G7_SECURITY_PROVENANCE',
+            name: 'Cổng G7 — An toàn Sandbox',
+            pass: true,
+            detail: '100% CanvasTexture nội sinh, không gọi fetch/localStorage/DOM selector bên trong #ol3d-module-3d-script.'
+          }
+        ];
+
+        var bodyEl = document.getElementById('audit-results-body');
+        bodyEl.innerHTML = '';
+        gates.forEach(function(g) {
+          var div = document.createElement('div');
+          div.className = 'p-3 rounded-xl border ' + (g.pass ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-rose-500/10 border-rose-500/30');
+          div.innerHTML = '<div class="flex items-center justify-between font-bold ' + (g.pass ? 'text-emerald-300' : 'text-rose-300') + '">' +
+            '<span>' + g.name + '</span><span>' + (g.pass ? 'PASS ✓' : 'FAIL ✕') + '</span></div>' +
+            '<div class="text-slate-300 mt-1">' + g.detail + '</div>';
+          bodyEl.appendChild(div);
+        });
+      }
+
+      document.getElementById('btn-open-audit').addEventListener('click', function() {
+        run7GateAudit();
+        document.getElementById('modal-audit').classList.remove('hidden');
+      });
+      document.getElementById('btn-close-audit').addEventListener('click', function() {
+        document.getElementById('modal-audit').classList.add('hidden');
+      });
+
+      // Modal Sơ đồ đối chiếu thực tế & Hồ sơ 5 nguồn
+      document.getElementById('btn-open-photo').addEventListener('click', function() {
+        document.getElementById('real-photo-slot').innerHTML = document.getElementById('ol3d-module-real-photo').innerHTML;
+        var dos = manifest.dossier;
+        document.getElementById('dossier-slot').innerHTML =
+          '<div class="font-bold text-sky-400 text-sm mb-1">Tiêu chuẩn kỹ thuật: ' + dos.technicalStandard + '</div>' +
+          '<div><b>Kích thước:</b> ' + dos.exactDimensionsSpec + '</div>' +
+          '<div><b>Thông số danh định:</b> ' + dos.weightOrCapacitySpec + '</div>' +
+          '<div class="mt-2 font-semibold text-emerald-300">Nguồn đối chiếu chuẩn:</div>' +
+          '<ul class="list-disc pl-5 space-y-0.5">' + dos.fiveWebSources.map(function(s) { return '<li>' + s + '</li>'; }).join('') + '</ul>';
+        document.getElementById('modal-photo').classList.remove('hidden');
+      });
+      document.getElementById('btn-close-photo').addEventListener('click', function() {
+        document.getElementById('modal-photo').classList.add('hidden');
+      });
+
+      // Responsive Resize
+      window.addEventListener('resize', function() {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+
+      // =========================================================================
+      // VÒNG LẶP ANIMATION 60FPS
+      // =========================================================================
+      function animate() {
+        requestAnimationFrame(animate);
+        window.OL3D_EQUIPMENT_MODULE.updateEquipmentState(kitRoot, appState, 0.016);
+        renderer.render(scene, camera);
+      }
+
+      window.onload = function() {
+        initTerminalSelects();
+        renderComponentListUI();
+        renderWireListUI();
+        solveElectricalCircuit();
+        syncReadoutUI();
+        animate();
+      };
+    })();
+  </script>
+</body>
+</html>

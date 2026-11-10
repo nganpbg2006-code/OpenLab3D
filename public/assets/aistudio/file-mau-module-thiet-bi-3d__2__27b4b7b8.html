@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OL3D HTML Module — Máy đo pH hiện số cầm tay (OL3D-EQP-PHM-0001)</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; }
+    .header { padding: 14px 24px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+    .badge { background: #0284c7; color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; padding: 20px; max-width: 1280px; margin: 0 auto; }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; }
+    #preview3d { width: 100%; height: 420px; border-radius: 10px; overflow: hidden; background: radial-gradient(circle at center, #1e293b, #090d16); }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <span class="badge">OL3D-HTML-MODULE v2.1</span>
+      <strong style="margin-left: 10px; font-size: 18px;">Máy đo pH hiện số cầm tay (OL3D-EQP-PHM-0001)</strong>
+    </div>
+    <div style="font-size: 13px; color: #94a3b8;">Đầy đủ: Icon SVG + Vật 3D Three.js + Ảnh thật đối chiếu + Hồ sơ 5 nguồn</div>
+  </div>
+
+  <!-- 1. HỒ SƠ THÔNG SỐ VẬT LÝ, TÍNH NĂNG TƯƠNG TÁC & 5 NGUỒN WEB -->
+  <script id="ol3d-module-manifest" type="application/json">
+  {
+    "moduleSpecVersion": "OL3D-HTML-MODULE-v2.1",
+    "asset": {
+      "assetId": "OL3D-EQP-PHM-0001",
+      "slug": "may-do-ph-hien-so",
+      "name": {
+        "vi": "Máy đo pH hiện số kèm điện cực thủy tinh",
+        "en": "Digital Laboratory pH Meter"
+      },
+      "kind": "equipment",
+      "subject": "chemistry",
+      "category": "chemical-apparatus",
+      "categoryIds": ["chemical-apparatus", "electrical-equipment"],
+      "tags": ["pH", "axit", "bazo", "điện cực", "hóa học 9", "module html"],
+      "summary": "Máy đo độ pH hiện số (0.00 – 14.00 pH, ĐCNN 0.01 pH) có chân đế và tay đỡ điện cực thủy tinh nhúng trực tiếp vào cốc dung dịch, màn hình LCD đồng bộ 360°.",
+      "textbookRef": {
+        "bookTitle": "SGK Khoa học tự nhiên 9 - Kết nối tri thức",
+        "chapter": "Bài 1: Nhận biết một số dụng cụ, hoá chất & Chương VII–VIII",
+        "lesson": "Xác định độ pH của dung dịch acid (CH₃COOH), nước cất và dung dịch kiềm",
+        "figureRef": "Thiết bị đo pH hiện số chuẩn Thông tư 38/2021/TT-BGDĐT",
+        "standardFunction": "Đo trực tiếp trị số pH (từ 0.00 đến 14.00) và nhiệt độ (°C) của dung dịch trong cốc thủy tinh với độ chính xác 0.01 pH.",
+        "usageGuidelines": "Tráng rửa đầu điện cực bằng nước cất, nhúng ngập bầu thủy tinh nhạy ở đầu điện cực vào cốc dung dịch và đọc giá trị pH ổn định trên màn hình LCD.",
+        "safetyNote": "Không để bầu điện cực thủy tinh va chạm mạnh vào đáy cốc; luôn ngâm đầu điện cực trong dung dịch bảo quản KCl 3M sau khi sử dụng."
+      },
+      "assetVersion": "1.0.0",
+      "manifestSchemaVersion": "2.0.0",
+      "moduleApiVersion": "2.0.0",
+      "geometry": {
+        "modelFormat": "PROCEDURAL_PBR",
+        "modelUri": "procedural://ph-meter-html-module",
+        "modelFileVersion": "1.0.0",
+        "proceduralArchetype": "digital-multimeter",
+        "upAxis": "Y",
+        "anchor": "base-center",
+        "boundingBoxM": { "width": 0.12, "height": 0.22, "depth": 0.12 },
+        "dimensions": {
+          "height": { "value": 220, "unit": "mm", "status": "verified" },
+          "widthOrDiameter": { "value": 120, "unit": "mm", "status": "verified" },
+          "depth": { "value": 120, "unit": "mm", "status": "verified" }
+        },
+        "triangleCount": 1420,
+        "materialCount": 7,
+        "namedNodes": [
+          { "nodeName": "body", "role": "body", "description": "Thân máy đo pH để bàn kèm trụ đỡ điện cực" },
+          { "nodeName": "scale_display", "role": "scale_display", "description": "Màn hình LCD hiển thị pH 7.00 và 25.0°C (360°)" },
+          { "nodeName": "plunger", "role": "plunger", "description": "Tay đỡ và đầu dò điện cực thủy tinh Ag/AgCl" }
+        ],
+        "scaleValidation": "verified"
+      },
+      "scientificProperties": {
+        "material": { "value": "Vỏ ABS kháng hóa chất IP67 & Điện cực màng thủy tinh Ag/AgCl", "status": "verified" },
+        "referenceMass": { "value": 285.0, "unit": "g", "status": "verified" },
+        "referenceVolume": { "value": 95.0, "unit": "cm³", "status": "verified" }
+      },
+      "measurementMetadata": {
+        "isMeasuringInstrument": true,
+        "measuredQuantity": "voltage-resistance",
+        "rangeMin": { "value": 0.0, "unit": "pH", "status": "verified" },
+        "rangeMax": { "value": 14.0, "unit": "pH", "status": "verified" },
+        "leastCount": { "value": 0.01, "unit": "pH", "status": "verified" },
+        "zeroOffsetSupported": true,
+        "calibrationMethod": "Hiệu chuẩn tự động 3 điểm chuẩn pH 4.01, 6.86, 9.18",
+        "referenceStandard": "ISO 10523 · Thông tư 38/2021/TT-BGDĐT"
+      }
+    },
+    "moduleControls": {
+      "stateKey": "multimeterValue",
+      "label": "Độ pH dung dịch đo",
+      "unit": "pH",
+      "min": 0.0,
+      "max": 14.0,
+      "step": 0.05,
+      "defaultValue": 7.0,
+      "canBeWeighedOnBalance": true,
+      "canHoldLiquid": false,
+      "canSubmergeInVessel": true,
+      "soundPhenomenon": "probe-measure",
+      "presets": [
+        { "label": "Đo Axit CH₃COOH (pH 2.90)", "statePatch": { "multimeterValue": 2.90, "multimeterMode": "pH" } },
+        { "label": "Nước cất chuẩn (pH 7.00)", "statePatch": { "multimeterValue": 7.00, "multimeterMode": "pH" } },
+        { "label": "Dung dịch Kiềm (pH 11.50)", "statePatch": { "multimeterValue": 11.50, "multimeterMode": "pH" } }
+      ]
+    },
+    "realPhotoMeta": {
+      "caption": "Ảnh thực tế Máy đo pH hiện số phòng thí nghiệm kèm tay đỡ điện cực thủy tinh và cốc dung dịch chuẩn pH 7.00",
+      "manufacturerRef": "Hanna / Horiba / Thiết bị KHTN 9 (Thông tư 38/2021/TT-BGDĐT)",
+      "realWorldScaleNote": "Kích thước đế: 120 × 120 mm · Chiều cao trụ đỡ điện cực: 220 mm · Điện cực thủy tinh Ø 12 mm",
+      "annotations": [
+        { "xPercent": 34, "yPercent": 42, "label": "Màn hình LCD nghiêng 30° hiển thị số pH (7.00 pH) và nhiệt độ bù ATC (25.0 °C)" },
+        { "xPercent": 34, "yPercent": 66, "label": "Cụm phím chức năng CAL (Hiệu chuẩn), MODE (pH/mV) và HOLD (Giữ số đo)" },
+        { "xPercent": 72, "yPercent": 35, "label": "Tay đỡ điện cực xoay linh hoạt gắn trên trục Inox" },
+        { "xPercent": 78, "yPercent": 72, "label": "Bầu màng thủy tinh nhạy ion H+ nhúng trong dung dịch cần đo" }
+      ]
+    },
+    "dossier": {
+      "assetId": "OL3D-EQP-PHM-0001",
+      "technicalStandard": "ISO 10523 · Thông tư 38/2021/TT-BGDĐT · SGK KHTN 9",
+      "exactDimensionsSpec": "Thân máy đế bàn: 120 × 120 × 55 mm · Trụ và tay đỡ điện cực cao: 220 mm · Điện cực thủy tinh: Ø 12 × 120 mm",
+      "weightOrCapacitySpec": "Thang đo: 0.00 – 14.00 pH · ĐCNN: 0.01 pH · Độ chính xác: ±0.02 pH · Khối lượng: 285 g",
+      "synthesizedFeatures": [
+        "Màn hình LCD kỹ thuật số vát nghiêng 30° dùng Local Console Group chống khuất tầm nhìn trực diện, đồng bộ 4 mặt 360°.",
+        "Tích hợp trụ đỡ và tay kẹp điện cực thủy tinh giúp nhúng đầu dò vào Cốc thủy tinh 250 ml ổn định, không chạm đáy.",
+        "Đo nhanh môi trường Acid (pH < 7), Trung tính (pH = 7.00) và Base (pH > 7) trong các bài thực hành Hóa học – Sinh học KHTN 9."
+      ],
+      "fiveWebSources": [
+        { "siteName": "Thư viện Pháp luật (Thông tư 38/2021/TT-BGDĐT)", "domain": "thuvienphapluat.vn", "verifiedSpecSummary": "Thiết bị đo pH hiện số dùng chung môn Khoa học tự nhiên cấp THCS: Thang đo 0–14 pH, độ chia 0.01 pH." },
+        { "siteName": "Hanna Instruments Vietnam", "domain": "hannavietnam.com", "verifiedSpecSummary": "Máy đo pH để bàn giáo dục: Màn hình LCD rộng hiển thị đồng thời pH và nhiệt độ, kèm giá đỡ điện cực." },
+        { "siteName": "VietChem — Thiết bị Khoa học Kỹ thuật", "domain": "vietchem.com.vn", "verifiedSpecSummary": "Điện cực pH thân thủy tinh Ag/AgCl chịu hóa chất, đầu nối BNC tiêu chuẩn." },
+        { "siteName": "Visitech Việt Nam", "domain": "visitech.vn", "verifiedSpecSummary": "Quy trình hiệu chuẩn máy đo pH bằng 3 dung dịch đệm chuẩn pH 4.01, 6.86 và 9.18." },
+        { "siteName": "VietJack — SGK KHTN 9 Kết nối tri thức", "domain": "vietjack.com", "verifiedSpecSummary": "Xác định tính acid của ethylic alcohol / acetic acid (Bài 26, 27) và môi trường đất/nước nuôi trồng." }
+      ]
+    },
+    "audit360": {
+      "assetId": "OL3D-EQP-PHM-0001",
+      "omnidirectionalReadout360": "4 màn hình LCD kỹ thuật số (Trước, Sau, Trái, Phải) đồng bộ thời gian thực cùng nhãn số đo pH 360°.",
+      "coreInteractiveFunctions": [
+        "Đọc giá trị pH chuẩn trên màn hình LCD sắc nét từ mọi góc nhìn.",
+        "Chuyển đổi chế độ kiểm tra dung dịch chuẩn hoặc cân khối lượng máy (285.00 g)."
+      ],
+      "environmentalAndCrossToolInteractions": [
+        "Đặt cạnh Cốc thủy tinh 250 ml hoặc Bình tam giác để nhúng đầu dò điện cực kiểm tra độ pH của chất lỏng.",
+        "Đặt lên Cân điện tử hiển thị đúng khối lượng 285.00 g."
+      ]
+    }
+  }
+  </script>
+
+  <!-- 2. ICON 2D VECTOR CHUẨN -->
+  <template id="ol3d-module-icon">
+    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="40" cy="72" rx="28" ry="4" fill="#94A3B8" opacity="0.35" />
+      <!-- Thân máy đế bàn -->
+      <rect x="14" y="48" width="34" height="20" rx="4" fill="#1E293B" stroke="#0F172A" stroke-width="1.8" />
+      <!-- Màn hình LCD nghiêng -->
+      <rect x="18" y="51" width="26" height="10" rx="2" fill="#CCFBF1" stroke="#14B8A6" stroke-width="1.4" />
+      <text x="31" y="59" text-anchor="middle" fill="#0F766E" font-family="monospace" font-weight="bold" font-size="7.5">7.00pH</text>
+      <!-- 3 nút bấm -->
+      <circle cx="23" cy="64.5" r="1.8" fill="#38BDF8" />
+      <circle cx="31" cy="64.5" r="1.8" fill="#FACC15" />
+      <circle cx="39" cy="64.5" r="1.8" fill="#F87171" />
+      <!-- Trụ đứng & Tay kẹp điện cực -->
+      <rect x="44" y="14" width="3.2" height="36" rx="1" fill="#CBD5E1" stroke="#64748B" stroke-width="1" />
+      <rect x="44" y="20" width="18" height="3.5" rx="1.5" fill="#334155" />
+      <!-- Đầu dò điện cực thủy tinh -->
+      <rect x="57" y="16" width="5" height="36" rx="2.5" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.4" />
+      <rect x="56.5" y="14" width="6" height="6" rx="1.5" fill="#0284C7" />
+      <circle cx="59.5" cy="53" r="3" fill="#38BDF8" stroke="#0369A1" stroke-width="1.2" />
+    </svg>
+  </template>
+
+  <!-- 3. ẢNH THẬT PHÒNG THÍ NGHIỆM ĐỐI CHIẾU -->
+  <template id="ol3d-module-real-photo">
+    <svg viewBox="0 0 680 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="studioBg" x1="0" y1="0" x2="0" y2="420" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1E293B" />
+          <stop offset="72%" stop-color="#0F172A" />
+          <stop offset="72.5%" stop-color="#78350F" />
+          <stop offset="100%" stop-color="#451A03" />
+        </linearGradient>
+      </defs>
+      <rect width="680" height="420" rx="14" fill="url(#studioBg)" />
+      <!-- Mặt bàn gỗ phòng thí nghiệm & Thước đo tỉ lệ thực mm -->
+      <line x1="0" y1="304" x2="680" y2="304" stroke="#B45309" stroke-width="2" />
+      <rect x="30" y="366" width="620" height="28" rx="6" fill="#090D16" fill-opacity="0.78" stroke="#334155" />
+      <text x="44" y="384" fill="#38BDF8" font-family="monospace" font-size="12" font-weight="bold">THƯỚC ĐỐI CHIẾU THỰC TẾ: ĐẾ 120×120 mm · CAO 220 mm · ĐCNN 0.01 pH (ISO 10523)</text>
+
+      <!-- Thân máy đo pH chụp góc Studio -->
+      <ellipse cx="240" cy="322" rx="95" ry="16" fill="#000" opacity="0.45" />
+      <rect x="145" y="195" width="180" height="118" rx="12" fill="#1E293B" stroke="#475569" stroke-width="3" />
+      <rect x="162" y="210" width="146" height="58" rx="6" fill="#CCFBF1" stroke="#0D9488" stroke-width="3" />
+      <text x="176" y="232" fill="#0F766E" font-family="monospace" font-size="12" font-weight="bold">pH METER · ATC</text>
+      <text x="176" y="258" fill="#042F2E" font-family="monospace" font-size="28" font-weight="bold">7.00 pH  25.0°C</text>
+      <!-- Cụm phím CAL / MODE / HOLD -->
+      <rect x="168" y="278" width="40" height="22" rx="5" fill="#0284C7" />
+      <text x="188" y="293" text-anchor="middle" fill="#FFF" font-family="sans-serif" font-size="11" font-weight="bold">CAL</text>
+      <rect x="215" y="278" width="42" height="22" rx="5" fill="#EAB308" />
+      <text x="236" y="293" text-anchor="middle" fill="#1E293B" font-family="sans-serif" font-size="11" font-weight="bold">MODE</text>
+      <rect x="264" y="278" width="42" height="22" rx="5" fill="#EF4444" />
+      <text x="285" y="293" text-anchor="middle" fill="#FFF" font-family="sans-serif" font-size="11" font-weight="bold">HOLD</text>
+
+      <!-- Trụ inox & Tay đỡ điện cực -->
+      <rect x="302" y="66" width="10" height="135" rx="3" fill="#E2E8F0" stroke="#64748B" stroke-width="2" />
+      <rect x="296" y="96" width="160" height="14" rx="5" fill="#334155" stroke="#94A3B8" stroke-width="1.5" />
+
+      <!-- Cốc thủy tinh 250 ml chứa dung dịch chuẩn pH 7.00 và Điện cực thủy tinh nhúng trong cốc -->
+      <ellipse cx="485" cy="322" rx="65" ry="12" fill="#000" opacity="0.4" />
+      <rect x="435" y="185" width="100" height="130" rx="8" fill="#E0F2FE" fill-opacity="0.18" stroke="#BAE6FD" stroke-width="2.5" />
+      <rect x="438" y="235" width="94" height="76" rx="5" fill="#22C55E" fill-opacity="0.32" />
+      <text x="485" y="298" text-anchor="middle" fill="#DCFCE7" font-family="monospace" font-size="12" font-weight="bold">Buffer pH 7.00</text>
+
+      <!-- Điện cực thủy tinh Ag/AgCl -->
+      <rect x="442" y="75" width="18" height="205" rx="8" fill="#F8FAFC" fill-opacity="0.85" stroke="#0284C7" stroke-width="2.5" />
+      <rect x="440" y="68" width="22" height="26" rx="4" fill="#0284C7" />
+      <circle cx="451" cy="284" r="10" fill="#38BDF8" stroke="#0369A1" stroke-width="2" />
+    </svg>
+  </template>
+
+  <!-- 4. MÃ DỰNG MÔ HÌNH 3D THREE.JS TUÂN THỦ CHUẨN OL3D-HTML-MODULE v2.0 -->
+  <script id="ol3d-module-3d-script">
+    window.OL3D_EQUIPMENT_MODULE = {
+      buildEquipmentGroup: function(THREE, asset) {
+        var group = new THREE.Group();
+        group.name = (asset && asset.slug ? asset.slug : 'ph_meter') + '_root';
+
+        var bodyMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.35, metalness: 0.15 });
+        var steelMat = new THREE.MeshStandardMaterial({ color: 0xdbe4ee, roughness: 0.22, metalness: 0.85 });
+        var glassMat = new THREE.MeshPhysicalMaterial({
+          color: 0xe0f2fe,
+          transparent: true,
+          opacity: 0.55,
+          roughness: 0.08,
+          transmission: 0.82,
+          ior: 1.47,
+          depthWrite: false
+        });
+
+        // 1. Đế máy (y = 0 -> 0.042m)
+        var baseMesh = new THREE.Mesh(new THREE.BoxGeometry(0.115, 0.042, 0.115), bodyMat);
+        baseMesh.name = 'body';
+        baseMesh.position.set(0, 0.021, 0);
+        baseMesh.castShadow = true;
+        baseMesh.receiveShadow = true;
+        group.add(baseMesh);
+
+        // Tạo texture LCD pH
+        function makePhLcdTexture(textVal) {
+          var canvas = document.createElement('canvas');
+          canvas.width = 512;
+          canvas.height = 192;
+          var ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.fillStyle = '#0f2922';
+            ctx.fillRect(0, 0, 512, 192);
+            ctx.fillStyle = '#ccfbf1';
+            ctx.fillRect(10, 10, 492, 172);
+            ctx.fillStyle = '#0f766e';
+            ctx.font = 'bold 26px monospace';
+            ctx.fillText('pH METER · ATC 25.0°C', 24, 46);
+            ctx.fillStyle = '#042f2e';
+            ctx.font = 'bold 84px monospace';
+            ctx.textAlign = 'right';
+            ctx.fillText(textVal || '7.00 pH', 480, 142);
+          }
+          var tex = new THREE.CanvasTexture(canvas);
+          tex.needsUpdate = true;
+          return tex;
+        }
+
+        var sharedLcdMat = new THREE.MeshStandardMaterial({
+          map: makePhLcdTexture('7.00 pH'),
+          roughness: 0.18,
+          metalness: 0.05,
+          emissive: new THREE.Color('#14b8a6'),
+          emissiveIntensity: 0.25,
+          polygonOffset: true,
+          polygonOffsetFactor: -2,
+          polygonOffsetUnits: -2
+        });
+
+        // 2. Cụm màn hình nghiêng mặt trước (Local Console Group chống khuất trực diện)
+        var frontConsoleGroup = new THREE.Group();
+        frontConsoleGroup.position.set(-0.012, 0.048, 0.032);
+        frontConsoleGroup.rotation.x = -0.48;
+        group.add(frontConsoleGroup);
+
+        var consoleBox = new THREE.Mesh(
+          new THREE.BoxGeometry(0.082, 0.036, 0.024),
+          new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.35 })
+        );
+        frontConsoleGroup.add(consoleBox);
+
+        var frontLcd = new THREE.Mesh(new THREE.PlaneGeometry(0.068, 0.025), sharedLcdMat);
+        frontLcd.name = 'scale_display';
+        frontLcd.position.set(0, 0.002, 0.012 + 0.0012);
+        frontConsoleGroup.add(frontLcd);
+
+        // Màn hình phụ mặt sau (180°) đồng bộ 360°
+        var rearLcd = new THREE.Mesh(new THREE.PlaneGeometry(0.068, 0.025), sharedLcdMat);
+        rearLcd.name = 'scale_display_rear';
+        rearLcd.position.set(-0.012, 0.032, -0.0585);
+        rearLcd.rotation.y = Math.PI;
+        group.add(rearLcd);
+
+        // 3. Trụ Inox & Tay kẹp giữ điện cực thủy tinh ('plunger')
+        var rodMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.175, 20), steelMat);
+        rodMesh.position.set(0.038, 0.125, -0.032);
+        rodMesh.castShadow = true;
+        group.add(rodMesh);
+
+        var armGroup = new THREE.Group();
+        armGroup.name = 'plunger';
+        armGroup.position.set(0.038, 0.185, -0.032);
+        group.add(armGroup);
+
+        var armBar = new THREE.Mesh(
+          new THREE.BoxGeometry(0.016, 0.012, 0.078),
+          new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.4 })
+        );
+        armBar.position.set(0, 0, 0.032);
+        armGroup.add(armBar);
+
+        var probeBody = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.125, 24), glassMat);
+        probeBody.position.set(0, -0.052, 0.064);
+        armGroup.add(probeBody);
+
+        var probeCap = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.0075, 0.0075, 0.024, 20),
+          new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.3 })
+        );
+        probeCap.position.set(0, 0.014, 0.064);
+        armGroup.add(probeCap);
+
+        var probeBulb = new THREE.Mesh(
+          new THREE.SphereGeometry(0.0065, 20, 20),
+          new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.15, metalness: 0.1 })
+        );
+        probeBulb.position.set(0, -0.116, 0.064);
+        armGroup.add(probeBulb);
+
+        return group;
+      },
+
+      applyEquipmentState: function(THREE, rootObject, instance, asset) {
+        var val = instance && instance.instanceState && typeof instance.instanceState.multimeterValue === 'number'
+          ? instance.instanceState.multimeterValue
+          : 7.0;
+        var label = val.toFixed(2) + ' pH';
+        rootObject.traverse(function(child) {
+          if (child.isMesh && typeof child.name === 'string' && child.name.indexOf('scale_display') === 0) {
+            var mat = child.material;
+            if (mat && mat.map && mat.map.image && mat.map.image.getContext) {
+              var ctx = mat.map.image.getContext('2d');
+              ctx.fillStyle = '#0f2922';
+              ctx.fillRect(0, 0, 512, 192);
+              ctx.fillStyle = '#ccfbf1';
+              ctx.fillRect(10, 10, 492, 172);
+              ctx.fillStyle = '#0f766e';
+              ctx.font = 'bold 26px monospace';
+              ctx.fillText('pH METER · ATC 25.0°C', 24, 46);
+              ctx.fillStyle = '#042f2e';
+              ctx.font = 'bold 84px monospace';
+              ctx.textAlign = 'right';
+              ctx.fillText(label, 480, 142);
+              mat.map.needsUpdate = true;
+            }
+          }
+        });
+      },
+
+      playEquipmentSound: function(eventType, value) {
+        try {
+          var AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return;
+          if (!window.__ol3dAudioCtx) window.__ol3dAudioCtx = new AudioCtx();
+          var ctx = window.__ol3dAudioCtx;
+          if (ctx.state === 'suspended') ctx.resume();
+          var now = ctx.currentTime;
+          var phVal = typeof value === 'number' ? value : 7.0;
+
+          // 1. Tiếng nhúng bầu điện cực thủy tinh vào cốc dung dịch (hydro-dip)
+          var oscDip = ctx.createOscillator();
+          var gainDip = ctx.createGain();
+          oscDip.type = 'sine';
+          oscDip.frequency.setValueAtTime(380, now);
+          oscDip.frequency.exponentialRampToValueAtTime(720, now + 0.085);
+          gainDip.gain.setValueAtTime(0.12, now);
+          gainDip.gain.exponentialRampToValueAtTime(0.003, now + 0.09);
+          oscDip.connect(gainDip);
+          gainDip.connect(ctx.destination);
+          oscDip.start(now);
+          oscDip.stop(now + 0.095);
+
+          // 2. Tiếng "Bíp" kỹ thuật số xác nhận số đo pH ổn định (cao độ theo môi trường pH)
+          var oscBeep = ctx.createOscillator();
+          var gainBeep = ctx.createGain();
+          oscBeep.type = 'sine';
+          oscBeep.frequency.setValueAtTime(2050 + (phVal / 14) * 950, now + 0.11);
+          gainBeep.gain.setValueAtTime(0.11, now + 0.11);
+          gainBeep.gain.exponentialRampToValueAtTime(0.002, now + 0.22);
+          oscBeep.connect(gainBeep);
+          gainBeep.connect(ctx.destination);
+          oscBeep.start(now + 0.11);
+          oscBeep.stop(now + 0.23);
+        } catch (e) {}
+      }
+    };
+  </script>
+
+  <!-- 5. TRẠM KIỂM ĐỊNH ĐỘC LẬP TRÊN TRÌNH DUYỆT WEB (STANDALONE BROWSER INSPECTOR) -->
+  <div id="ol3d-standalone-inspector" style="max-width: 1360px; margin: 0 auto; padding: 18px 24px;">
+    <!-- Thanh trạng thái kiểm định tự động 4 khối chuẩn -->
+    <div id="compliance-bar" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; padding: 12px 16px; background: #0f2922; border: 1px solid #14b8a6; border-radius: 10px; align-items: center; justify-content: space-between;">
+      <div style="font-weight: 800; color: #5eead4; font-size: 13.5px;">
+        ✓ KIỂM ĐỊNH TRÌNH DUYỆT ĐỘC LẬP: ĐỦ 4 KHỐI CHUẨN OL3D-HTML-MODULE (SẴN SÀNG NẠP VÀO PHÒNG THÍ NGHIỆM)
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 11.5px; font-weight: 700;">
+        <span style="background: #115e59; color: #ccfbf1; padding: 3px 9px; border-radius: 5px;">#ol3d-module-manifest: OK</span>
+        <span style="background: #115e59; color: #ccfbf1; padding: 3px 9px; border-radius: 5px;">#ol3d-module-icon: OK</span>
+        <span style="background: #115e59; color: #ccfbf1; padding: 3px 9px; border-radius: 5px;">#ol3d-module-real-photo: OK</span>
+        <span style="background: #115e59; color: #ccfbf1; padding: 3px 9px; border-radius: 5px;">#ol3d-module-3d-script: OK</span>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1.15fr 1fr; gap: 18px;">
+      <!-- CỘT TRÁI: VẬT 3D TƯƠNG TÁC + TEST TRẠNG THÁI ĐỘNG -->
+      <div class="card" style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div style="font-size: 13px; font-weight: 800; color: #38bdf8; text-transform: uppercase;">
+            1. KIỂM TRA VẬT 3D THREE.JS (TỶ LỆ 1.0 = 1m · ĐÁY y = 0 · MÀN HÌNH 360°)
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button onclick="window.__setCamAngle(0)" style="background:#0284c7;color:#fff;border:none;padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;">0° Trực diện</button>
+            <button onclick="window.__setCamAngle(90)" style="background:#334155;color:#e2e8f0;border:none;padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;">90° Phải</button>
+            <button onclick="window.__setCamAngle(180)" style="background:#334155;color:#e2e8f0;border:none;padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;">180° Sau</button>
+            <button onclick="window.__setCamAngle(270)" style="background:#334155;color:#e2e8f0;border:none;padding:5px 10px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;">270° Trái</button>
+          </div>
+        </div>
+
+        <div id="preview3d" style="position: relative; cursor: grab;">
+          <div style="position: absolute; top: 10px; left: 12px; background: rgba(15,23,42,0.82); border: 1px solid #334155; padding: 5px 10px; border-radius: 6px; font-size: 11.5px; color: #cbd5e1; pointer-events: none;">
+            Kéo chuột để xoay 360° · Cuộn chuột để phóng to/thu nhỏ · Mặt bàn gỗ tại y = 0.000 m
+          </div>
+        </div>
+
+        <!-- Bảng test hàm applyEquipmentState trực tiếp trên trình duyệt -->
+        <div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 12.5px; font-weight: 800; color: #facc15;">TEST TÍNH NĂNG ĐỘNG (applyEquipmentState):</span>
+            <span id="ph-readout-badge" style="font-family: monospace; font-size: 14px; font-weight: 800; color: #2dd4bf; background: #0f2922; padding: 2px 10px; border-radius: 5px;">7.00 pH (Trung tính)</span>
+          </div>
+          <input id="ph-slider" type="range" min="0" max="14" step="0.05" value="7.00" style="width: 100%; accent-color: #0284c7; cursor: pointer;" />
+          <div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">
+            <button onclick="window.__setTestPh(2.90)" style="background:#7f1d1d;color:#fecaca;border:1px solid #ef4444;padding:4px 10px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;">Thử Axit CH₃COOH (pH 2.90)</button>
+            <button onclick="window.__setTestPh(7.00)" style="background:#064e3b;color:#a7f3d0;border:1px solid #10b981;padding:4px 10px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;">Thử Nước cất chuẩn (pH 7.00)</button>
+            <button onclick="window.__setTestPh(11.50)" style="background:#1e3a8a;color:#bfdbfe;border:1px solid #3b82f6;padding:4px 10px;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;">Thử Dung dịch Kiềm (pH 11.50)</button>
+          </div>
+        </div>
+
+        <!-- Thông số vật lý trích xuất tự động từ #ol3d-module-manifest -->
+        <div id="spec-summary-cards" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;"></div>
+      </div>
+
+      <!-- CỘT PHẢI: ẢNH THẬT ĐỐI CHIẾU + ICON 2D + HỒ SƠ 5 NGUỒN WEB -->
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <!-- Khung Ảnh thật đối chiếu -->
+        <div class="card">
+          <div style="font-size: 13px; font-weight: 800; color: #f59e0b; text-transform: uppercase; margin-bottom: 10px;">
+            2. ẢNH THẬT THỰC TẾ ĐỐI CHIẾU (#ol3d-module-real-photo)
+          </div>
+          <div id="real-photo-mount" style="border-radius: 10px; overflow: hidden; border: 1px solid #334155; position: relative;"></div>
+          <div id="real-photo-annotations" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px;"></div>
+        </div>
+
+        <!-- Khung Icon 2D & Hồ sơ 5 nguồn -->
+        <div class="card" style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="background: #f8fafc; border: 2px solid #38bdf8; border-radius: 12px; width: 84px; height: 84px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 6px;" id="icon-2d-mount"></div>
+            <div>
+              <div style="font-size: 13px; font-weight: 800; color: #38bdf8; text-transform: uppercase;">
+                3. ICON 2D (#ol3d-module-icon) & TRÍCH DẪN SGK KHTN 9
+              </div>
+              <div id="textbook-summary" style="font-size: 12.5px; color: #cbd5e1; margin-top: 4px; line-height: 1.45;"></div>
+            </div>
+          </div>
+
+          <div style="border-top: 1px solid #334155; padding-top: 10px;">
+            <div style="font-size: 12px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px;">
+              4. ĐỐI CHIẾU 5 NGUỒN TRANG WEB THỰC TẾ (fiveWebSources)
+            </div>
+            <div id="five-sources-list" style="display: flex; flex-direction: column; gap: 5px; font-size: 12px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script tự khởi chạy Trạm Kiểm Định khi mở file .HTML trên trình duyệt -->
+  <script>
+    (function() {
+      try {
+        var manifestEl = document.getElementById('ol3d-module-manifest');
+        var iconTpl = document.getElementById('ol3d-module-icon');
+        var photoTpl = document.getElementById('ol3d-module-real-photo');
+        var manifest = JSON.parse(manifestEl.textContent);
+        var asset = manifest.asset;
+
+        // 1. Render Icon 2D
+        document.getElementById('icon-2d-mount').innerHTML = iconTpl.innerHTML;
+
+        // 2. Render Ảnh thật + Điểm chú thích
+        var photoMount = document.getElementById('real-photo-mount');
+        photoMount.innerHTML = photoTpl.innerHTML;
+        var annContainer = document.getElementById('real-photo-annotations');
+        if (manifest.realPhotoMeta && manifest.realPhotoMeta.annotations) {
+          manifest.realPhotoMeta.annotations.forEach(function(ann, idx) {
+            var pin = document.createElement('div');
+            pin.style.cssText = 'position:absolute;left:' + ann.xPercent + '%;top:' + ann.yPercent + '%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:#f59e0b;color:#0f172a;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.6);';
+            pin.textContent = String(idx + 1);
+            pin.title = ann.label;
+            photoMount.appendChild(pin);
+
+            var item = document.createElement('div');
+            item.style.cssText = 'background:#0f172a;border:1px solid #334155;border-radius:6px;padding:6px 8px;font-size:11.5px;color:#e2e8f0;';
+            item.innerHTML = '<strong style="color:#f59e0b;">#' + (idx + 1) + ':</strong> ' + ann.label;
+            annContainer.appendChild(item);
+          });
+        }
+
+        // 3. Render Thông số vật lý & SGK & 5 Nguồn web
+        var dims = asset.geometry.dimensions;
+        var sci = asset.scientificProperties;
+        var meas = asset.measurementMetadata;
+        document.getElementById('spec-summary-cards').innerHTML = [
+          { label: 'Kích thước thực', val: dims.widthOrDiameter.value + '×' + dims.height.value + ' mm' },
+          { label: 'Khối lượng khô', val: (sci.referenceMass ? sci.referenceMass.value + ' g' : 'N/A') },
+          { label: 'Thể tích chiếm chỗ', val: (sci.referenceVolume ? sci.referenceVolume.value + ' cm³' : 'N/A') },
+          { label: 'ĐCNN / Thang đo', val: (meas ? meas.leastCount.value + ' ' + meas.leastCount.unit : 'Chuẩn SGK') }
+        ].map(function(s) {
+          return '<div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:8px;"><div style="font-size:11px;color:#94a3b8;">' + s.label + '</div><div style="font-size:13.5px;font-weight:800;color:#38bdf8;font-family:monospace;margin-top:2px;">' + s.val + '</div></div>';
+        }).join('');
+
+        document.getElementById('textbook-summary').innerHTML =
+          '<strong>' + asset.textbookRef.bookTitle + '</strong> (' + asset.textbookRef.chapter + ')<br/>' +
+          asset.textbookRef.standardFunction;
+
+        if (manifest.dossier && manifest.dossier.fiveWebSources) {
+          document.getElementById('five-sources-list').innerHTML = manifest.dossier.fiveWebSources.map(function(src, i) {
+            return '<div style="background:#0f172a;border:1px solid #334155;border-radius:6px;padding:6px 10px;">' +
+              '<strong style="color:#38bdf8;">' + (i + 1) + '. ' + src.siteName + ' (' + src.domain + '):</strong> ' +
+              '<span style="color:#cbd5e1;">' + src.verifiedSpecSummary + '</span></div>';
+          }).join('');
+        }
+
+        // 4. Khởi tạo Khung 3D WebGL (Three.js) kiểm tra trực tiếp
+        var container = document.getElementById('preview3d');
+        if (window.THREE && window.OL3D_EQUIPMENT_MODULE && container) {
+          var w = container.clientWidth || 560;
+          var h = container.clientHeight || 420;
+          var scene = new THREE.Scene();
+          var camera = new THREE.PerspectiveCamera(38, w / h, 0.01, 20);
+
+          var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+          renderer.setSize(w, h);
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+          renderer.shadowMap.enabled = true;
+          container.appendChild(renderer.domElement);
+
+          scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+          var dirLight = new THREE.DirectionalLight(0xffffff, 1.15);
+          dirLight.position.set(0.6, 1.2, 0.8);
+          dirLight.castShadow = true;
+          scene.add(dirLight);
+
+          // Mặt bàn gỗ tham chiếu y = 0
+          var bench = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.18, 0.18, 0.008, 48),
+            new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.65 })
+          );
+          bench.position.set(0, -0.004, 0);
+          bench.receiveShadow = true;
+          scene.add(bench);
+
+          var grid = new THREE.GridHelper(0.32, 16, 0x38bdf8, 0x334155);
+          grid.position.y = 0.0005;
+          scene.add(grid);
+
+          var eqGroup = window.OL3D_EQUIPMENT_MODULE.buildEquipmentGroup(THREE, asset);
+          scene.add(eqGroup);
+
+          var yaw = 0.25;
+          var pitch = 0.28;
+          var dist = 0.42;
+          var targetY = (asset.geometry.boundingBoxM ? asset.geometry.boundingBoxM.height : 0.2) * 0.45;
+
+          function updateCam() {
+            camera.position.set(
+              Math.sin(yaw) * Math.cos(pitch) * dist,
+              targetY + Math.sin(pitch) * dist,
+              Math.cos(yaw) * Math.cos(pitch) * dist
+            );
+            camera.lookAt(0, targetY, 0);
+          }
+          updateCam();
+
+          window.__setCamAngle = function(deg) {
+            yaw = (deg * Math.PI) / 180;
+            pitch = 0.22;
+            updateCam();
+          };
+
+          var dragging = false, prevX = 0, prevY = 0;
+          renderer.domElement.addEventListener('pointerdown', function(e) {
+            dragging = true; prevX = e.clientX; prevY = e.clientY;
+          });
+          window.addEventListener('pointerup', function() { dragging = false; });
+          window.addEventListener('pointermove', function(e) {
+            if (!dragging) return;
+            yaw -= (e.clientX - prevX) * 0.01;
+            pitch = Math.max(-0.1, Math.min(1.2, pitch + (e.clientY - prevY) * 0.008));
+            prevX = e.clientX; prevY = e.clientY;
+            updateCam();
+          });
+          renderer.domElement.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            dist = Math.max(0.18, Math.min(0.9, dist + e.deltaY * 0.0004));
+            updateCam();
+          }, { passive: false });
+
+          window.__setTestPh = function(val) {
+            var slider = document.getElementById('ph-slider');
+            if (slider) slider.value = String(val);
+            var env = val < 6.5 ? ' (Môi trường Axit)' : val > 7.5 ? ' (Môi trường Kiềm)' : ' (Trung tính)';
+            document.getElementById('ph-readout-badge').textContent = val.toFixed(2) + ' pH' + env;
+            if (window.OL3D_EQUIPMENT_MODULE.applyEquipmentState) {
+              window.OL3D_EQUIPMENT_MODULE.applyEquipmentState(
+                THREE,
+                eqGroup,
+                { instanceState: { multimeterValue: val } },
+                asset
+              );
+            }
+            if (window.OL3D_EQUIPMENT_MODULE.playEquipmentSound) {
+              window.OL3D_EQUIPMENT_MODULE.playEquipmentSound('probe-measure', val);
+            }
+          };
+
+          document.getElementById('ph-slider').addEventListener('input', function(e) {
+            window.__setTestPh(parseFloat(e.target.value));
+          });
+
+          function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+          }
+          animate();
+        }
+      } catch (err) {
+        console.error('Standalone Inspector Error:', err);
+      }
+    })();
+  </script>
+</body>
+</html>

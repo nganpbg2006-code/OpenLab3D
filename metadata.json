@@ -1,0 +1,8 @@
+{
+  "name": "Remix Bộ Thí Nghiệm Mạch Điện Nối Tiếp 3D — OpenLab 3D v2.4",
+  "description": "Mô phỏng 3D tương tác thời gian thực Bộ thí nghiệm Mạch điện nối tiếp DC (Nguồn Pin đại Con Ó, Cầu dao K, Biến trở con chạy 20Ω, Bóng đèn 126, Ampe kế, Vôn kế, Dây bắp chuối) đạt chuẩn OpenLab 3D v2.4 kèm trình xuất file .HTML độc lập.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

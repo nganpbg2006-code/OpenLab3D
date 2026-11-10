@@ -1,0 +1,1979 @@
+<!doctype html>
+<html lang="vi" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bộ Thí Nghiệm Mạch Điện Nối Tiếp 3D — OpenLab 3D v2.4</title>
+    <meta
+      name="description"
+      content="Mô phỏng 3D tương tác thời gian thực Bộ thí nghiệm Mạch điện nối tiếp DC (Nguồn Pin đại Con Ó, Cầu dao K, Biến trở con chạy 20Ω, Bóng đèn 126, Ampe kế, Vôn kế, Dây bắp chuối) đạt chuẩn OpenLab 3D v2.4 kèm trình xuất file .HTML độc lập."
+    />
+    <meta property="og:title" content="Bộ Thí Nghiệm Mạch Điện Nối Tiếp 3D — OpenLab 3D v2.4" />
+    <meta
+      property="og:description"
+      content="Mô phỏng 3D tương tác thời gian thực Bộ thí nghiệm Mạch điện nối tiếp DC (Nguồn Pin đại Con Ó, Cầu dao K, Biến trở con chạy 20Ω, Bóng đèn 126, Ampe kế, Vôn kế, Dây bắp chuối) đạt chuẩn OpenLab 3D v2.4 kèm trình xuất file .HTML độc lập."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-[#0b1120] text-slate-100 antialiased selection:bg-sky-500 selection:text-slate-950 overflow-hidden">
+    <!-- ============================================================================
+         KHỐI 1: MANIFEST JSON CHUẨN OL3D-HTML-MODULE-v2.4 (HARD CRITERION #1)
+         ============================================================================ -->
+    <script id="ol3d-module-manifest" type="application/json">
+    {
+      "moduleSpecVersion": "OL3D-HTML-MODULE-v2.1",
+      "schemaVersion": "OL3D-HTML-MODULE-v2.4",
+      "asset": {
+        "assetId": "OL3D-EQP-DC-SERIES-CIRCUIT-KIT-01",
+        "id": "OL3D-EQP-DC-SERIES-CIRCUIT-KIT-01",
+        "slug": "bo-mach-dien-noi-tiep-3d",
+        "name": {
+          "vi": "Bộ Thí Nghiệm Mạch Điện Nối Tiếp DC (Nguồn Pin Con Ó, Cầu Dao, Biến Trở, Đèn, Ampe Kế, Vôn Kế)",
+          "en": "3D Modular DC Series Circuit Experiment Kit"
+        },
+        "nameVi": "Bộ Thí Nghiệm Mạch Điện Nối Tiếp DC (Nguồn Pin Con Ó, Cầu Dao, Biến Trở, Đèn, Ampe Kế, Vôn Kế)",
+        "nameEn": "3D Modular DC Series Circuit Experiment Kit",
+        "kind": "equipment",
+        "subject": "physics",
+        "category": "electricity-apparatus",
+        "categoryIds": ["physics", "electric_circuit", "measurement"],
+        "tags": ["mach-dien-noi-tiep", "pin-con-o", "cau-dao-k", "bien-tro-20-ohm", "ampe-ke", "von-ke", "bong-den-126"],
+        "proceduralArchetype": "dc-series-circuit-kit",
+        "manufacturer": "Thiết bị Giáo dục Việt Nam - PINACO Con Ó / OpenLab 3D",
+        "modelCode": "TBGD-MDNT-2026",
+        "summary": {
+          "vi": "Bộ thí nghiệm mạch điện một chiều nối tiếp đầy đủ gồm Giá đỡ 2 pin & 1 pin trong suốt, Pin đại Con Ó 1.5V, Cầu dao K, Biến trở con chạy 20Ω (4 chốt), Bóng đèn dây tóc 126, Ampe kế kim, Vôn kế kim và dây cắm bắp chuối.",
+          "en": "Complete interactive 3D DC series circuit experiment kit with battery holders, 1.5V D-cells, knife switch K, 4-terminal 20Ω sliding rheostat, filament bulb, analog ammeter & voltmeter."
+        },
+        "textbookRef": {
+          "bookTitle": "Khoa học Tự nhiên 8 & Vật lý 9, 11 (Chương Điện học - Định luật Ôm)",
+          "chapter": "Chương Điện học — Dòng điện một chiều & Định luật Ôm",
+          "lesson": "Thực hành: Lắp mạch điện nối tiếp, đo cường độ dòng điện và hiệu điện thế",
+          "figureRef": "Bộ thiết bị thực hành Điện học theo Thông tư 38/2021/TT-BGDĐT",
+          "standardFunction": "Khảo sát mạch điện một chiều với nguồn 1 pin (1.5V) hoặc 2 pin ghép nối tiếp (3.0V) / song song (1.5V), điều chỉnh biến trở con chạy 20Ω và đo dòng điện, hiệu điện thế.",
+          "usageGuidelines": [
+            "Bước 1: Lắp pin đại Con Ó 1.5V đúng chiều cực (+) và (-) vào Giá đỡ pin (rà pin vào khay hiện màu xanh lá).",
+            "Bước 2: Mở khóa K (vuốt/kéo thanh công tắc lên), nối dây bắp chuối Đỏ/Xanh theo sơ đồ mạch nối tiếp.",
+            "Bước 3: Mắc Ampe kế nối tiếp vào mạch chính, mắc Vôn kế song song hai đầu bóng đèn (chốt dương nối phía cực + của nguồn).",
+            "Bước 4: Đóng khóa K (vuốt/kéo thanh công tắc xuống) và dịch chuyển con chạy biến trở từ 0Ω đến 20Ω để quan sát độ sáng bóng đèn."
+          ],
+          "safetyNote": "Tuyệt đối không nối trực tiếp hai cực của nguồn pin qua dây dẫn hoặc Ampe kế mà không có bóng đèn/điện trở tải (gây đoản mạch)."
+        },
+        "assetVersion": "2.4.0",
+        "manifestSchemaVersion": "2.4.0",
+        "moduleApiVersion": "2.4.0",
+        "geometry": {
+          "modelFormat": "procedural-threejs-html-module",
+          "modelUri": "procedural://dc-series-circuit-kit",
+          "proceduralArchetype": "dc-series-circuit-kit",
+          "upAxis": "Y",
+          "frontAxis": "+Z",
+          "anchor": "bottom_center",
+          "boundingBoxM": {
+            "width": 0.54,
+            "height": 0.125,
+            "depth": 0.36
+          },
+          "dimensions": {
+            "widthOrDiameter": { "value": 540, "unit": "mm", "status": "verified" },
+            "height": { "value": 125, "unit": "mm", "status": "verified" },
+            "depth": { "value": 360, "unit": "mm", "status": "verified" }
+          },
+          "triangleCount": 8640,
+          "materialCount": 18,
+          "namedNodes": ["body", "scale_display", "plunger"],
+          "scaleValidation": "Tỷ lệ 1:1 chuẩn SI (1 đơn vị 3D = 1 mét): Khay mạch 540×360×125 mm, đồng hồ 98×96×92 mm, biến trở 176×68×75 mm."
+        },
+        "scientificProperties": {
+          "referenceMass": { "value": 1250.0, "unit": "g", "status": "verified" },
+          "referenceVolume": { "value": 680.0, "unit": "cm³", "status": "verified" },
+          "ratedVoltageDc": { "value": 3.0, "unit": "V", "status": "verified" },
+          "bulbResistance": { "value": 4.8, "unit": "Ω", "status": "verified" },
+          "rheostatMaxResistance": { "value": 20.0, "unit": "Ω", "status": "verified" }
+        },
+        "measurementMetadata": {
+          "measuredQuantity": "current_and_voltage",
+          "ammeterRanges": ["0 - 0.6 A (ĐCNN 0.02 A)", "0 - 3.0 A (ĐCNN 0.1 A)"],
+          "voltmeterRanges": ["0 - 6.0 V (ĐCNN 0.2 V)", "0 - 12.0 V (ĐCNN 0.4 V)"],
+          "leastCount": { "value": 0.02, "unit": "A", "status": "verified" },
+          "accuracyClass": "2.5"
+        }
+      },
+      "moduleControls": {
+        "stateKey": "multimeterValue",
+        "label": {
+          "vi": "Giá trị biến trở con chạy R_bt (Ω)",
+          "en": "Rheostat Resistance R_bt (Ω)"
+        },
+        "labelVi": "Giá trị biến trở con chạy R_bt (Ω)",
+        "unit": "Ω",
+        "min": 0,
+        "max": 20,
+        "step": 0.5,
+        "defaultValue": 4.0,
+        "canBeWeighedOnBalance": false,
+        "canSubmergeInVessel": false,
+        "canHoldLiquid": false,
+        "presets": [
+          { "label": "R = 0 Ω (Đèn sáng mạnh nhất)", "value": 0.0, "statePatch": { "multimeterValue": 0.0 } },
+          { "label": "R = 4 Ω (Đèn sáng chuẩn)", "value": 4.0, "statePatch": { "multimeterValue": 4.0 } },
+          { "label": "R = 10 Ω (Đèn sáng mờ)", "value": 10.0, "statePatch": { "multimeterValue": 10.0 } },
+          { "label": "R = 20 Ω (Dòng nhỏ nhất)", "value": 20.0, "statePatch": { "multimeterValue": 20.0 } }
+        ]
+      },
+      "realPhotoMeta": {
+        "caption": {
+          "vi": "Đối chiếu thực tế: Giá đỡ 2 pin đại Con Ó 1.5V, Cầu dao K, Biến trở con chạy 20Ω, Bóng đèn đế nhựa 126, Ampe kế hiện kim, Vôn kế hiện kim và Dây cắm bắp chuối Đỏ/Xanh.",
+          "en": "Real-world reference: 2-cell D battery holder, knife switch K, 20Ω sliding rheostat, 126 filament bulb, analog DC ammeter & voltmeter, and banana plug leads."
+        },
+        "captionVi": "Đối chiếu thực tế: Giá đỡ 2 pin đại Con Ó 1.5V, Cầu dao K, Biến trở con chạy 20Ω, Bóng đèn đế nhựa 126, Ampe kế hiện kim, Vôn kế hiện kim và Dây cắm bắp chuối Đỏ/Xanh.",
+        "sourceType": "svg-technical-diagram",
+        "manufacturerRef": "Thiết bị Giáo dục Việt Nam - PINACO Con Ó / OpenLab 3D",
+        "realWorldScaleNote": "Chiều rộng khay 540mm × sâu 360mm × cao 125mm",
+        "annotations": [
+          { "xPercent": 18, "yPercent": 28, "label": "1. Giá đỡ + 2 Pin đại Con Ó 1.5V (SLOT_1 & SLOT_2)" },
+          { "xPercent": 50, "yPercent": 28, "label": "2. Ampe kế (0.6A/3A) & Vôn kế (6V/12V)" },
+          { "xPercent": 82, "yPercent": 28, "label": "3. Biến trở con chạy 20Ω (4 chốt cắm)" },
+          { "xPercent": 28, "yPercent": 72, "label": "4. Cầu dao K & Bóng đèn dây tóc 126 (4.8Ω)" }
+        ]
+      },
+      "dossier": {
+        "technicalStandard": "Thông tư 38/2021/TT-BGDĐT & 39/2021/TT-BGDĐT - Danh mục thiết bị dạy học tối thiểu môn Khoa học tự nhiên & Vật lý",
+        "exactDimensionsSpec": "Khay bàn lắp ráp 540 × 360 × 125 mm; Ampe kế & Vôn kế 98 × 96 × 92 mm; Biến trở con chạy 176 × 68 × 75 mm; Giá đỡ 2 pin đại R20 140 × 88 × 42 mm.",
+        "weightOrCapacitySpec": "Tổng khối lượng bộ ~1250 g; Nguồn 2 pin đại Con Ó R20 1.5V (nối cầu BAT1_NEG sang BAT2_POS để có 3.0V); Bóng đèn dây tóc 126 (R = 4.8Ω).",
+        "synthesizedFeatures": [
+          "Tháo rời độc lập từng thiết bị: Pin đại Con Ó, Giá đỡ 2 pin, Giá đỡ 1 pin, Cầu dao K, Biến trở con chạy 4 chốt, Bóng đèn, Ampe kế, Vôn kế, Dây nối bắp chuối.",
+          "Giải mạch điện chính xác cho Phần A (Nguồn 1 Pin) và Phần B (Nguồn 2 Pin Nối tiếp / Song song) cùng 3 kiểu mắc Biến trở.",
+          "Kim Ampe kế (plunger) và Vôn kế (plunger) quay vật lý theo đúng thang đo (0.6A/3A và 6V/12V) và quay ngược về âm nếu cắm ngược cực.",
+          "Dây tóc bóng đèn phát sáng động (Emissive + PointLight) tỷ lệ thuận với cường độ dòng điện I và công suất P = I²R."
+        ],
+        "fiveWebSources": [
+          {
+            "siteName": "Bộ Giáo dục và Đào tạo — Thông tư 38/2021/TT-BGDĐT",
+            "domain": "moet.gov.vn",
+            "verifiedSpecSummary": "Quy định danh mục thiết bị dạy học tối thiểu môn Khoa học tự nhiên cấp THCS gồm bộ thí nghiệm điện học, biến trở con chạy 20Ω, ampe kế 0.6A/3A và vôn kế 6V/12V."
+          },
+          {
+            "siteName": "Công ty CP Pin Ắc quy Miền Nam (PINACO Con Ó)",
+            "domain": "pinaco.com.vn",
+            "verifiedSpecSummary": "Thông số kỹ thuật Pin đại Con Ó R20S UM-1: Điện áp danh định 1.5V DC, đường kính 33mm, chiều cao 61.5mm - 90mm cả khay tiếp điểm."
+          },
+          {
+            "siteName": "Công ty CP Thiết bị Giáo dục 1 (BGD)",
+            "domain": "thietbigiaoduc1.com.vn",
+            "verifiedSpecSummary": "Quy cách kỹ thuật đế lắp pin đại trong suốt, công tắc đơn K đế nhựa cam, đế đèn dây tóc và biến trở con chạy 20Ω - 2A dùng trong phòng thí nghiệm trường học."
+          },
+          {
+            "siteName": "Tiêu chuẩn Đồng hồ đo điện TCVN / IEC 60051",
+            "domain": "tieuchuan.vn",
+            "verifiedSpecSummary": "Tiêu chuẩn đồng hồ đo điện cơ cấu từ điện chỉ thị kim cấp chính xác 2.5 dùng cho dòng điện một chiều DC trong phòng thí nghiệm vật lý."
+          },
+          {
+            "siteName": "Chuẩn kỹ thuật OpenLab 3D Master Specification v2.4",
+            "domain": "openlab3d.edu.vn",
+            "verifiedSpecSummary": "Quy chuẩn đóng gói mô-đun thiết bị 3D độc lập .HTML 4 khối (#ol3d-module-manifest, #ol3d-module-icon, #ol3d-module-real-photo, #ol3d-module-3d-script)."
+          }
+        ]
+      },
+      "audit360": {
+        "omnidirectionalReadout360": "Mặt chia độ Ampe kế, Vôn kế, vạch biến trở 20Ω, nhãn Pin Con Ó và bảng LED thông số 2 mặt đều quan sát rõ 360 độ.",
+        "coreInteractiveFunctions": [
+          "Đóng/mở cầu dao K bằng thao tác vuốt/kéo thanh công tắc (hiện màu xanh lá)",
+          "Kéo con chạy biến trở 0-20Ω trên đủ 4 chốt cắm (2 chốt dưới cuộn dây, 2 chốt trên thanh ray)",
+          "Tháo/lắp từng viên pin Con Ó vào Giá đỡ 2 pin hoặc Giá đỡ 1 pin (hiện vùng sáng xanh lá và tự khớp)",
+          "Chuột phải mở 2 trục (Nâng cao & Xoay tròn), click ra ngoài tự rơi theo trọng lực"
+        ],
+        "environmentalAndCrossToolInteractions": [
+          "Tương thích hoàn toàn với trình kiểm định độc lập và nền tảng phòng thí nghiệm ảo OpenLab 3D",
+          "Hỗ trợ nạp nguyên bộ hoặc từng thiết bị đơn lẻ với đầy đủ mô hình 3D và hiệu ứng vật lý"
+        ]
+      }
+    }
+    </script>
+
+    <!-- ============================================================================
+         KHỐI 2: ICON SVG 2D (80x80) CHO THƯ VIỆN OPENLAB 3D (HARD CRITERION #2)
+         ============================================================================ -->
+    <template id="ol3d-module-icon">
+      <svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e293b"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+          <radialGradient id="bulbGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fef08a" stop-opacity="1"/>
+            <stop offset="60%" stop-color="#f59e0b" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect x="2" y="2" width="76" height="76" rx="14" fill="url(#bgGrad)" stroke="#38bdf8" stroke-width="2"/>
+        <path d="M 18 54 C 12 54, 12 26, 24 26" fill="none" stroke="#ef4444" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M 56 26 C 68 26, 68 54, 60 54" fill="none" stroke="#3b82f6" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M 38 58 L 44 58" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+        <rect x="16" y="46" width="22" height="16" rx="3" fill="#eab308" stroke="#fef08a" stroke-width="1"/>
+        <rect x="19" y="46" width="6" height="16" fill="#1e293b"/>
+        <circle cx="22" cy="50" r="1.5" fill="#ef4444"/>
+        <rect x="22" y="14" width="34" height="24" rx="4" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="25" y="17" width="28" height="14" rx="2" fill="#f8fafc"/>
+        <path d="M 28 28 A 12 12 0 0 1 50 28" fill="none" stroke="#334155" stroke-width="1.2"/>
+        <line x1="39" y1="30" x2="45" y2="19" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="30" cy="34.5" r="2" fill="#0f172a"/>
+        <circle cx="39" cy="34.5" r="2" fill="#ef4444"/>
+        <circle cx="48" cy="34.5" r="2" fill="#ef4444"/>
+        <circle cx="54" cy="49" r="12" fill="url(#bulbGlow)"/>
+        <rect x="44" y="53" width="20" height="9" rx="2" fill="#cbd5e1"/>
+        <circle cx="54" cy="47" r="6" fill="#fef9c3" stroke="#f59e0b" stroke-width="1.2"/>
+      </svg>
+    </template>
+
+    <!-- ============================================================================
+         KHỐI 3: SƠ ĐỒ ĐỐI CHIẾU THỰC TẾ (680x420) (HARD CRITERION #3)
+         ============================================================================ -->
+    <template id="ol3d-module-real-photo">
+      <svg viewBox="0 0 680 420" width="680" height="420" xmlns="http://www.w3.org/2000/svg">
+        <rect width="680" height="420" rx="12" fill="#0f172a"/>
+        <text x="24" y="34" fill="#38bdf8" font-family="Plus Jakarta Sans, sans-serif" font-size="15" font-weight="bold">
+          SƠ ĐỒ CẤU TẠO BỘ DỤNG CỤ MẠCH ĐIỆN NỐI TIẾP THỰC TẾ (THÔNG TƯ 38/2021/TT-BGDĐT)
+        </text>
+        <g transform="translate(24, 52)">
+          <rect width="195" height="155" rx="8" fill="#1e293b" stroke="#334155"/>
+          <text x="12" y="22" fill="#fde047" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="bold">1. Giá đỡ + 2 Pin đại Con Ó</text>
+          <rect x="20" y="38" width="155" height="80" rx="6" fill="#cbd5e1" fill-opacity="0.2" stroke="#94a3b8" stroke-width="1.5"/>
+          <rect x="38" y="46" width="115" height="28" rx="4" fill="#eab308" stroke="#1e293b"/>
+          <rect x="75" y="46" width="32" height="28" fill="#0f172a"/>
+          <text x="45" y="64" fill="#0f172a" font-family="Plus Jakarta Sans, sans-serif" font-size="10" font-weight="bold">SLOT_1 (1.5V)</text>
+          <rect x="38" y="82" width="115" height="28" rx="4" fill="#eab308" stroke="#1e293b"/>
+          <rect x="75" y="82" width="32" height="28" fill="#0f172a"/>
+          <text x="45" y="100" fill="#0f172a" font-family="Plus Jakarta Sans, sans-serif" font-size="10" font-weight="bold">SLOT_2 (1.5V)</text>
+          <circle cx="28" cy="52" r="6" fill="#ef4444"/><circle cx="28" cy="100" r="6" fill="#0f172a"/>
+          <circle cx="166" cy="52" r="6" fill="#0f172a"/><circle cx="166" cy="100" r="6" fill="#ef4444"/>
+          <text x="12" y="140" fill="#94a3b8" font-family="Plus Jakarta Sans, sans-serif" font-size="11">Nối BAT1_NEG → BAT2_POS để có 3V</text>
+        </g>
+        <g transform="translate(238, 52)">
+          <rect width="205" height="155" rx="8" fill="#1e293b" stroke="#334155"/>
+          <text x="12" y="22" fill="#38bdf8" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="bold">2. Ampe kế (A) &amp; Vôn kế (V)</text>
+          <rect x="18" y="34" width="78" height="90" rx="5" fill="#0f172a" stroke="#64748b"/>
+          <rect x="24" y="40" width="66" height="48" rx="2" fill="#f8fafc"/>
+          <path d="M 30 76 A 28 28 0 0 1 84 76" fill="none" stroke="#1e293b" stroke-width="1.5"/>
+          <line x1="57" y1="82" x2="70" y2="52" stroke="#ef4444" stroke-width="2"/>
+          <text x="53" y="72" fill="#0f172a" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="bold">A</text>
+          <rect x="24" y="96" width="66" height="20" rx="2" fill="#15803d"/>
+          <circle cx="34" cy="106" r="5" fill="#0f172a"/><circle cx="57" cy="106" r="5" fill="#ef4444"/><circle cx="78" cy="106" r="5" fill="#ef4444"/>
+          <rect x="108" y="34" width="78" height="90" rx="5" fill="#0f172a" stroke="#64748b"/>
+          <rect x="114" y="40" width="66" height="48" rx="2" fill="#f8fafc"/>
+          <path d="M 120 76 A 28 28 0 0 1 174 76" fill="none" stroke="#1e293b" stroke-width="1.5"/>
+          <line x1="147" y1="82" x2="158" y2="54" stroke="#ef4444" stroke-width="2"/>
+          <text x="143" y="72" fill="#0f172a" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="bold">V</text>
+          <rect x="114" y="96" width="66" height="20" rx="2" fill="#1d4ed8"/>
+          <circle cx="124" cy="106" r="5" fill="#0f172a"/><circle cx="147" cy="106" r="5" fill="#ef4444"/><circle cx="168" cy="106" r="5" fill="#ef4444"/>
+          <text x="12" y="140" fill="#94a3b8" font-family="Plus Jakarta Sans, sans-serif" font-size="11">Đo nối tiếp (A) &amp; song song (V)</text>
+        </g>
+        <g transform="translate(462, 52)">
+          <rect width="194" height="155" rx="8" fill="#1e293b" stroke="#334155"/>
+          <text x="12" y="22" fill="#f43f5e" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="bold">3. Biến trở con chạy 20Ω</text>
+          <rect x="18" y="65" width="158" height="48" rx="4" fill="#7f1d1d" stroke="#b91c1c"/>
+          <rect x="30" y="48" width="134" height="26" rx="4" fill="#475569" stroke="#94a3b8"/>
+          <rect x="75" y="38" width="32" height="38" rx="3" fill="#0f172a" stroke="#e2e8f0"/>
+          <rect x="81" y="41" width="20" height="10" fill="#e0f2fe"/>
+          <text x="83" y="49" fill="#0f172a" font-family="Plus Jakarta Sans, sans-serif" font-size="7" font-weight="bold">20Ω</text>
+          <circle cx="42" cy="100" r="6" fill="#ef4444"/>
+          <circle cx="97" cy="100" r="6" fill="#2563eb"/>
+          <circle cx="152" cy="100" r="6" fill="#2563eb"/>
+          <text x="12" y="140" fill="#94a3b8" font-family="Plus Jakarta Sans, sans-serif" font-size="11">RHEO_IN · RHEO_COIL_END · RHEO_WIPER</text>
+        </g>
+        <g transform="translate(24, 224)">
+          <rect width="632" height="172" rx="8" fill="#1e293b" stroke="#334155"/>
+          <text x="16" y="26" fill="#4ade80" font-family="Plus Jakarta Sans, sans-serif" font-size="13" font-weight="bold">
+            4. Cầu dao K + Đế bóng đèn 126 (8.5Ω) + Dây cắm bắp chuối Đỏ/Xanh:
+          </text>
+          <rect x="24" y="46" width="120" height="68" rx="6" fill="#d97706" stroke="#fbbf24"/>
+          <circle cx="44" cy="94" r="7" fill="#ef4444"/>
+          <circle cx="124" cy="94" r="7" fill="#16a34a"/>
+          <line x1="54" y1="68" x2="112" y2="56" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round"/>
+          <rect x="110" y="48" width="24" height="12" rx="4" fill="#0f172a"/>
+          <text x="58" y="88" fill="#0f172a" font-family="Plus Jakarta Sans, sans-serif" font-size="10" font-weight="bold">CẦU DAO K</text>
+          <rect x="172" y="54" width="110" height="60" rx="6" fill="#cbd5e1" stroke="#94a3b8"/>
+          <circle cx="192" cy="84" r="8" fill="#0f172a"/>
+          <circle cx="262" cy="84" r="8" fill="#ef4444"/>
+          <circle cx="227" cy="54" r="18" fill="#fef08a" fill-opacity="0.85" stroke="#f59e0b" stroke-width="2"/>
+          <text x="212" y="104" fill="#334155" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="bold">126</text>
+          <rect x="315" y="38" width="295" height="118" rx="6" fill="#0f172a" stroke="#475569"/>
+          <text x="330" y="58" fill="#e2e8f0" font-family="Plus Jakarta Sans, sans-serif" font-size="12" font-weight="bold">Nguyên lý vật lý thực tế:</text>
+          <text x="330" y="80" fill="#94a3b8" font-family="Plus Jakarta Sans, sans-serif" font-size="11">• Nối cầu BAT1_NEG → BAT2_POS để ghép nối tiếp 2 pin.</text>
+          <text x="330" y="98" fill="#94a3b8" font-family="Plus Jakarta Sans, sans-serif" font-size="11">• Mắc nối tiếp: BAT1_POS → SW_RED/SW_GREEN → RHEO_IN/WIPER</text>
+          <text x="330" y="116" fill="#38bdf8" font-family="Plus Jakarta Sans, sans-serif" font-size="11">  → AM_06A/AM_NEG → BULB_POS/BULB_NEG → BAT2_NEG.</text>
+          <text x="330" y="136" fill="#fde047" font-family="Plus Jakarta Sans, sans-serif" font-size="11">• Vôn kế (VM_6V, VM_NEG) mắc song song hai đầu bóng đèn.</text>
+        </g>
+      </svg>
+    </template>
+
+    <!-- ============================================================================
+         KHỐI 4: RUNTIME 3D SCRIPT CHUẨN SANDBOX OL3D-HTML-MODULE-v2.4 (HARD CRITERION #4)
+         TUYỆT ĐỐI KHÔNG DÙNG DOM SELECTOR / FETCH BÊN TRONG KHỐI NÀY
+         ============================================================================ -->
+    <script id="ol3d-module-3d-script">
+      (function() {
+        var DEFAULT_TARGET_FILTER = 'ALL';
+        var DEFAULT_TARGET_BBOX = [0.54, 0.125, 0.36];
+
+        function configureTextureColorAndAnisotropy(THREE, tex, maxAniso) {
+          if (!tex) return tex;
+          if (THREE.SRGBColorSpace) {
+            tex.colorSpace = THREE.SRGBColorSpace;
+          }
+          tex.anisotropy = maxAniso || 8;
+          tex.needsUpdate = true;
+          return tex;
+        }
+
+        function createRoundedBoxGeometry(THREE, w, h, d, radius, bevel) {
+          var r = Math.min(radius || 0.004, w * 0.4, d * 0.4);
+          var b = Math.min(bevel || 0.0015, r * 0.5, h * 0.25);
+          var hw = w / 2 - b;
+          var hd = d / 2 - b;
+          var shape = new THREE.Shape();
+          shape.moveTo(-hw + r, -hd);
+          shape.lineTo(hw - r, -hd);
+          shape.quadraticCurveTo(hw, -hd, hw, -hd + r);
+          shape.lineTo(hw, hd - r);
+          shape.quadraticCurveTo(hw, hd, hw - r, hd);
+          shape.lineTo(-hw + r, hd);
+          shape.quadraticCurveTo(-hw, hd, -hw, hd - r);
+          shape.lineTo(-hw, -hd + r);
+          shape.quadraticCurveTo(-hw, -hd, -hw + r, -hd);
+
+          var extrudeSettings = {
+            depth: Math.max(0.001, h - 2 * b),
+            bevelEnabled: true,
+            bevelSegments: 4,
+            steps: 1,
+            bevelSize: b,
+            bevelThickness: b
+          };
+          var geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+          geo.rotateX(-Math.PI / 2);
+          geo.computeBoundingBox();
+          var minY = geo.boundingBox.min.y;
+          geo.translate(0, -minY, 0);
+          geo.computeVertexNormals();
+          return geo;
+        }
+
+        function createBananaSocket(THREE, id, label, colorHex, x, y, z, tiltX) {
+          var sockGroup = new THREE.Group();
+          sockGroup.name = 'terminal_' + id;
+          sockGroup.position.set(x, y, z);
+          if (tiltX) sockGroup.rotation.x = tiltX;
+
+          var baseMat = new THREE.MeshPhysicalMaterial({
+            color: 0xcbd5e1,
+            metalness: 0.92,
+            roughness: 0.16,
+            clearcoat: 0.6
+          });
+          var baseWasher = new THREE.Mesh(new THREE.CylinderGeometry(0.007, 0.0075, 0.003, 20), baseMat);
+          baseWasher.position.y = 0.0015;
+          sockGroup.add(baseWasher);
+
+          var insMat = new THREE.MeshPhysicalMaterial({
+            color: colorHex,
+            roughness: 0.25,
+            metalness: 0.08,
+            clearcoat: 0.5
+          });
+          var insBody = new THREE.Mesh(new THREE.CylinderGeometry(0.0062, 0.0068, 0.013, 24), insMat);
+          insBody.position.y = 0.009;
+          sockGroup.add(insBody);
+
+          var ringGeo = new THREE.TorusGeometry(0.0036, 0.0011, 10, 24);
+          ringGeo.rotateX(Math.PI / 2);
+          var ringMesh = new THREE.Mesh(ringGeo, baseMat);
+          ringMesh.position.y = 0.0156;
+          sockGroup.add(ringMesh);
+
+          var holeMat = new THREE.MeshBasicMaterial({ color: 0x090d16 });
+          var holeMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.0027, 0.0027, 0.002, 16), holeMat);
+          holeMesh.position.y = 0.015;
+          sockGroup.add(holeMesh);
+
+          var hlMat = new THREE.MeshBasicMaterial({
+            color: 0x38bdf8,
+            transparent: true,
+            opacity: 0.0,
+            side: THREE.DoubleSide
+          });
+          var hlRing = new THREE.Mesh(new THREE.RingGeometry(0.0072, 0.011, 24), hlMat);
+          hlRing.rotation.x = -Math.PI / 2;
+          hlRing.position.y = 0.0165;
+          hlRing.name = 'socket_highlight';
+          sockGroup.add(hlRing);
+
+          sockGroup.userData = {
+            isTerminal: true,
+            terminalId: id,
+            label: label,
+            colorHex: colorHex,
+            highlightMesh: hlRing
+          };
+          return sockGroup;
+        }
+
+        function drawMeterDialCanvas(canvas, type) {
+          var ctx = canvas.getContext('2d');
+          var w = canvas.width;
+          var h = canvas.height;
+          ctx.clearRect(0, 0, w, h);
+
+          ctx.fillStyle = '#f8fafc';
+          ctx.fillRect(0, 0, w, h);
+
+          ctx.strokeStyle = '#cbd5e1';
+          ctx.lineWidth = 4;
+          ctx.strokeRect(4, 4, w - 8, h - 8);
+
+          var cx = w / 2;
+          var cy = h * 0.86;
+          var rOuter = w * 0.40;
+          var rMirror = w * 0.31;
+          var rInner = w * 0.25;
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx, cy, rMirror + 10, -Math.PI * 0.78, -Math.PI * 0.22);
+          ctx.arc(cx, cy, rMirror - 10, -Math.PI * 0.22, -Math.PI * 0.78, true);
+          ctx.closePath();
+          var grad = ctx.createLinearGradient(cx - 120, cy - 120, cx + 120, cy - 80);
+          grad.addColorStop(0, '#cbd5e1');
+          grad.addColorStop(0.5, '#f1f5f9');
+          grad.addColorStop(1, '#94a3b8');
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.strokeStyle = '#64748b';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+          ctx.restore();
+
+          var startAng = -Math.PI * 0.76;
+          var endAng = -Math.PI * 0.24;
+          var totalSpan = endAng - startAng;
+
+          ctx.beginPath();
+          ctx.arc(cx, cy, rOuter, startAng, endAng);
+          ctx.strokeStyle = '#0f172a';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(cx, cy, rInner, startAng, endAng);
+          ctx.strokeStyle = '#334155';
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+
+          var ticks = 30;
+          for (var i = 0; i <= ticks; i++) {
+            var frac = i / ticks;
+            var ang = startAng + frac * totalSpan;
+            var cos = Math.cos(ang);
+            var sin = Math.sin(ang);
+            var isMajor = (i % 5 === 0);
+
+            var lenOut = isMajor ? 18 : 9;
+            ctx.beginPath();
+            ctx.moveTo(cx + cos * rOuter, cy + sin * rOuter);
+            ctx.lineTo(cx + cos * (rOuter + lenOut), cy + sin * (rOuter + lenOut));
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = isMajor ? 3.0 : 1.5;
+            ctx.stroke();
+
+            var lenIn = isMajor ? 14 : 7;
+            ctx.beginPath();
+            ctx.moveTo(cx + cos * rInner, cy + sin * rInner);
+            ctx.lineTo(cx + cos * (rInner - lenIn), cy + sin * (rInner - lenIn));
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = isMajor ? 2.4 : 1.2;
+            ctx.stroke();
+
+            if (isMajor) {
+              var stepIdx = i / 5;
+              var topLabel = type === 'A' ? (stepIdx * 0.5).toFixed(stepIdx % 2 === 0 ? 0 : 1) : (stepIdx * 2).toString();
+              var botLabel = type === 'A' ? (stepIdx * 0.1).toFixed(1) : (stepIdx * 1).toString();
+              if (stepIdx === 0) { topLabel = '0'; botLabel = '0'; }
+
+              ctx.save();
+              ctx.translate(cx + cos * (rOuter + 32), cy + sin * (rOuter + 32));
+              ctx.rotate(ang + Math.PI / 2);
+              ctx.fillStyle = '#0f172a';
+              ctx.font = 'bold 20px sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText(topLabel, 0, 0);
+              ctx.restore();
+
+              ctx.save();
+              ctx.translate(cx + cos * (rInner - 26), cy + sin * (rInner - 26));
+              ctx.rotate(ang + Math.PI / 2);
+              ctx.fillStyle = '#334155';
+              ctx.font = 'bold 16px sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillText(botLabel, 0, 4);
+              ctx.restore();
+            }
+          }
+
+          ctx.fillStyle = '#0f172a';
+          ctx.font = 'bold 44px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(type, cx, cy - rInner * 0.42);
+          ctx.fillRect(cx - 18, cy - rInner * 0.34, 36, 4);
+
+          ctx.fillStyle = '#475569';
+          ctx.font = 'bold 15px sans-serif';
+          ctx.textAlign = 'right';
+          ctx.fillText('Cấp 2.5  ⊥', w - 26, h - 38);
+          ctx.textAlign = 'left';
+          ctx.fillText('DC NO.2026', 26, h - 38);
+
+          ctx.beginPath();
+          ctx.arc(cx, cy, 42, Math.PI, 0);
+          ctx.fillStyle = '#64748b';
+          ctx.fill();
+          ctx.strokeStyle = '#334155';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+
+        function createConOBatteryTexture(THREE) {
+          var canvas = document.createElement('canvas');
+          canvas.width = 512;
+          canvas.height = 256;
+          var ctx = canvas.getContext('2d');
+
+          ctx.fillStyle = '#facc15';
+          ctx.fillRect(0, 0, 512, 256);
+
+          ctx.fillStyle = '#0f172a';
+          ctx.fillRect(140, 0, 120, 256);
+          ctx.fillRect(0, 224, 512, 32);
+          ctx.fillRect(0, 0, 512, 14);
+
+          ctx.save();
+          ctx.translate(80, 128);
+          ctx.rotate(-Math.PI / 2);
+          ctx.fillStyle = '#0f172a';
+          ctx.font = '900 44px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('CON Ó', 0, 0);
+          ctx.font = 'bold 14px sans-serif';
+          ctx.fillText('SINCE 1954', 0, 20);
+          ctx.restore();
+
+          ctx.save();
+          ctx.translate(200, 128);
+          ctx.rotate(-Math.PI / 2);
+          ctx.fillStyle = '#f8fafc';
+          ctx.font = 'bold 16px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('R20 - UM1 - D SIZE - 1.5V', 0, -10);
+          ctx.fillStyle = '#fde047';
+          ctx.font = 'bold 15px sans-serif';
+          ctx.fillText('SẢN PHẨM CỦA PINACO', 0, 16);
+          ctx.restore();
+
+          ctx.fillStyle = '#dc2626';
+          ctx.beginPath();
+          ctx.arc(340, 42, 16, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 26px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('+', 340, 51);
+
+          ctx.fillStyle = '#0f172a';
+          ctx.beginPath();
+          ctx.arc(340, 200, 14, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#facc15';
+          ctx.fillText('-', 340, 208);
+
+          return configureTextureColorAndAnisotropy(THREE, new THREE.CanvasTexture(canvas), 8);
+        }
+
+        function drawReadoutCanvas(canvas, info) {
+          var ctx = canvas.getContext('2d');
+          var w = canvas.width;
+          var h = canvas.height;
+          ctx.fillStyle = '#090d16';
+          ctx.fillRect(0, 0, w, h);
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 4;
+          ctx.strokeRect(4, 4, w - 8, h - 8);
+
+          ctx.fillStyle = '#38bdf8';
+          ctx.font = 'bold 20px sans-serif';
+          ctx.fillText('THÔNG SỐ MẠCH ĐIỆN THỰC TẾ', 20, 34);
+
+          var statusText = info.closed ? 'MẠCH KÍN - ĐÈN SÁNG' : 'MẠCH HỞ / LỖI ĐẤU DÂY';
+          ctx.fillStyle = info.closed ? '#4ade80' : '#f87171';
+          ctx.font = 'bold 18px sans-serif';
+          ctx.fillText('Trạng thái: ' + statusText, 20, 66);
+
+          ctx.fillStyle = '#fde047';
+          ctx.font = 'bold 26px monospace';
+          ctx.fillText('I = ' + (info.currentA || 0).toFixed(2) + ' A   |   U_đèn = ' + (info.bulbV || 0).toFixed(2) + ' V', 20, 108);
+
+          ctx.fillStyle = '#e2e8f0';
+          ctx.font = 'bold 22px monospace';
+          ctx.fillText('R_biến_trở = ' + (info.rheostatOhm || 0).toFixed(1) + ' Ω  |  U_nguồn = ' + (info.emfV || 0).toFixed(1) + ' V', 20, 146);
+
+          ctx.fillStyle = '#94a3b8';
+          ctx.font = '16px sans-serif';
+          ctx.fillText('R_đèn = 8.5 Ω  •  Công suất đèn P = ' + (info.powerW || 0).toFixed(2) + ' W', 20, 180);
+        }
+
+        // 1. Giá đỡ pin (Battery Holder): SLOT_1 (trên: z = -0.022), SLOT_2 (dưới: z = +0.022)
+        // Khay 1: BAT1_POS (Đỏ, trái-trên) và BAT1_NEG (Đen, phải-trên hoặc trái-dưới theo quy ước 4 góc)
+        // Theo đúng đặc tả:
+        // + Khay 1: BAT1_POS (Đỏ, trái-trên: x=-0.060, z=-0.026) và BAT1_NEG (Đen, trái-dưới: x=-0.060, z=+0.026)
+        // + Khay 2: BAT2_NEG (Đen, phải-trên: x=+0.060, z=-0.026) và BAT2_POS (Đỏ, phải-dưới: x=+0.060, z=+0.026)
+        function buildBatteryHolderUnit(THREE) {
+          var unit = new THREE.Group();
+          unit.name = 'unit_battery_holder';
+
+          var acrylicMat = new THREE.MeshPhysicalMaterial({
+            color: 0xe2e8f0,
+            transparent: true,
+            opacity: 0.52,
+            roughness: 0.15,
+            metalness: 0.05,
+            ior: 1.49,
+            clearcoat: 1.0
+          });
+          var baseGeo = createRoundedBoxGeometry(THREE, 0.140, 0.012, 0.088, 0.005, 0.0015);
+          var baseMesh = new THREE.Mesh(baseGeo, acrylicMat);
+          baseMesh.name = 'body';
+          unit.add(baseMesh);
+
+          var wallMat = new THREE.MeshPhysicalMaterial({
+            color: 0xf1f5f9,
+            transparent: true,
+            opacity: 0.68,
+            roughness: 0.2,
+            clearcoat: 0.8
+          });
+          var leftWall = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.018, 0.028, 0.086, 0.003, 0.001), wallMat);
+          leftWall.position.set(-0.060, 0.012, 0);
+          unit.add(leftWall);
+
+          var rightWall = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.018, 0.028, 0.086, 0.003, 0.001), wallMat);
+          rightWall.position.set(0.060, 0.012, 0);
+          unit.add(rightWall);
+
+          var midRidge = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.104, 0.012, 0.008, 0.002, 0.001), wallMat);
+          midRidge.position.set(0, 0.012, 0);
+          unit.add(midRidge);
+
+          var metalMat = new THREE.MeshPhysicalMaterial({
+            color: 0xd97706,
+            metalness: 0.92,
+            roughness: 0.18
+          });
+          var contactL1 = new THREE.Mesh(new THREE.BoxGeometry(0.002, 0.016, 0.016), metalMat);
+          contactL1.position.set(-0.049, 0.024, -0.022);
+          unit.add(contactL1);
+
+          var contactL2 = new THREE.Mesh(new THREE.BoxGeometry(0.002, 0.016, 0.016), metalMat);
+          contactL2.position.set(-0.049, 0.024, 0.022);
+          unit.add(contactL2);
+
+          var contactR1 = new THREE.Mesh(new THREE.BoxGeometry(0.002, 0.016, 0.016), metalMat);
+          contactR1.position.set(0.049, 0.024, -0.022);
+          unit.add(contactR1);
+
+          var contactR2 = new THREE.Mesh(new THREE.BoxGeometry(0.002, 0.016, 0.016), metalMat);
+          contactR2.position.set(0.049, 0.024, 0.022);
+          unit.add(contactR2);
+
+          var stickerMat = new THREE.MeshBasicMaterial({ color: 0x15803d });
+          var sticker = new THREE.Mesh(new THREE.PlaneGeometry(0.024, 0.008), stickerMat);
+          sticker.position.set(0, 0.006, 0.0445);
+          unit.add(sticker);
+
+          // 4 Cọc ở 4 góc đúng theo từng ngăn:
+          // Ngăn 1 (z = -0.022): BAT1_POS (Đỏ, trái: x=-0.060, z=-0.026) và BAT1_NEG (Đen, phải: x=+0.060, z=-0.026)
+          // Ngăn 2 (z = +0.022): BAT2_NEG (Đen, trái: x=-0.060, z=+0.026) và BAT2_POS (Đỏ, phải: x=+0.060, z=+0.026)
+          var sockBat1Pos = createBananaSocket(THREE, 'BAT1_POS', 'BAT1_POS (Đỏ - Cực + Pin 1)', 0xef4444, -0.060, 0.040, -0.026, 0);
+          var sockBat1Neg = createBananaSocket(THREE, 'BAT1_NEG', 'BAT1_NEG (Đen - Cực - Pin 1)', 0x1e293b, 0.060, 0.040, -0.026, 0);
+          var sockBat2Neg = createBananaSocket(THREE, 'BAT2_NEG', 'BAT2_NEG (Đen - Cực - Pin 2)', 0x1e293b, -0.060, 0.040, 0.026, 0);
+          var sockBat2Pos = createBananaSocket(THREE, 'BAT2_POS', 'BAT2_POS (Đỏ - Cực + Pin 2)', 0xef4444, 0.060, 0.040, 0.026, 0);
+          unit.add(sockBat1Pos, sockBat1Neg, sockBat2Neg, sockBat2Pos);
+
+          // Vùng sáng màu xanh lá khi rà pin vào đúng ngăn (SLOT_1 hoặc SLOT_2)
+          var slotHlMat1 = new THREE.MeshBasicMaterial({
+            color: 0x22c55e,
+            transparent: true,
+            opacity: 0.48,
+            depthWrite: false
+          });
+          var slot1Hl = new THREE.Mesh(new THREE.BoxGeometry(0.094, 0.026, 0.036), slotHlMat1);
+          slot1Hl.position.set(0, 0.025, -0.022);
+          slot1Hl.name = 'slot1_highlight';
+          slot1Hl.visible = false;
+          unit.add(slot1Hl);
+
+          var slotHlMat2 = new THREE.MeshBasicMaterial({
+            color: 0x22c55e,
+            transparent: true,
+            opacity: 0.48,
+            depthWrite: false
+          });
+          var slot2Hl = new THREE.Mesh(new THREE.BoxGeometry(0.094, 0.026, 0.036), slotHlMat2);
+          slot2Hl.position.set(0, 0.025, 0.022);
+          slot2Hl.name = 'slot2_highlight';
+          slot2Hl.visible = false;
+          unit.add(slot2Hl);
+
+          unit.userData = {
+            unitId: 'battery_holder',
+            titleVi: 'Giá Đỡ 2 Pin Trong Suốt (SLOT_1 & SLOT_2)',
+            detachable: true,
+            slot1Hl: slot1Hl,
+            slot2Hl: slot2Hl,
+            homePos: new THREE.Vector3(-0.175, 0, -0.085)
+          };
+          return unit;
+        }
+
+        // 1B. Giá đỡ 1 Pin (Single Battery Holder #1 & #2):
+        // Khi rà pin vào hiện màu xanh lá (slot_highlight) và tự động khớp pin vào đúng chỗ
+        function buildSingleBatteryHolderUnit(THREE, holderIndex) {
+          var unit = new THREE.Group();
+          unit.name = 'unit_single_battery_holder_' + holderIndex;
+
+          var acrylicMat = new THREE.MeshPhysicalMaterial({
+            color: 0xe2e8f0,
+            transparent: true,
+            opacity: 0.54,
+            roughness: 0.15,
+            metalness: 0.05,
+            ior: 1.49,
+            clearcoat: 1.0
+          });
+          var baseGeo = createRoundedBoxGeometry(THREE, 0.140, 0.012, 0.048, 0.005, 0.0015);
+          var baseMesh = new THREE.Mesh(baseGeo, acrylicMat);
+          baseMesh.name = 'body';
+          unit.add(baseMesh);
+
+          var wallMat = new THREE.MeshPhysicalMaterial({
+            color: 0xf1f5f9,
+            transparent: true,
+            opacity: 0.70,
+            roughness: 0.2,
+            clearcoat: 0.8
+          });
+          var leftWall = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.018, 0.028, 0.046, 0.003, 0.001), wallMat);
+          leftWall.position.set(-0.060, 0.012, 0);
+          unit.add(leftWall);
+
+          var rightWall = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.018, 0.028, 0.046, 0.003, 0.001), wallMat);
+          rightWall.position.set(0.060, 0.012, 0);
+          unit.add(rightWall);
+
+          var frontRail = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.104, 0.010, 0.004, 0.001, 0.0005), wallMat);
+          frontRail.position.set(0, 0.012, 0.021);
+          unit.add(frontRail);
+
+          var backRail = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.104, 0.010, 0.004, 0.001, 0.0005), wallMat);
+          backRail.position.set(0, 0.012, -0.021);
+          unit.add(backRail);
+
+          var metalMat = new THREE.MeshPhysicalMaterial({
+            color: 0xd97706,
+            metalness: 0.92,
+            roughness: 0.18
+          });
+          var contactL = new THREE.Mesh(new THREE.BoxGeometry(0.002, 0.016, 0.018), metalMat);
+          contactL.position.set(-0.049, 0.024, 0);
+          unit.add(contactL);
+
+          var contactR = new THREE.Mesh(new THREE.BoxGeometry(0.002, 0.016, 0.018), metalMat);
+          contactR.position.set(0.049, 0.024, 0);
+          unit.add(contactR);
+
+          var posId = 'SBAT' + holderIndex + '_POS';
+          var negId = 'SBAT' + holderIndex + '_NEG';
+          var sockPos = createBananaSocket(
+            THREE,
+            posId,
+            posId + ' (Đỏ - Cực + Giá đỡ 1 pin #' + holderIndex + ')',
+            0xef4444,
+            -0.060,
+            0.040,
+            0,
+            0
+          );
+          var sockNeg = createBananaSocket(
+            THREE,
+            negId,
+            negId + ' (Đen - Cực - Giá đỡ 1 pin #' + holderIndex + ')',
+            0x1e293b,
+            0.060,
+            0.040,
+            0,
+            0
+          );
+          unit.add(sockPos, sockNeg);
+
+          var slotHlMat = new THREE.MeshBasicMaterial({
+            color: 0x22c55e,
+            transparent: true,
+            opacity: 0.48,
+            depthWrite: false
+          });
+          var slotHl = new THREE.Mesh(new THREE.BoxGeometry(0.094, 0.026, 0.036), slotHlMat);
+          slotHl.position.set(0, 0.025, 0);
+          slotHl.name = 'slot_highlight';
+          slotHl.visible = false;
+          unit.add(slotHl);
+
+          unit.userData = {
+            unitId: 'single_battery_holder_' + holderIndex,
+            titleVi: 'Giá Đỡ 1 Pin #' + holderIndex + ' (' + posId + ' & ' + negId + ')',
+            detachable: true,
+            slotHl: slotHl,
+            homePos: new THREE.Vector3(holderIndex === 1 ? -0.025 : 0.145, 0, 0.0)
+          };
+          return unit;
+        }
+
+        // 2. Viên Pin Đại Con Ó 1.5V (SLOT_1 ở z = -0.022, SLOT_2 ở z = +0.022)
+        function buildConOBatteryUnit(THREE, index, tex) {
+          var batGroup = new THREE.Group();
+          batGroup.name = 'unit_battery_' + index;
+
+          var r = 0.0155;
+          var len = 0.090;
+          var bodyGeo = new THREE.CylinderGeometry(r, r, len, 28, 1, false);
+          bodyGeo.rotateZ(Math.PI / 2);
+          var bodyMat = new THREE.MeshPhysicalMaterial({
+            map: tex,
+            roughness: 0.24,
+            metalness: 0.15,
+            clearcoat: 0.65
+          });
+          var bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+          bodyMesh.name = 'body';
+          bodyMesh.position.y = r + 0.012;
+          batGroup.add(bodyMesh);
+
+          var metalMat = new THREE.MeshPhysicalMaterial({
+            color: 0xe2e8f0,
+            metalness: 0.94,
+            roughness: 0.14,
+            clearcoat: 0.7
+          });
+          var isPosLeft = (index !== 2);
+          var capPos = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.96, r * 0.96, 0.002, 24), metalMat);
+          capPos.rotation.z = Math.PI / 2;
+          capPos.position.set(isPosLeft ? -len / 2 : len / 2, r + 0.012, 0);
+          batGroup.add(capPos);
+
+          var capNeg = new THREE.Mesh(new THREE.CylinderGeometry(r * 0.96, r * 0.96, 0.002, 24), metalMat);
+          capNeg.rotation.z = Math.PI / 2;
+          capNeg.position.set(isPosLeft ? len / 2 : -len / 2, r + 0.012, 0);
+          batGroup.add(capNeg);
+
+          var nub = new THREE.Mesh(new THREE.CylinderGeometry(0.0048, 0.0052, 0.005, 20), metalMat);
+          nub.rotation.z = Math.PI / 2;
+          nub.position.set(isPosLeft ? -len / 2 - 0.0025 : len / 2 + 0.0025, r + 0.012, 0);
+          batGroup.add(nub);
+
+          batGroup.userData = {
+            unitId: 'battery_' + index,
+            titleVi: 'Viên Pin Đại Con Ó 1.5V #' + index,
+            detachable: true,
+            isInserted: index <= 2,
+            slotZ: index === 1 ? -0.022 : 0.022
+          };
+          return batGroup;
+        }
+
+        // 3. Cầu dao K (Switch): SW_RED (Đỏ) và SW_GREEN (Xanh lá)
+        function buildKnifeSwitchUnit(THREE) {
+          var unit = new THREE.Group();
+          unit.name = 'unit_switch';
+
+          var baseMat = new THREE.MeshPhysicalMaterial({
+            color: 0xf59e0b,
+            roughness: 0.26,
+            metalness: 0.06,
+            clearcoat: 0.45
+          });
+          var baseMesh = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.112, 0.016, 0.068, 0.005, 0.0015), baseMat);
+          baseMesh.name = 'body';
+          unit.add(baseMesh);
+
+          var labelCanvas = document.createElement('canvas');
+          labelCanvas.width = 256;
+          labelCanvas.height = 160;
+          var lctx = labelCanvas.getContext('2d');
+          lctx.fillStyle = '#f59e0b';
+          lctx.fillRect(0, 0, 256, 160);
+          lctx.fillStyle = '#1e293b';
+          lctx.font = 'bold 20px sans-serif';
+          lctx.textAlign = 'center';
+          lctx.fillText('CẦU DAO', 128, 32);
+          lctx.strokeStyle = '#1e293b';
+          lctx.lineWidth = 4;
+          lctx.beginPath();
+          lctx.moveTo(46, 122);
+          lctx.lineTo(104, 122);
+          lctx.lineTo(146, 98);
+          lctx.moveTo(152, 122);
+          lctx.lineTo(210, 122);
+          lctx.stroke();
+          lctx.font = 'bold 22px sans-serif';
+          lctx.fillText('K', 124, 108);
+
+          var labelTex = configureTextureColorAndAnisotropy(THREE, new THREE.CanvasTexture(labelCanvas), 8);
+          var topPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(0.102, 0.058),
+            new THREE.MeshBasicMaterial({ map: labelTex, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 })
+          );
+          topPlane.rotation.x = -Math.PI / 2;
+          topPlane.position.y = 0.0162;
+          unit.add(topPlane);
+
+          var metalMat = new THREE.MeshPhysicalMaterial({
+            color: 0xe2e8f0,
+            metalness: 0.92,
+            roughness: 0.15,
+            clearcoat: 0.7
+          });
+          var postLeft = new THREE.Mesh(new THREE.BoxGeometry(0.010, 0.016, 0.010), metalMat);
+          postLeft.position.set(-0.028, 0.023, -0.008);
+          unit.add(postLeft);
+
+          // Ngàm kẹp chữ U bên phải để lưỡi dao đóng sát khít vào giữa 2 má đồng
+          var postRightBase = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.005, 0.012), metalMat);
+          postRightBase.position.set(0.018, 0.0185, -0.008);
+          unit.add(postRightBase);
+
+          var forkFront = new THREE.Mesh(new THREE.BoxGeometry(0.010, 0.014, 0.0025), metalMat);
+          forkFront.position.set(0.018, 0.024, -0.005);
+          unit.add(forkFront);
+
+          var forkBack = new THREE.Mesh(new THREE.BoxGeometry(0.010, 0.014, 0.0025), metalMat);
+          forkBack.position.set(0.018, 0.024, -0.011);
+          unit.add(forkBack);
+
+          var bladePivot = new THREE.Group();
+          bladePivot.name = 'switch_blade_pivot';
+          bladePivot.position.set(-0.028, 0.023, -0.008);
+
+          var bladeMetalMat = new THREE.MeshPhysicalMaterial({
+            color: 0xe2e8f0,
+            emissive: 0x000000,
+            emissiveIntensity: 0.0,
+            metalness: 0.92,
+            roughness: 0.15,
+            clearcoat: 0.7
+          });
+          var bladeMesh = new THREE.Mesh(new THREE.BoxGeometry(0.058, 0.007, 0.0032), bladeMetalMat);
+          bladeMesh.position.set(0.026, 0, 0);
+          bladeMesh.name = 'switch_blade_mesh';
+          bladePivot.add(bladeMesh);
+
+          var handleMat = new THREE.MeshPhysicalMaterial({
+            color: 0x0f172a,
+            emissive: 0x000000,
+            emissiveIntensity: 0.0,
+            roughness: 0.25,
+            clearcoat: 0.5
+          });
+          var handleMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.0055, 0.0045, 0.024, 16), handleMat);
+          handleMesh.rotation.z = Math.PI / 2;
+          handleMesh.position.set(0.062, 0.001, 0);
+          handleMesh.name = 'handle';
+          bladePivot.add(handleMesh);
+
+          // Lớp phủ màu xanh lá (Selection Highlight) khi người dùng rà chuột vào thanh bật/tắt công tắc
+          var leverHlGroup = new THREE.Group();
+          leverHlGroup.name = 'switch_lever_highlight';
+          var leverHlMat = new THREE.MeshBasicMaterial({
+            color: 0x22c55e,
+            transparent: true,
+            opacity: 0.45,
+            depthWrite: false
+          });
+          var bladeHlMesh = new THREE.Mesh(new THREE.BoxGeometry(0.060, 0.0095, 0.0065), leverHlMat);
+          bladeHlMesh.position.set(0.026, 0, 0);
+          leverHlGroup.add(bladeHlMesh);
+
+          var handleHlMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.0072, 0.0062, 0.026, 16), leverHlMat);
+          handleHlMesh.rotation.z = Math.PI / 2;
+          handleHlMesh.position.set(0.062, 0.001, 0);
+          leverHlGroup.add(handleHlMesh);
+
+          leverHlGroup.visible = false;
+          bladePivot.add(leverHlGroup);
+
+          // Vùng bắt chuột (Hitbox) bao quanh thanh công tắc để dễ rà chuột và kéo lên/xuống
+          var leverHitbox = new THREE.Mesh(
+            new THREE.BoxGeometry(0.082, 0.022, 0.020),
+            new THREE.MeshBasicMaterial({ visible: false })
+          );
+          leverHitbox.position.set(0.038, 0.001, 0);
+          leverHitbox.name = 'switch_lever_hitbox';
+          bladePivot.add(leverHitbox);
+
+          bladePivot.rotation.z = 0.72;
+          unit.add(bladePivot);
+
+          var sockL = createBananaSocket(THREE, 'SW_RED', 'SW_RED (Cọc Đỏ Cầu Dao K)', 0xef4444, -0.034, 0.016, 0.018, 0);
+          var sockR = createBananaSocket(THREE, 'SW_GREEN', 'SW_GREEN (Cọc Xanh Lá Cầu Dao K)', 0x16a34a, 0.034, 0.016, 0.018, 0);
+          unit.add(sockL, sockR);
+
+          unit.userData = {
+            unitId: 'switch',
+            titleVi: 'Cầu Dao K (SW_RED & SW_GREEN)',
+            detachable: true,
+            bladePivot: bladePivot,
+            bladeMetalMat: bladeMetalMat,
+            handleMat: handleMat,
+            leverHlGroup: leverHlGroup,
+            homePos: new THREE.Vector3(-0.175, 0, 0.085)
+          };
+          return unit;
+        }
+
+        // 4. Bóng đèn 126 (Bulb): BULB_NEG (Đen, trái) và BULB_POS (Đỏ, phải), R_bulb = 8.5Ω
+        function buildLightBulbUnit(THREE) {
+          var unit = new THREE.Group();
+          unit.name = 'unit_bulb';
+
+          var baseMat = new THREE.MeshPhysicalMaterial({
+            color: 0xe2e8f0,
+            transparent: true,
+            opacity: 0.85,
+            roughness: 0.22,
+            metalness: 0.05,
+            clearcoat: 0.6
+          });
+          var baseMesh = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.092, 0.024, 0.056, 0.004, 0.0015), baseMat);
+          baseMesh.name = 'body';
+          unit.add(baseMesh);
+
+          var brassMat = new THREE.MeshPhysicalMaterial({
+            color: 0xd97706,
+            metalness: 0.90,
+            roughness: 0.18,
+            clearcoat: 0.6
+          });
+          var bracket = new THREE.Mesh(new THREE.BoxGeometry(0.036, 0.003, 0.022), brassMat);
+          bracket.position.set(0, 0.0255, 0);
+          unit.add(bracket);
+
+          var screwShell = new THREE.Mesh(new THREE.CylinderGeometry(0.0095, 0.0095, 0.016, 24), brassMat);
+          screwShell.position.set(0, 0.033, 0);
+          unit.add(screwShell);
+
+          var blueBeadMat = new THREE.MeshPhysicalMaterial({
+            color: 0x0284c7,
+            transparent: true,
+            opacity: 0.85,
+            roughness: 0.1
+          });
+          var blueBead = new THREE.Mesh(new THREE.SphereGeometry(0.0045, 16, 12), blueBeadMat);
+          blueBead.position.set(0, 0.044, 0);
+          unit.add(blueBead);
+
+          var filamentMat = new THREE.MeshStandardMaterial({
+            color: 0xfef08a,
+            emissive: 0xffa500,
+            emissiveIntensity: 0.0,
+            roughness: 0.2
+          });
+          var filamentGeo = new THREE.TorusGeometry(0.0048, 0.0009, 10, 24, Math.PI * 1.2);
+          var filamentMesh = new THREE.Mesh(filamentGeo, filamentMat);
+          filamentMesh.position.set(0, 0.051, 0);
+          filamentMesh.name = 'bulb_filament';
+          unit.add(filamentMesh);
+
+          var glassMat = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            emissive: 0xfef08a,
+            emissiveIntensity: 0.0,
+            transparent: true,
+            opacity: 0.36,
+            roughness: 0.05,
+            metalness: 0.05,
+            ior: 1.48,
+            clearcoat: 1.0,
+            depthWrite: false
+          });
+          var bulbGlass = new THREE.Mesh(new THREE.SphereGeometry(0.014, 28, 24), glassMat);
+          bulbGlass.position.set(0, 0.051, 0);
+          bulbGlass.renderOrder = 4;
+          unit.add(bulbGlass);
+
+          var haloMat = new THREE.MeshBasicMaterial({
+            color: 0xfde047,
+            transparent: true,
+            opacity: 0.0,
+            depthWrite: false
+          });
+          var haloMesh = new THREE.Mesh(new THREE.SphereGeometry(0.025, 20, 16), haloMat);
+          haloMesh.position.set(0, 0.051, 0);
+          haloMesh.renderOrder = 5;
+          unit.add(haloMesh);
+
+          var bulbLight = new THREE.PointLight(0xffedd5, 0, 0.45);
+          bulbLight.position.set(0, 0.065, 0);
+          unit.add(bulbLight);
+
+          var sockL = createBananaSocket(THREE, 'BULB_NEG', 'BULB_NEG (Cọc Đen Bóng Đèn -)', 0x1e293b, -0.028, 0.024, 0, 0);
+          var sockR = createBananaSocket(THREE, 'BULB_POS', 'BULB_POS (Cọc Đỏ Bóng Đèn +)', 0xef4444, 0.028, 0.024, 0, 0);
+          unit.add(sockL, sockR);
+
+          unit.userData = {
+            unitId: 'bulb',
+            titleVi: 'Bóng Đèn 126 (R_bulb = 8.5Ω)',
+            detachable: true,
+            filamentMat: filamentMat,
+            glassMat: glassMat,
+            haloMat: haloMat,
+            bulbLight: bulbLight,
+            homePos: new THREE.Vector3(0.015, 0, 0.085)
+          };
+          return unit;
+        }
+
+        // 5. Biến trở con chạy 20Ω (Rheostat): RHEO_IN (Đỏ, trái), RHEO_COIL_END (Xanh, giữa), RHEO_WIPER (Xanh, phải)
+        function buildRheostatUnit(THREE) {
+          var unit = new THREE.Group();
+          unit.name = 'unit_rheostat';
+
+          var baseMat = new THREE.MeshPhysicalMaterial({
+            color: 0x7f1d1d,
+            roughness: 0.28,
+            metalness: 0.08,
+            clearcoat: 0.5
+          });
+          var baseMesh = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.176, 0.014, 0.068, 0.004, 0.0015), baseMat);
+          baseMesh.name = 'body';
+          unit.add(baseMesh);
+
+          var diagCanvas = document.createElement('canvas');
+          diagCanvas.width = 512;
+          diagCanvas.height = 128;
+          var dctx = diagCanvas.getContext('2d');
+          dctx.fillStyle = '#7f1d1d';
+          dctx.fillRect(0, 0, 512, 128);
+          dctx.strokeStyle = '#f8fafc';
+          dctx.fillStyle = '#f8fafc';
+          dctx.lineWidth = 4;
+          dctx.beginPath();
+          dctx.moveTo(70, 88);
+          dctx.lineTo(180, 88);
+          dctx.moveTo(290, 88);
+          dctx.lineTo(430, 88);
+          dctx.moveTo(190, 42);
+          var zx = 190;
+          for (var k = 0; k < 6; k++) {
+            dctx.lineTo(zx + 10, k % 2 === 0 ? 22 : 58);
+            zx += 10;
+          }
+          dctx.stroke();
+          dctx.font = 'bold 18px sans-serif';
+          dctx.fillText('IN (Dưới Trái)', 38, 114);
+          dctx.fillText('2 CHỐT TRÊN (Thanh Ray)', 165, 114);
+          dctx.fillText('END (Dưới Phải)', 365, 114);
+
+          var diagTex = configureTextureColorAndAnisotropy(THREE, new THREE.CanvasTexture(diagCanvas), 8);
+          var diagPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(0.162, 0.028),
+            new THREE.MeshBasicMaterial({ map: diagTex, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 })
+          );
+          diagPlane.rotation.x = -Math.PI / 2;
+          diagPlane.position.set(0, 0.0142, 0.016);
+          unit.add(diagPlane);
+
+          var standMat = new THREE.MeshPhysicalMaterial({
+            color: 0x0f172a,
+            roughness: 0.3,
+            metalness: 0.1
+          });
+          var standL = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.014, 0.056, 0.042, 0.002, 0.001), standMat);
+          standL.position.set(-0.072, 0.014, -0.008);
+          unit.add(standL);
+
+          var standR = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.014, 0.056, 0.042, 0.002, 0.001), standMat);
+          standR.position.set(0.072, 0.014, -0.008);
+          unit.add(standR);
+
+          var coilCanvas = document.createElement('canvas');
+          coilCanvas.width = 512;
+          coilCanvas.height = 64;
+          var cctx = coilCanvas.getContext('2d');
+          for (var i = 0; i < 512; i += 4) {
+            cctx.fillStyle = (i % 8 === 0) ? '#1e293b' : '#475569';
+            cctx.fillRect(i, 0, 4, 64);
+          }
+          var coilTex = configureTextureColorAndAnisotropy(THREE, new THREE.CanvasTexture(coilCanvas), 8);
+          var coilMat = new THREE.MeshPhysicalMaterial({
+            map: coilTex,
+            metalness: 0.65,
+            roughness: 0.35
+          });
+          var coilGeo = new THREE.CylinderGeometry(0.0135, 0.0135, 0.132, 28);
+          coilGeo.rotateZ(Math.PI / 2);
+          var coilMesh = new THREE.Mesh(coilGeo, coilMat);
+          coilMesh.position.set(0, 0.036, -0.008);
+          unit.add(coilMesh);
+
+          var rodMat = new THREE.MeshPhysicalMaterial({
+            color: 0xe2e8f0,
+            metalness: 0.94,
+            roughness: 0.12
+          });
+          var topRod = new THREE.Mesh(new THREE.BoxGeometry(0.148, 0.005, 0.005), rodMat);
+          topRod.position.set(0, 0.061, -0.008);
+          unit.add(topRod);
+
+          var redCapMat = new THREE.MeshPhysicalMaterial({ color: 0xdc2626, roughness: 0.25 });
+          var capL = new THREE.Mesh(new THREE.CylinderGeometry(0.0055, 0.0055, 0.012, 16), redCapMat);
+          capL.rotation.z = Math.PI / 2;
+          capL.position.set(-0.084, 0.061, -0.008);
+          unit.add(capL);
+
+          var capR = new THREE.Mesh(new THREE.CylinderGeometry(0.0055, 0.0055, 0.012, 16), redCapMat);
+          capR.rotation.z = Math.PI / 2;
+          capR.position.set(0.084, 0.061, -0.008);
+          unit.add(capR);
+
+          var wiperGroup = new THREE.Group();
+          wiperGroup.name = 'plunger';
+          var wiperBody = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.024, 0.022, 0.028, 0.002, 0.001), standMat);
+          wiperBody.position.y = 0.052;
+          wiperGroup.add(wiperBody);
+
+          var wiperContact = new THREE.Mesh(new THREE.BoxGeometry(0.010, 0.012, 0.030), rodMat);
+          wiperContact.position.y = 0.044;
+          wiperGroup.add(wiperContact);
+
+          var tagCanvas = document.createElement('canvas');
+          tagCanvas.width = 128;
+          tagCanvas.height = 64;
+          var tctx = tagCanvas.getContext('2d');
+          tctx.fillStyle = '#e0f2fe';
+          tctx.fillRect(0, 0, 128, 64);
+          tctx.fillStyle = '#0369a1';
+          tctx.font = 'bold 30px sans-serif';
+          tctx.textAlign = 'center';
+          tctx.fillText('20Ω', 64, 44);
+          var tagTex = configureTextureColorAndAnisotropy(THREE, new THREE.CanvasTexture(tagCanvas), 8);
+          var tagPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(0.018, 0.012),
+            new THREE.MeshBasicMaterial({ map: tagTex, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 })
+          );
+          tagPlane.rotation.x = -Math.PI / 2;
+          tagPlane.position.y = 0.0742;
+          wiperGroup.add(tagPlane);
+
+          wiperGroup.position.set(-0.032, 0, -0.008);
+          unit.add(wiperGroup);
+
+          // 2 chốt dưới (cuộn dây): RHEO_IN (trái) và RHEO_COIL_END (phải)
+          var sockIn = createBananaSocket(THREE, 'RHEO_IN', 'RHEO_IN (Chốt dưới trái - Đầu cuộn dây)', 0xef4444, -0.058, 0.014, 0.019, 0);
+          var sockEnd = createBananaSocket(THREE, 'RHEO_COIL_END', 'RHEO_COIL_END (Chốt dưới phải - Cuối cuộn dây)', 0x2563eb, 0.058, 0.014, 0.019, 0);
+          // 2 chốt trên (thanh kim loại con chạy): RHEO_RAIL_L (trên trái) và RHEO_WIPER (trên phải)
+          var sockRailL = createBananaSocket(THREE, 'RHEO_RAIL_L', 'RHEO_RAIL_L (Chốt trên trái - Thanh kim loại)', 0x16a34a, -0.072, 0.068, -0.008, 0);
+          var sockWiper = createBananaSocket(THREE, 'RHEO_WIPER', 'RHEO_WIPER (Chốt trên phải - Thanh kim loại)', 0x16a34a, 0.072, 0.068, -0.008, 0);
+          unit.add(sockIn, sockEnd, sockRailL, sockWiper);
+
+          unit.userData = {
+            unitId: 'rheostat',
+            titleVi: 'Biến Trở Con Chạy 20Ω (2 chốt dưới cuộn dây & 2 chốt trên thanh ray)',
+            detachable: true,
+            wiperGroup: wiperGroup,
+            homePos: new THREE.Vector3(0.180, 0, -0.085)
+          };
+          return unit;
+        }
+
+        // 6 & 7. Ampe kế DC (AM_NEG, AM_06A, AM_3A) & Vôn kế DC (VM_NEG, VM_6V, VM_12V)
+        function buildAnalogMeterUnit(THREE, type) {
+          var isAmmeter = (type === 'A');
+          var unit = new THREE.Group();
+          unit.name = isAmmeter ? 'unit_ammeter' : 'unit_voltmeter';
+
+          var housingMat = new THREE.MeshPhysicalMaterial({
+            color: 0x18181b,
+            roughness: 0.28,
+            metalness: 0.08,
+            clearcoat: 0.35
+          });
+
+          var baseFoot = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.098, 0.024, 0.096, 0.004, 0.0015), housingMat);
+          baseFoot.name = 'base_foot';
+          unit.add(baseFoot);
+
+          var upperBody = new THREE.Mesh(createRoundedBoxGeometry(THREE, 0.096, 0.086, 0.066, 0.005, 0.002), housingMat);
+          upperBody.name = 'body';
+          upperBody.position.set(0, 0.020, -0.014);
+          upperBody.rotation.x = -0.22;
+          unit.add(upperBody);
+
+          var faceGroup = new THREE.Group();
+          faceGroup.position.set(0, 0.068, 0.012);
+          faceGroup.rotation.x = -0.26;
+
+          var dialCanvas = document.createElement('canvas');
+          dialCanvas.width = 512;
+          dialCanvas.height = 380;
+          drawMeterDialCanvas(dialCanvas, type);
+          var dialTex = configureTextureColorAndAnisotropy(THREE, new THREE.CanvasTexture(dialCanvas), 8);
+
+          var dialPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(0.086, 0.066),
+            new THREE.MeshBasicMaterial({ map: dialTex, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 })
+          );
+          dialPlane.position.z = 0.001;
+          faceGroup.add(dialPlane);
+
+          var needlePivot = new THREE.Group();
+          needlePivot.name = isAmmeter ? 'ammeter_needle' : 'voltmeter_needle';
+          needlePivot.position.set(0, -0.023, 0.003);
+
+          var needleMat = new THREE.MeshBasicMaterial({ color: 0xdc2626 });
+          var needleGeo = new THREE.ConeGeometry(0.0016, 0.048, 8);
+          needleGeo.translate(0, 0.024, 0);
+          var needleMesh = new THREE.Mesh(needleGeo, needleMat);
+          needleMesh.name = 'plunger';
+          needlePivot.add(needleMesh);
+
+          var capMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.0035, 0.0035, 0.002, 16), housingMat);
+          capMesh.rotation.x = Math.PI / 2;
+          needlePivot.add(capMesh);
+
+          needlePivot.rotation.z = 0.83;
+          faceGroup.add(needlePivot);
+
+          var coverGlassMat = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.26,
+            roughness: 0.06,
+            ior: 1.49,
+            clearcoat: 1.0,
+            depthWrite: false
+          });
+          var coverBox = new THREE.Mesh(new THREE.BoxGeometry(0.090, 0.070, 0.008), coverGlassMat);
+          coverBox.position.z = 0.004;
+          coverBox.renderOrder = 4;
+          faceGroup.add(coverBox);
+
+          var zeroScrew = new THREE.Mesh(new THREE.CylinderGeometry(0.003, 0.003, 0.003, 16), housingMat);
+          zeroScrew.rotation.x = Math.PI / 2;
+          zeroScrew.position.set(0, -0.018, 0.0085);
+          faceGroup.add(zeroScrew);
+
+          unit.add(faceGroup);
+
+          var stripCanvas = document.createElement('canvas');
+          stripCanvas.width = 256;
+          stripCanvas.height = 64;
+          var sctx = stripCanvas.getContext('2d');
+          sctx.fillStyle = isAmmeter ? '#15803d' : '#1d4ed8';
+          sctx.fillRect(0, 0, 256, 64);
+          sctx.strokeStyle = '#f8fafc';
+          sctx.lineWidth = 3;
+          sctx.strokeRect(3, 3, 250, 58);
+          sctx.fillStyle = '#ffffff';
+          sctx.font = 'bold 20px sans-serif';
+          sctx.textAlign = 'center';
+          sctx.fillText('-', 46, 56);
+          sctx.fillText(isAmmeter ? '0.6A' : '6V', 128, 56);
+          sctx.fillText(isAmmeter ? '3A' : '12V', 210, 56);
+
+          var stripTex = configureTextureColorAndAnisotropy(THREE, new THREE.CanvasTexture(stripCanvas), 8);
+          var stripPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(0.088, 0.022),
+            new THREE.MeshBasicMaterial({ map: stripTex, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 })
+          );
+          stripPlane.rotation.x = -Math.PI / 2;
+          stripPlane.position.set(0, 0.0242, 0.032);
+          unit.add(stripPlane);
+
+          var sockNeg = createBananaSocket(
+            THREE,
+            isAmmeter ? 'AM_NEG' : 'VM_NEG',
+            isAmmeter ? 'AM_NEG (Đen, Cọc - Ampe kế)' : 'VM_NEG (Đen, Cọc - Vôn kế)',
+            0x1e293b,
+            -0.028, 0.024, 0.030, 0
+          );
+          var sockR1 = createBananaSocket(
+            THREE,
+            isAmmeter ? 'AM_06A' : 'VM_6V',
+            isAmmeter ? 'AM_06A (Đỏ, Thang 0.6A)' : 'VM_6V (Đỏ, Thang 6V)',
+            0xef4444,
+            0.000, 0.024, 0.030, 0
+          );
+          var sockR2 = createBananaSocket(
+            THREE,
+            isAmmeter ? 'AM_3A' : 'VM_12V',
+            isAmmeter ? 'AM_3A (Đỏ, Thang 3A)' : 'VM_12V (Đỏ, Thang 12V)',
+            0xef4444,
+            0.028, 0.024, 0.030, 0
+          );
+          unit.add(sockNeg, sockR1, sockR2);
+
+          unit.userData = {
+            unitId: isAmmeter ? 'ammeter' : 'voltmeter',
+            titleVi: isAmmeter ? 'Ampe Kế DC (AM_NEG / AM_06A / AM_3A)' : 'Vôn Kế DC (VM_NEG / VM_6V / VM_12V)',
+            detachable: true,
+            needlePivot: needlePivot,
+            homePos: isAmmeter ? new THREE.Vector3(0.0, 0, -0.090) : new THREE.Vector3(0.185, 0, 0.085)
+          };
+          return unit;
+        }
+
+        function buildBananaWireMesh(THREE, wireId, posA, posB, colorHex, wireIndex) {
+          var wireGroup = new THREE.Group();
+          wireGroup.name = 'wire_' + wireId;
+
+          var plugMat = new THREE.MeshPhysicalMaterial({
+            color: colorHex,
+            roughness: 0.24,
+            metalness: 0.08,
+            clearcoat: 0.55
+          });
+          var metalTipMat = new THREE.MeshPhysicalMaterial({
+            color: 0xe2e8f0,
+            metalness: 0.95,
+            roughness: 0.12
+          });
+          var holeMat = new THREE.MeshBasicMaterial({ color: 0x090d16 });
+
+          function createBananaPlugHead(pos) {
+            var pGroup = new THREE.Group();
+            pGroup.position.copy(pos);
+            var pin = new THREE.Mesh(new THREE.CylinderGeometry(0.0024, 0.0020, 0.012, 14), metalTipMat);
+            pin.position.y = 0.010;
+            pGroup.add(pin);
+            var shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.0044, 0.0044, 0.020, 18), plugMat);
+            shroud.position.y = 0.025;
+            pGroup.add(shroud);
+            var crossHole = new THREE.Mesh(new THREE.CylinderGeometry(0.0018, 0.0018, 0.0092, 12), holeMat);
+            crossHole.rotation.z = Math.PI / 2;
+            crossHole.position.y = 0.023;
+            pGroup.add(crossHole);
+            return pGroup;
+          }
+
+          wireGroup.add(createBananaPlugHead(posA));
+          wireGroup.add(createBananaPlugHead(posB));
+
+          var p0 = new THREE.Vector3(posA.x, posA.y + 0.034, posA.z);
+          var p4 = new THREE.Vector3(posB.x, posB.y + 0.034, posB.z);
+          var dist = p0.distanceTo(p4);
+          var archH = Math.min(0.065, Math.max(0.022, dist * 0.24)) + (wireIndex % 3) * 0.006;
+
+          var p1 = new THREE.Vector3(
+            p0.x + (p4.x - p0.x) * 0.22,
+            Math.max(p0.y, p4.y) + archH * 0.75,
+            p0.z + (p4.z - p0.z) * 0.22
+          );
+          var p2 = new THREE.Vector3(
+            (p0.x + p4.x) * 0.5,
+            Math.max(p0.y, p4.y) + archH,
+            (p0.z + p4.z) * 0.5 + ((wireIndex % 2 === 0 ? 1 : -1) * 0.012)
+          );
+          var p3 = new THREE.Vector3(
+            p0.x + (p4.x - p0.x) * 0.78,
+            Math.max(p0.y, p4.y) + archH * 0.75,
+            p0.z + (p4.z - p0.z) * 0.78
+          );
+
+          var curve = new THREE.CatmullRomCurve3([p0, p1, p2, p3, p4]);
+          var tubeGeo = new THREE.TubeGeometry(curve, 28, 0.0023, 10, false);
+          var cableMat = new THREE.MeshPhysicalMaterial({
+            color: colorHex,
+            roughness: 0.30,
+            metalness: 0.05,
+            clearcoat: 0.45
+          });
+          var tubeMesh = new THREE.Mesh(tubeGeo, cableMat);
+          tubeMesh.name = 'wire_cable_mesh';
+          wireGroup.add(tubeMesh);
+
+          wireGroup.userData = {
+            isWire: true,
+            wireId: wireId,
+            colorHex: colorHex
+          };
+          return wireGroup;
+        }
+
+        function getTerminalLocalPos(rootObject, terminalId) {
+          var ud = rootObject && rootObject.userData ? rootObject.userData : null;
+          if (!ud || !ud.componentsGroup) return null;
+          var target = ud.componentsGroup.getObjectByName('terminal_' + terminalId);
+          if (!target || !target.parent || !target.parent.visible) return null;
+          var pos = new ud.THREE_REF.Vector3();
+          pos.copy(target.position);
+          pos.add(target.parent.position);
+          return pos;
+        }
+
+        function rebuildWires3D(rootObject, wireList) {
+          var ud = rootObject && rootObject.userData ? rootObject.userData : null;
+          if (!ud || !ud.wiresGroup || !Array.isArray(wireList)) return;
+          while (ud.wiresGroup.children.length > 0) {
+            var old = ud.wiresGroup.children[0];
+            ud.wiresGroup.remove(old);
+          }
+          for (var i = 0; i < wireList.length; i++) {
+            var w = wireList[i];
+            var pA = getTerminalLocalPos(rootObject, w.from);
+            var pB = getTerminalLocalPos(rootObject, w.to);
+            if (pA && pB) {
+              var mesh = ud.buildBananaWireMesh(ud.THREE_REF, w.id, pA, pB, w.color, i);
+              mesh.userData.from = w.from;
+              mesh.userData.to = w.to;
+              ud.wiresGroup.add(mesh);
+            }
+          }
+        }
+
+        function buildEquipmentMesh(THREE, asset) {
+          var opts = asset || {};
+          var activeFilter = opts.fullWorkbench ? 'ALL' : (opts.targetFilter || DEFAULT_TARGET_FILTER || 'ALL');
+          var root = new THREE.Group();
+          root.name = (opts && opts.slug ? opts.slug : 'bo-mach-dien-noi-tiep-3d') + '_root';
+
+          var boardMat = new THREE.MeshPhysicalMaterial({
+            color: 0x1e293b,
+            roughness: 0.38,
+            metalness: 0.12,
+            clearcoat: 0.25
+          });
+          var boardMesh = new THREE.Mesh(
+            createRoundedBoxGeometry(THREE, 0.520, 0.008, 0.340, 0.012, 0.002),
+            boardMat
+          );
+          boardMesh.name = 'body';
+          root.add(boardMesh);
+
+          var baseFootAlias = new THREE.Mesh(
+            new THREE.BoxGeometry(0.510, 0.004, 0.330),
+            boardMat
+          );
+          baseFootAlias.name = 'base_foot';
+          baseFootAlias.position.y = 0.002;
+          root.add(baseFootAlias);
+
+          var componentsGroup = new THREE.Group();
+          componentsGroup.name = 'circuit_components_group';
+          componentsGroup.position.y = 0.008;
+          root.add(componentsGroup);
+
+          var batHolder = buildBatteryHolderUnit(THREE);
+          batHolder.position.copy(batHolder.userData.homePos);
+          componentsGroup.add(batHolder);
+
+          var singleHolder1 = buildSingleBatteryHolderUnit(THREE, 1);
+          singleHolder1.position.copy(singleHolder1.userData.homePos);
+          componentsGroup.add(singleHolder1);
+
+          var singleHolder2 = buildSingleBatteryHolderUnit(THREE, 2);
+          singleHolder2.position.copy(singleHolder2.userData.homePos);
+          componentsGroup.add(singleHolder2);
+
+          var conOTex = createConOBatteryTexture(THREE);
+          var bat1 = buildConOBatteryUnit(THREE, 1, conOTex);
+          var bat2 = buildConOBatteryUnit(THREE, 2, conOTex);
+          var bat3 = buildConOBatteryUnit(THREE, 3, conOTex);
+          var bat4 = buildConOBatteryUnit(THREE, 4, conOTex);
+          bat1.position.set(batHolder.position.x, 0, batHolder.position.z + bat1.userData.slotZ);
+          bat2.position.set(batHolder.position.x, 0, batHolder.position.z + bat2.userData.slotZ);
+          bat3.position.set(singleHolder1.position.x, 0, singleHolder1.position.z);
+          bat4.position.set(singleHolder2.position.x, 0, singleHolder2.position.z);
+          componentsGroup.add(bat1, bat2, bat3, bat4);
+
+          var knifeSwitch = buildKnifeSwitchUnit(THREE);
+          knifeSwitch.position.copy(knifeSwitch.userData.homePos);
+          componentsGroup.add(knifeSwitch);
+
+          var lightBulb = buildLightBulbUnit(THREE);
+          lightBulb.position.copy(lightBulb.userData.homePos);
+          componentsGroup.add(lightBulb);
+
+          var rheostat = buildRheostatUnit(THREE);
+          rheostat.position.copy(rheostat.userData.homePos);
+          componentsGroup.add(rheostat);
+
+          var ammeter = buildAnalogMeterUnit(THREE, 'A');
+          ammeter.position.copy(ammeter.userData.homePos);
+          componentsGroup.add(ammeter);
+
+          var voltmeter = buildAnalogMeterUnit(THREE, 'V');
+          voltmeter.position.copy(voltmeter.userData.homePos);
+          componentsGroup.add(voltmeter);
+
+          var wiresGroup = new THREE.Group();
+          wiresGroup.name = 'circuit_wires_group';
+          wiresGroup.position.y = 0.008;
+          root.add(wiresGroup);
+
+          var screenCanvas = document.createElement('canvas');
+          screenCanvas.width = 512;
+          screenCanvas.height = 200;
+          var defaultInfo = { closed: true, currentA: 0.23, bulbV: 1.98, rheostatOhm: 4.0, emfV: 3.0, powerW: 0.46 };
+          drawReadoutCanvas(screenCanvas, defaultInfo);
+          var screenTex = configureTextureColorAndAnisotropy(THREE, new THREE.CanvasTexture(screenCanvas), 8);
+
+          var standPost = new THREE.Mesh(
+            new THREE.BoxGeometry(0.150, 0.056, 0.008),
+            new THREE.MeshPhysicalMaterial({ color: 0x0f172a, roughness: 0.25 })
+          );
+          standPost.name = 'stand_post';
+          standPost.position.set(-0.175, 0.036, -0.158);
+          root.add(standPost);
+
+          var dispMat = new THREE.MeshBasicMaterial({
+            map: screenTex,
+            polygonOffset: true,
+            polygonOffsetFactor: -1,
+            polygonOffsetUnits: -1
+          });
+          var scaleDisplay = new THREE.Mesh(new THREE.PlaneGeometry(0.144, 0.050), dispMat);
+          scaleDisplay.name = 'scale_display';
+          scaleDisplay.position.set(-0.175, 0.036, -0.152);
+          root.add(scaleDisplay);
+
+          var scaleDisplayRear = new THREE.Mesh(new THREE.PlaneGeometry(0.144, 0.050), dispMat);
+          scaleDisplayRear.name = 'scale_display_rear';
+          scaleDisplayRear.rotation.y = Math.PI;
+          scaleDisplayRear.position.set(-0.175, 0.036, -0.164);
+          root.add(scaleDisplayRear);
+
+          root.userData = {
+            THREE_REF: THREE,
+            activeFilter: activeFilter,
+            componentsGroup: componentsGroup,
+            wiresGroup: wiresGroup,
+            units: {
+              battery_holder: batHolder,
+              single_battery_holder_1: singleHolder1,
+              single_battery_holder_2: singleHolder2,
+              battery_1: bat1,
+              battery_2: bat2,
+              battery_3: bat3,
+              battery_4: bat4,
+              switch: knifeSwitch,
+              bulb: lightBulb,
+              rheostat: rheostat,
+              ammeter: ammeter,
+              voltmeter: voltmeter
+            },
+            screenCanvas: screenCanvas,
+            screenTex: screenTex,
+            drawReadoutCanvas: drawReadoutCanvas,
+            buildBananaWireMesh: buildBananaWireMesh,
+            lastSignature: ''
+          };
+
+          if (activeFilter === 'ALL') {
+            var defaultWires = [
+              { id: 'w0', from: 'BAT1_NEG', to: 'BAT2_POS', color: 0xef4444 },
+              { id: 'w1', from: 'BAT1_POS', to: 'SW_RED', color: 0xef4444 },
+              { id: 'w2', from: 'SW_GREEN', to: 'RHEO_IN', color: 0xef4444 },
+              { id: 'w3', from: 'RHEO_WIPER', to: 'AM_06A', color: 0xef4444 },
+              { id: 'w4', from: 'AM_NEG', to: 'BULB_POS', color: 0x2563eb },
+              { id: 'w5', from: 'BULB_NEG', to: 'BAT2_NEG', color: 0x2563eb },
+              { id: 'w6', from: 'BULB_POS', to: 'VM_6V', color: 0xef4444 },
+              { id: 'w7', from: 'BULB_NEG', to: 'VM_NEG', color: 0x2563eb }
+            ];
+            rebuildWires3D(root, defaultWires);
+          } else {
+            wiresGroup.visible = false;
+            root.remove(standPost);
+            var targetW = DEFAULT_TARGET_BBOX[0] || 0.12;
+            var targetH = DEFAULT_TARGET_BBOX[1] || 0.06;
+            var targetD = DEFAULT_TARGET_BBOX[2] || 0.08;
+
+            boardMesh.scale.set(
+              Math.max(0.06, (targetW * 0.86) / 0.520),
+              0.25,
+              Math.max(0.06, (targetD * 0.86) / 0.340)
+            );
+            boardMesh.position.set(0, 0, 0);
+            baseFootAlias.scale.copy(boardMesh.scale);
+            baseFootAlias.position.set(0, 0.001, 0);
+
+            scaleDisplay.scale.set(0.14, 0.14, 0.14);
+            scaleDisplay.position.set(0, Math.min(0.015, targetH * 0.35), 0);
+            scaleDisplayRear.scale.set(0.14, 0.14, 0.14);
+            scaleDisplayRear.position.set(0, Math.min(0.015, targetH * 0.35), -0.002);
+
+            componentsGroup.position.set(0, 0.002, 0);
+            var toRemove = [];
+            for (var i = 0; i < componentsGroup.children.length; i++) {
+              var ch = componentsGroup.children[i];
+              var keep = (ch.name === activeFilter) ||
+                (activeFilter === 'unit_battery_holder' && (ch.name === 'unit_battery_1' || ch.name === 'unit_battery_2')) ||
+                (activeFilter === 'unit_single_battery_holder_1' && ch.name === 'unit_battery_3');
+              if (!keep) {
+                toRemove.push(ch);
+              }
+            }
+            for (var j = 0; j < toRemove.length; j++) {
+              componentsGroup.remove(toRemove[j]);
+            }
+
+            var mainUnit = componentsGroup.getObjectByName(activeFilter);
+            if (mainUnit) {
+              var yOff = (activeFilter.indexOf('unit_battery_') === 0 && activeFilter !== 'unit_battery_holder') ? -0.011 : 0;
+              mainUnit.position.set(0, yOff, 0);
+              if (!root.getObjectByName('plunger')) {
+                var proxyPlunger = new THREE.Mesh(
+                  new THREE.BoxGeometry(0.006, 0.006, 0.006),
+                  new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.3 })
+                );
+                proxyPlunger.name = 'plunger';
+                proxyPlunger.position.set(0, Math.max(0.01, targetH * 0.4), 0);
+                mainUnit.add(proxyPlunger);
+              }
+            }
+            if (activeFilter === 'unit_battery_holder') {
+              if (bat1) bat1.position.set(0, 0, -0.022);
+              if (bat2) bat2.position.set(0, 0, 0.022);
+            }
+            if (activeFilter === 'unit_single_battery_holder_1') {
+              if (bat3) bat3.position.set(0, 0, 0);
+            }
+          }
+
+          return root;
+        }
+
+        function updateEquipmentState(rootObject, state, dt) {
+          if (!rootObject || !rootObject.userData) return;
+          var st = state || {};
+          var ud = rootObject.userData;
+          var units = ud.units;
+          var activeFilter = ud.activeFilter || 'ALL';
+          var alpha = 1 - Math.exp(-14 * (dt || 0.016));
+
+          var hasMultiVal = typeof st.multimeterValue === 'number';
+          var multiVal = hasMultiVal ? st.multimeterValue : 4.0;
+
+          var rheoOhm = typeof st.rheostatOhm === 'number'
+            ? st.rheostatOhm
+            : (activeFilter === 'ALL' || activeFilter === 'unit_rheostat' ? multiVal : 4.0);
+          rheoOhm = Math.max(0, Math.min(20, rheoOhm));
+
+          if (units.rheostat && units.rheostat.userData.wiperGroup) {
+            var fracR = rheoOhm / 20.0;
+            var targetX = -0.056 + fracR * 0.112;
+            units.rheostat.userData.wiperGroup.position.x += (targetX - units.rheostat.userData.wiperGroup.position.x) * alpha;
+          }
+
+          var swClosed = (typeof st.switchClosed === 'boolean')
+            ? st.switchClosed
+            : (activeFilter === 'unit_switch' && hasMultiVal ? multiVal >= 0.5 : true);
+          if (units.switch && units.switch.userData.bladePivot) {
+            if (typeof st.switchBladeAngle === 'number') {
+              units.switch.userData.bladePivot.rotation.z = st.switchBladeAngle;
+            } else {
+              var targetBladeZ = swClosed ? -0.04 : 0.72;
+              var curZ = units.switch.userData.bladePivot.rotation.z;
+              units.switch.userData.bladePivot.rotation.z = curZ + (targetBladeZ - curZ) * alpha;
+            }
+            if (activeFilter === 'unit_switch' && hasMultiVal) {
+              var hl = units.switch.getObjectByName('switch_lever_highlight');
+              if (hl) hl.visible = true;
+            }
+          }
+
+          var bat1In = (typeof st.battery1Inserted === 'boolean')
+            ? st.battery1Inserted
+            : (activeFilter === 'unit_battery_holder' && hasMultiVal ? multiVal >= 1.0 : true);
+          var bat2In = (typeof st.battery2Inserted === 'boolean')
+            ? st.battery2Inserted
+            : (activeFilter === 'unit_battery_holder' && hasMultiVal ? multiVal >= 2.5 : true);
+
+          if (!st.disableAutoBatteryPos) {
+            if (units.battery_1 && units.battery_holder && units.battery_holder.parent) {
+              var hp = units.battery_holder.position;
+              var targetX1 = bat1In ? hp.x : hp.x - 0.030;
+              var targetZ1 = bat1In ? (hp.z - 0.022) : (hp.z - 0.085);
+              units.battery_1.position.x += (targetX1 - units.battery_1.position.x) * alpha;
+              units.battery_1.position.z += (targetZ1 - units.battery_1.position.z) * alpha;
+              var s1hl = units.battery_holder.getObjectByName('slot1_highlight');
+              if (s1hl && activeFilter === 'unit_battery_holder' && hasMultiVal) s1hl.visible = !bat1In;
+            }
+            if (units.battery_2 && units.battery_holder && units.battery_holder.parent) {
+              var hp2 = units.battery_holder.position;
+              var targetX2 = bat2In ? hp2.x : hp2.x + 0.035;
+              var targetZ2 = bat2In ? (hp2.z + 0.022) : (hp2.z + 0.085);
+              units.battery_2.position.x += (targetX2 - units.battery_2.position.x) * alpha;
+              units.battery_2.position.z += (targetZ2 - units.battery_2.position.z) * alpha;
+              var s2hl = units.battery_holder.getObjectByName('slot2_highlight');
+              if (s2hl && activeFilter === 'unit_battery_holder' && hasMultiVal) s2hl.visible = !bat2In;
+            }
+            if (activeFilter === 'unit_single_battery_holder_1' && units.battery_3 && units.single_battery_holder_1) {
+              var sbatIn = hasMultiVal ? multiVal >= 0.75 : true;
+              var shp = units.single_battery_holder_1.position;
+              var tx3 = sbatIn ? shp.x : shp.x;
+              var tz3 = sbatIn ? shp.z : shp.z - 0.068;
+              units.battery_3.position.x += (tx3 - units.battery_3.position.x) * alpha;
+              units.battery_3.position.z += (tz3 - units.battery_3.position.z) * alpha;
+              var shl = units.single_battery_holder_1.getObjectByName('slot_highlight');
+              if (shl && hasMultiVal) shl.visible = !sbatIn;
+            }
+          }
+
+          var emfV = typeof st.emfV === 'number'
+            ? st.emfV
+            : (activeFilter === 'unit_battery_holder' && hasMultiVal ? multiVal : ((bat1In && bat2In) ? 3.0 : (bat1In || bat2In ? 1.5 : 0.0)));
+          var rBulb = typeof st.bulbResistance === 'number' ? st.bulbResistance : 4.8;
+          var rInt = 0.24;
+          var defaultI = (swClosed && emfV > 0) ? (emfV / (rBulb + rheoOhm + rInt + 0.05)) : 0.0;
+
+          var currentA = typeof st.ammeterReadingA === 'number'
+            ? st.ammeterReadingA
+            : (activeFilter === 'unit_ammeter' && hasMultiVal ? multiVal : defaultI);
+          var voltV = typeof st.voltmeterReadingV === 'number'
+            ? st.voltmeterReadingV
+            : (activeFilter === 'unit_voltmeter' && hasMultiVal ? multiVal : (activeFilter === 'unit_bulb' && hasMultiVal ? multiVal : (defaultI * rBulb)));
+          var bulbCurrentA = typeof st.bulbCurrentA === 'number'
+            ? st.bulbCurrentA
+            : (activeFilter === 'unit_bulb' && hasMultiVal ? (multiVal / rBulb) : defaultI);
+          var ammeterScaleMax = typeof st.ammeterMaxA === 'number' ? st.ammeterMaxA : (Math.abs(currentA) > 0.65 ? 3.0 : 0.6);
+          var voltmeterScaleMax = typeof st.voltmeterMaxV === 'number' ? st.voltmeterMaxV : (Math.abs(voltV) > 6.2 ? 12.0 : 6.0);
+
+          if (units.ammeter && units.ammeter.userData.needlePivot) {
+            var normA = Math.max(-0.22, Math.min(1.25, currentA / ammeterScaleMax));
+            var targetAngA = 0.83 - normA * 1.66;
+            var curAngA = units.ammeter.userData.needlePivot.rotation.z;
+            units.ammeter.userData.needlePivot.rotation.z = curAngA + (targetAngA - curAngA) * alpha;
+          }
+          if (units.voltmeter && units.voltmeter.userData.needlePivot) {
+            var normV = Math.max(-0.22, Math.min(1.25, voltV / voltmeterScaleMax));
+            var targetAngV = 0.83 - normV * 1.66;
+            var curAngV = units.voltmeter.userData.needlePivot.rotation.z;
+            units.voltmeter.userData.needlePivot.rotation.z = curAngV + (targetAngV - curAngV) * alpha;
+          }
+
+          // Độ sáng đèn tỉ lệ trực tiếp và rõ rệt với cường độ dòng điện I & công suất P = I²R
+          var powerW = bulbCurrentA * bulbCurrentA * rBulb;
+          var currentRatio = Math.max(0, Math.min(1.6, bulbCurrentA / 0.38));
+          var glowRatio = Math.max(currentRatio * 0.85, Math.min(1.8, powerW / 0.45));
+          if (units.bulb && units.bulb.userData) {
+            var bud = units.bulb.userData;
+            bud.filamentMat.emissiveIntensity = glowRatio * 4.5;
+            bud.glassMat.emissiveIntensity = glowRatio * 1.35;
+            bud.haloMat.opacity = Math.min(0.85, glowRatio * 0.62);
+            bud.bulbLight.intensity = glowRatio * 2.8;
+          }
+
+          var sig = [
+            (currentA || 0).toFixed(2),
+            (voltV || 0).toFixed(2),
+            rheoOhm.toFixed(1),
+            emfV.toFixed(1),
+            powerW.toFixed(2),
+            bulbCurrentA > 0.02 ? '1' : '0'
+          ].join('|');
+
+          if (ud.lastSignature !== sig) {
+            ud.lastSignature = sig;
+            ud.drawReadoutCanvas(ud.screenCanvas, {
+              closed: bulbCurrentA > 0.02,
+              currentA: Math.abs(currentA),
+              bulbV: Math.abs(voltV),
+              rheostatOhm: rheoOhm,
+              emfV: emfV,
+              powerW: powerW
+            });
+            ud.screenTex.needsUpdate = true;
+          }
+        }
+
+        function playEquipmentSound(eventType, value) {
+          try {
+            var AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            if (!window.__ol3dAudioCtx) {
+              window.__ol3dAudioCtx = new AudioCtx();
+            }
+            var ctx = window.__ol3dAudioCtx;
+            if (ctx.state === 'suspended') ctx.resume();
+
+            var osc = ctx.createOscillator();
+            var gain = ctx.createGain();
+            var now = ctx.currentTime;
+
+            if (eventType === 'switch') {
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(value ? 520 : 340, now);
+              osc.frequency.exponentialRampToValueAtTime(value ? 880 : 210, now + 0.06);
+              gain.gain.setValueAtTime(0.14, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.075);
+            } else if (eventType === 'plug') {
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(640, now);
+              osc.frequency.exponentialRampToValueAtTime(980, now + 0.05);
+              gain.gain.setValueAtTime(0.11, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.055);
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.06);
+            } else {
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(300 + (Number(value) || 0) * 18, now);
+              gain.gain.setValueAtTime(0.04, now);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 0.04);
+            }
+          } catch (e) {}
+        }
+
+        function applyEquipmentState(THREE, rootObject, instance, asset) {
+          var st = instance && instance.instanceState ? instance.instanceState : (instance || {});
+          updateEquipmentState(rootObject, st, 0.25);
+        }
+
+        window.OL3D_EQUIPMENT_MODULE = {
+          buildEquipmentGroup: buildEquipmentMesh,
+          buildEquipmentMesh: buildEquipmentMesh,
+          applyEquipmentState: applyEquipmentState,
+          updateEquipmentState: updateEquipmentState,
+          getTerminalLocalPos: getTerminalLocalPos,
+          rebuildWires3D: rebuildWires3D,
+          playEquipmentSound: playEquipmentSound
+        };
+      })();
+    </script>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
